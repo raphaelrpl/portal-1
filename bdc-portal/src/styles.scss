@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@import '~leaflet/dist/leaflet.css';
+
+//ANGULAR MATERIAL
+@import '~@angular/material/theming';
+@include mat-core();
+
+@import 'assets/bdc.scss';
+
+.my-theme {
+  @include angular-material-theme($my-theme);
+}
+
+//DEFAULT
+body {
+    padding: 0;
+    margin: 0;
+}
