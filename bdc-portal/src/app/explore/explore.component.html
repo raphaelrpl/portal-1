@@ -1,10 +1,21 @@
-<section #navigation>
-    <navigation></navigation>
+<section class="explore">    
+    <mat-drawer-container class="sidenav" autosize>
+        <!-- NAVIGATION -->
+        <mat-drawer #sidenav class="sidenav" mode="side" [opened]="true">
+            <sidenav></sidenav>
+        </mat-drawer>
+        
+        <!-- CONTENT -->
+        <section>
+            <div #toolbar>
+                <toolbar (toggleToEmit)="toggleDrawer()"></toolbar>
+            </div>
+
+            <base-map [height]="innerHeight"></base-map>
+        </section>
+    </mat-drawer-container>
 </section>
 
-<base-map [width]="innerWidth"
-    [height]="innerHeight"></base-map>
-
-<footer #footer>
-    BDC - 2019
+<footer #footer class="footer">
+    <p>© 2019 - BRAZIL DATA CUBE (BDC)</p>
 </footer>

@@ -1,14 +1,9 @@
 @import '~leaflet/dist/leaflet.css';
 
-//ANGULAR MATERIAL
-@import '~@angular/material/theming';
+//ANGULAR MATERIAL - THEMES
+@import 'assets/styles/bdc-theme.scss';
 @include mat-core();
-
-@import 'assets/bdc.scss';
-
-.my-theme {
-  @include angular-material-theme($my-theme);
-}
+@include angular-material-theme($bdc_theme);
 
 //DEFAULT
 body {
