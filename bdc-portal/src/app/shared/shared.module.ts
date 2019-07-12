@@ -7,13 +7,16 @@ import {
 } from '@angular/material';
 
 import { SelectLangComponent } from './components/selectLang/selectLang.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 @NgModule({
   declarations: [
-    SelectLangComponent
+    SelectLangComponent,
+    FooterComponent
   ],
   exports: [
-    SelectLangComponent
+    SelectLangComponent,
+    FooterComponent
   ],
   imports: [
     CommonModule,

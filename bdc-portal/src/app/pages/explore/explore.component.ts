@@ -7,8 +7,7 @@ import { Component,
 } from '@angular/core';
 
 @Component({
-  templateUrl: './explore.component.html',
-  styleUrls: ['./explore.component.scss']
+  templateUrl: './explore.component.html'
 })
 export class ExploreComponent implements OnInit, AfterViewInit {
 
@@ -27,7 +26,8 @@ export class ExploreComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.toolbarHeight = this.toolbar.nativeElement.offsetHeight;
-    setTimeout(_=> this.onResize(''));
+    this.footerHeight = this.footer.nativeElement.offsetHeight;
+    setTimeout( _ => this.onResize(''));
   }
 
   @HostListener('window:resize', ['$event'])
