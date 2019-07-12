@@ -2,7 +2,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { 
+import {
   MatButtonModule,
   MatToolbarModule,
   MatIconModule,
@@ -14,6 +14,7 @@ import { ExploreComponent } from './explore.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MapComponent } from './map/map.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
   imports: [
     RouterModule,
     CommonModule,
+    SharedModule,
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,

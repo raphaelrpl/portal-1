@@ -1,17 +1,17 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { tileLayer, latLng } from 'leaflet';
+import { tileLayer, latLng, MapOptions } from 'leaflet';
 
 @Component({
-  selector: 'base-map',
+  selector: 'app-base-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {
 
-  public options: Object = {}
+  public options: MapOptions;
 
-  @Input() width: any;
-  @Input() height: any;
+  @Input() width: number;
+  @Input() height: number;
 
   constructor() { }
 

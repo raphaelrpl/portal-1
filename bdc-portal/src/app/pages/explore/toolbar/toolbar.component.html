@@ -1,0 +1,24 @@
+<nav>
+    <mat-toolbar color="primary" class="toolbar">
+        <mat-toolbar-row class="tol_container">
+            <div class="tol_cont-title">
+                <div
+                    class="title_btn-toggle"
+                    (click)="toggleDrawer()">
+                    <mat-icon>menu</mat-icon>
+                </div>
+                <span>Brazil Data Cube</span>
+            </div>
+            
+            <div class="tol_cont-buttons">
+                <button
+                    mat-raised-button
+                    [routerLink]="'/auth/login'">
+                    LOGIN
+                </button>
+
+                <app-select-lang></app-select-lang>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</nav>
