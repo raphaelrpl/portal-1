@@ -6,7 +6,7 @@ Based on master-details model, this application has the following architecture.
 ![Basic architecture](https://github.com/betonr/portal/blob/dev/docs/BDC%20Arquitecture%20-%20Master_Details.jpg)
 
 ## Generate Docs
-the documentation of the application is made with the "compodoc" plugin and can be generated as follows
+the documentation of the application is made with the "[`compodoc`](https://compodoc.app/)" plugin and can be generated as follows
 
 ```
 cd ../bdc-portal
