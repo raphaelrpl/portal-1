@@ -2,6 +2,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { HttpClientModule } from '@angular/common/http';
 import {
   MatButtonModule,
   MatToolbarModule,
@@ -21,7 +22,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     ExploreComponent,
     ToolbarComponent,
     MapComponent,
-    SidenavComponent,
+    SidenavComponent
   ],
   exports: [
     RouterModule
@@ -35,7 +36,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatIconModule,
     MatSelectModule,
     MatSidenavModule,
-    LeafletModule
+    HttpClientModule,
+    LeafletModule.forRoot()
   ]
 })
 export class ExploreModule { }
