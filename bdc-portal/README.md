@@ -2,8 +2,8 @@
 
 Web Portal for visualizing spatial data from the Brazil Data Cube
 
-- ![`Basic architecture`](https://github.com/betonr/portal/blob/dev/docs/BDC%20Arquitecture%20-%20Master_Details.jpg)
-- ![`Documentation`](./../docs)
+- [`Basic architecture`](https://github.com/betonr/portal/blob/dev/docs/BDC%20Arquitecture%20-%20Master_Details.jpg)
+- [`Documentation`](./../docs)
 
 ## Installation
 ### Requirements
