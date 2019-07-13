@@ -9,6 +9,10 @@ import {
 import { SelectLangComponent } from './components/selectLang/selectLang.component';
 import { FooterComponent } from './components/footer/footer.component';
 
+/**
+ * Shared Module
+ * used to export components, services and models common in this application
+ */
 @NgModule({
   declarations: [
     SelectLangComponent,

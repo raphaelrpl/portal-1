@@ -10,6 +10,10 @@ const routes: Routes = [
   { path: 'admin', loadChildren: './pages/admin/admin.module#AdminModule'}
 ];
 
+/**
+ * External Route Module (main)
+ * has call to the explorer, authentication and administrator modules
+ */
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
