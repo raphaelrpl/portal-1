@@ -1,7 +1,7 @@
 import { tileLayer } from 'leaflet';
-import { Layer, LayerId } from './layer.interface';
+import { BdcLayersWMS } from './layer.interface';
 
-export const BaseLayers: Layer[] = [
+export const BaseLayers: BdcLayersWMS[] = [
    // Google Satellite
    {
       id: 'google_sattelite',
@@ -63,29 +63,4 @@ export const BaseLayers: Layer[] = [
       name: 'Blank',
       layer: tileLayer('', {})
    }
-];
-
-export const OverlayersId: LayerId[] = [
-   {
-      ds: 'grids',
-      title: 'aea_500k',
-      enabled: true,
-      name: 'WFI'
-   },
-   {
-      ds: 'grids',
-      title: 'aea_250k',
-      enabled: false,
-      name: '250k'
-   }
-   // {
-   //    id: 'll_WFI',
-   //    enabled: false,
-   //    name: 'll_WFI',
-   //    layer: tileLayer.wms('http://cbers1.dpi.inpe.br:8095/geoserver/ows?', {
-   //       layers: 'grids:aea_500k',
-   //       format: 'image/png',
-   //       transparent: true
-   //    }),
-   // }
 ];

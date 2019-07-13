@@ -1,10 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { latLng, MapOptions, Layer as LayerLeaflet, Control, geoJSON } from 'leaflet';
-
-import { Layer, LayerId } from './layers/layer.interface';
-import { BaseLayers, OverlayersId } from './layers/baseLayers.in-memory';
-import { LayerService } from './layers/layer.service';
+import { latLng, MapOptions, Layer, geoJSON } from 'leaflet';
 import { GeoJsonObject } from 'geojson';
+
+import { BdcLayersWMS, BdcLayersWFS } from './layers/layer.interface';
+import { LayerService } from './layers/layer.service';
 
 @Component({
   selector: 'app-base-map',
@@ -18,11 +17,11 @@ export class MapComponent implements OnInit {
 
   public options: MapOptions;
   public layersControl: any;
-  public layers: LayerLeaflet[];
-  public overlayers: Layer[];
+  public layers: Layer[];
+  public overlayers: BdcLayersWMS[];
 
-  public baseLayers = {}
-  public overlays = {}
+  public baseLayers = {};
+  public overlays = {};
 
   constructor(private ls: LayerService) {}
 
@@ -32,49 +31,8 @@ export class MapComponent implements OnInit {
       center: latLng(-16, -52)
     };
 
-    this.getLayerObject(BaseLayers)
-    this.getLayerObjectByService(OverlayersId)
-  }
-
-  getLayerObject(listLayers: Layer[]): any {
-    const vm = this;
-    listLayers.forEach( (l: Layer) => {
-      vm.baseLayers[l.name] = l.layer;
-    });
-  }
-
-  async getLayerObjectByService(listLayersId: LayerId[]) {
-    try {
-      const vm = this;
-      this.overlayers = [];
-
-      await listLayersId.forEach( async (l: LayerId) => {
-        let responseGeoJson: GeoJsonObject = await this.ls.getLayerGeoJson(l.ds, l.title)
-
-        const layerGeoJson = geoJSON(
-          responseGeoJson,
-          { style: () => ({ color: '#ff7800' })}
-        )
-        vm.overlays[l.name] = layerGeoJson
-
-        let layer: Layer = {
-          id: l.title,
-          name: l.name,
-          enabled: l.enabled,
-          layer: layerGeoJson
-        }
-        vm.overlayers.push(layer)
-      });
-
-    } catch(err) {
-      console.log('ERR ====> !')
-
-    } finally {
-      this.setControlLayers()
-      setTimeout(() => {
-        this.applyLayersEnabled()
-      }, 1000);
-    }      
+    this.setBaseLayers(this.ls.getBaseLayers());
+    this.setGridsLayers(this.ls.getGridsLayers());
   }
 
   setControlLayers(): void {
@@ -84,13 +42,62 @@ export class MapComponent implements OnInit {
     };
   }
 
-  applyLayersEnabled(): void {
-    const baseLayer = BaseLayers.filter((l: Layer) => l.id === 'osm');
+  setBaseLayers(listLayers: BdcLayersWMS[]) {
+    const vm = this;
+    listLayers.forEach( (l: BdcLayersWMS) => {
+      vm.baseLayers[l.name] = l.layer;
+    });
+  }
+
+  async setGridsLayers(listLayersId: BdcLayersWFS[]) {
+    try {
+      const vm = this;
+      this.overlayers = [];
+
+      await listLayersId.forEach( async (l: BdcLayersWFS) => {
+        const responseGeoJson: GeoJsonObject = await this.ls.getGeoJsonByLayer(l.ds, l.title);
+
+        const layerGeoJson = geoJSON(
+          responseGeoJson,
+          {
+            style: (feat) => {
+              if ([].indexOf(feat.properties.tileid) >= 0) {
+                return ({ color: '#000000' });
+              } else {
+                return ({ color: '#ff7800' });
+              }
+            }
+          });
+        vm.overlays[l.name] = layerGeoJson;
+
+        const layer: BdcLayersWMS = {
+          id: l.title,
+          name: l.name,
+          enabled: l.enabled,
+          layer: layerGeoJson
+        };
+        vm.overlayers.push(layer);
+      });
+
+    } catch (err) {
+      console.log('==> ERR: ' + err);
+
+    } finally {
+      this.setControlLayers();
+
+      setTimeout(() => {
+        this.applyLayersInMap();
+      }, 1000);
+    }
+  }
+
+  applyLayersInMap(): void {
+    const baseLayer = this.ls.getBaseLayers().filter((l: BdcLayersWMS) => l.id === 'osm');
 
     if (this.overlayers[0] && this.overlayers[0].layer) {
-      const newLayers: LayerLeaflet[] = this.overlayers
-            .filter((l: Layer) => l.enabled)
-            .map((l: Layer) => l && l.layer);
+      const newLayers: Layer[] = this.overlayers
+            .filter((l: BdcLayersWMS) => l.enabled)
+            .map((l: BdcLayersWMS) => l && l.layer);
 
       newLayers.unshift(baseLayer[0].layer);
       this.layers = newLayers;

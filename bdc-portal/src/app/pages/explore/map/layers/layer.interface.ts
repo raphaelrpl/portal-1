@@ -1,15 +1,15 @@
 import { Layer } from 'leaflet';
 
-export interface Layer {
+export interface BdcLayersWMS {
     id: string;
     name: string;
     enabled: boolean;
     layer: Layer;
 }
 
-export interface LayerId {
-    ds: string,
-    title: string,
-    name: string,
-    enabled: boolean
+export interface BdcLayersWFS {
+    ds: string;
+    title: string;
+    name: string;
+    enabled: boolean;
 }
