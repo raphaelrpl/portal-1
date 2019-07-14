@@ -17,6 +17,10 @@ import { MapComponent } from './map/map.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
+/**
+ * Explore Module
+ * Module for managing components and service of map pages
+ */
 @NgModule({
   declarations: [
     ExploreComponent,
