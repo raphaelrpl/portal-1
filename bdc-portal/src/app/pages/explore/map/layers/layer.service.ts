@@ -40,7 +40,7 @@ export class LayerService {
      * get tiles with data in the BDC project
      */
     public async getTilesUsed(): Promise<any> {
-        const urlSuffix = '/tiles'
+        const urlSuffix = '/tiles';
         const response = await this.http.get(`${this.soilistUrl}${urlSuffix}`).toPromise();
         return response;
     }

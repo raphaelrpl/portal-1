@@ -31,7 +31,7 @@ export class MapComponent implements OnInit {
   private overlayers: BdcLayer[];
   /** tiles used with data in the BDC project */
   private tilesUsed: number[];
-  
+
   /** all available base layers for viewing (layer object only) */
   private baseLayers = {};
   /** all overlay layers available for viewing (layer object only) */
@@ -48,7 +48,7 @@ export class MapComponent implements OnInit {
     };
 
     this.layers = [];
-    this.setTilesUsed()
+    this.setTilesUsed();
     this.setBaseLayers(this.ls.getBaseLayers());
     this.setGridsLayers(this.ls.getGridsLayers());
   }
@@ -74,13 +74,12 @@ export class MapComponent implements OnInit {
 
   async setTilesUsed() {
     try {
-      const tiles = await this.ls.getTilesUsed()
-      console.log(tiles.data)
-      this.tilesUsed = []
+      const tiles = await this.ls.getTilesUsed();
+      this.tilesUsed = tiles.map( t => t.tileid );
 
-    } catch(err) {
+    } catch (err) {
       console.log('==> ERR: ' + err);
-      this.tilesUsed = []
+      this.tilesUsed = [];
     }
   }
 
@@ -101,14 +100,14 @@ export class MapComponent implements OnInit {
           responseGeoJson,
           {
             onEachFeature: (feat, layer) => {
-              const lyr = (layer as any);
+              const lyr = (layer) as any;
               if (feat.geometry.type === 'MultiPolygon') {
                 if (this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
-                  
+
                   // TODO: create markers
-                  //vm.markers[l.title] = vm.markers[l.title] || [];
-                  //const center = lyr.getBounds().getCenter();
-                  //vm.markers[l.title].push(marker(center));
+                  // vm.markers[l.title] = vm.markers[l.title] || [];
+                  // const center = lyr.getBounds().getCenter();
+                  // vm.markers[l.title].push(marker(center));
 
                   // apply style
                   lyr.setStyle({
@@ -116,14 +115,14 @@ export class MapComponent implements OnInit {
                     weight: 2,
                     fillColor: '#009999',
                     fillOpacity: 0.4
-                  })
+                  });
 
                 } else {
                   lyr.setStyle({
                     color: '#0033cc',
                     weight: 1,
                     fillOpacity: 0.1
-                  })
+                  });
                 }
               }
             }
@@ -159,10 +158,10 @@ export class MapComponent implements OnInit {
       const newLayers: Layer[] = this.overlayers
             .filter((l: BdcLayer) => l.enabled)
             .map((l: BdcLayer) => l && l.layer);
-          
-          // set base layer with firsty
-          newLayers.unshift(baseLayer[0].layer);
-          this.layers = newLayers;
+
+      // set base layer with firsty
+      newLayers.unshift(baseLayer[0].layer);
+      this.layers = newLayers;
     } else {
       this.layers = [baseLayer[0].layer];
     }
