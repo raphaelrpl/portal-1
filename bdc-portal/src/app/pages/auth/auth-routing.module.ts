@@ -8,6 +8,10 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent }
 ];
 
+/**
+ * Auth Route Module
+ * redirects to authentication components with 'auth' before URL
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

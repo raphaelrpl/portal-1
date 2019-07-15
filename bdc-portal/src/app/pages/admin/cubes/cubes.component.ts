@@ -1,14 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
+/**
+ * Cubes manage page component
+ */
 @Component({
   templateUrl: './cubes.component.html',
   styleUrls: ['./cubes.component.scss']
 })
-export class CubesComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class CubesComponent{}

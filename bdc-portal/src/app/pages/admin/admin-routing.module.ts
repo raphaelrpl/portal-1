@@ -8,6 +8,10 @@ const routes: Routes = [
   { path: 'cubes', component: CubesComponent }
 ];
 
+/**
+ * Admin Route Module
+ * redirects to administrator dashboard components with 'admin' before URL
+ */
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
