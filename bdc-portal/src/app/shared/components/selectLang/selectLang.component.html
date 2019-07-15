@@ -1,0 +1,15 @@
+<mat-form-field class="btn_lang-select">
+    <mat-select 
+        [(value)]="languageId">
+        <mat-option 
+            *ngFor="let lang of languages" 
+            [value]="lang.id">
+
+            <div class="lang_option">
+                <img [src]="lang.icon" title="icon PT-BR"/>
+                {{lang.title}}
+            </div>
+        </mat-option>
+    
+    </mat-select>
+</mat-form-field>

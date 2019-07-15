@@ -1,0 +1,30 @@
+<section class="explore">    
+    <mat-drawer-container class="sidenav" autosize>
+        <!-- NAVIGATION -->
+        <mat-drawer 
+            #sidenav
+            class="sidenav"
+            mode="side"
+            [opened]="true"
+        >
+            <app-sidenav></app-sidenav>
+        </mat-drawer>
+        
+        <!-- CONTENT -->
+        <section>
+            <div #toolbar>
+                <app-toolbar 
+                    (toggleToEmit)="toggleDrawer()"
+                ></app-toolbar>
+            </div>
+            
+            <app-base-map 
+                [height]="innerHeight"
+            ></app-base-map>
+            
+            <div #footer>
+                <app-footer></app-footer>
+            </div>
+        </section>
+    </mat-drawer-container>
+</section>
