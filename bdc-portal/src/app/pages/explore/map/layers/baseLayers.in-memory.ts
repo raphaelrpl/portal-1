@@ -1,8 +1,11 @@
 import { tileLayer } from 'leaflet';
-import { BdcLayersWMS } from './layer.interface';
+import { BdcLayer } from './layer.interface';
 
-export const BaseLayers: BdcLayersWMS[] = [
-   // Google Satellite
+/**
+ * return a list of external base layers/maps
+ * static WMS list
+ */
+export const BaseLayers: BdcLayer[] = [
    {
       id: 'google_sattelite',
       enabled: false,
@@ -11,7 +14,6 @@ export const BaseLayers: BdcLayersWMS[] = [
          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       }),
    },
-   // Google Hybrid
    {
       id: 'google_hybrid',
       enabled: false,
@@ -20,7 +22,6 @@ export const BaseLayers: BdcLayersWMS[] = [
          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       }),
    },
-   // Google Streets
    {
       id: 'google_streets',
       enabled: false,
@@ -29,7 +30,6 @@ export const BaseLayers: BdcLayersWMS[] = [
          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       }),
    },
-   // Google Terrain
    {
       id: 'google_terrain',
       enabled: false,
@@ -38,7 +38,6 @@ export const BaseLayers: BdcLayersWMS[] = [
          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
       }),
    },
-   // OSM
    {
       id: 'osm',
       enabled: true,
@@ -47,7 +46,6 @@ export const BaseLayers: BdcLayersWMS[] = [
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }),
    },
-   // OSM TOPO
    {
       id: 'osm_topo',
       enabled: false,
@@ -56,7 +54,6 @@ export const BaseLayers: BdcLayersWMS[] = [
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }),
    },
-   // BLANK
    {
       id: '',
       enabled: false,

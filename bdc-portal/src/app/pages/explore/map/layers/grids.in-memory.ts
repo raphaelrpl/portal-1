@@ -1,6 +1,10 @@
-import { BdcLayersWFS } from './layer.interface';
+import { BdcLayerWFS } from './layer.interface';
 
-export const Grids: BdcLayersWFS[] = [
+/**
+ * return a list of grids from the BDC project
+ * static WFS list
+ */
+export const Grids: BdcLayerWFS[] = [
    {
       ds: 'grids',
       title: 'aea_500k',

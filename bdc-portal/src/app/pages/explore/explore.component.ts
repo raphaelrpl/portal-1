@@ -32,7 +32,7 @@ export class ExploreComponent implements OnInit, AfterViewInit {
   public innerHeight: number;
 
   /**
-   * get Height of the toolbar and footer components 
+   * get Height of the toolbar and footer components
    * when initialize this component
    */
   ngOnInit() {

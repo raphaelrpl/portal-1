@@ -7,4 +7,4 @@ import { Component } from '@angular/core';
   templateUrl: './cubes.component.html',
   styleUrls: ['./cubes.component.scss']
 })
-export class CubesComponent{}
+export class CubesComponent {}
