@@ -9,4 +9,5 @@ import { Component } from '@angular/core';
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.scss']
 })
-export class SidenavComponent {}
+export class SidenavComponent {
+}

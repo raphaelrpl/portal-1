@@ -26,7 +26,7 @@ export class SelectLangComponent implements OnInit {
       {id: 'pt', title: 'PT-BR', icon: '/assets/images/icons/brazil.jpg'},
       {id: 'en', title: 'EN', icon: '/assets/images/icons/usa.png'}
     ];
-    this.languageId = 'pt';
+    this.languageId = 'en';
   }
 
 }

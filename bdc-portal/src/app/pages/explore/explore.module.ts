@@ -8,7 +8,8 @@ import {
   MatToolbarModule,
   MatIconModule,
   MatSelectModule,
-  MatSidenavModule
+  MatSidenavModule,
+  MatExpansionModule
 } from '@angular/material';
 
 import { ExploreComponent } from './explore.component';
@@ -41,6 +42,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatSelectModule,
     MatSidenavModule,
     HttpClientModule,
+    MatExpansionModule,
     LeafletModule.forRoot()
   ]
 })
