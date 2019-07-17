@@ -8,14 +8,14 @@
 
         <mat-accordion>
             <!-- SEARCH BOX -->
-            <mat-expansion-panel>
+            <mat-expansion-panel [expanded]="step == 0">
               <mat-expansion-panel-header>
                 <mat-panel-title>
                   <mat-icon>search</mat-icon> Search
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
-              <p>Search</p>
+              <app-search></app-search>
             </mat-expansion-panel>
             
           </mat-accordion>

@@ -1,0 +1,100 @@
+<div class="container-search">
+    <form (ngSubmit)="search()">
+        <mat-form-field appearance="fill">
+            <mat-label>Select Products</mat-label>
+            <mat-select [(value)]="products" multiple>
+                <mat-option *ngFor="let product of productsList" [value]="product.title" [disabled]="product.disabled">{{ product.title }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Select Providers</mat-label>
+            <mat-select [(value)]="searchObj.providers" multiple>
+                <mat-option *ngFor="let provider of providersKeys" [value]="provider">{{ provider }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <hr />
+
+        <div class="search__region-box">
+            <mat-radio-group name="typeSearchR" [(ngModel)]="typeSearchRegion">
+                <div class="box-radio">
+                    <mat-radio-button name="typeSearchR" value="address" disabled>Address</mat-radio-button>
+                    <mat-radio-button name="typeSearchR" value="coordinates">Coordinates</mat-radio-button>
+                </div>
+            </mat-radio-group>         
+
+            <div class="box-content">
+                <span *ngIf="typeSearchRegion == 'address'; then selectByAddress else selectByCoordinates"></span>
+                <ng-template #selectByAddress>
+                    <mat-form-field style="width: 100%">
+                        <mat-label>Search Region</mat-label>
+                        <input matInput placeholder="Sao Paulo, Brazil...">
+                    </mat-form-field>
+                </ng-template>
+
+                <ng-template #selectByCoordinates>
+                    <mat-form-field>
+                        <input matInput type="number" placeholder="Lat North" name="north" [(ngModel)]="searchObj.bbox.north">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="number" placeholder="Log East" name="east" [(ngModel)]="searchObj.bbox.east">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="number" placeholder="Lat South" name="south" [(ngModel)]="searchObj.bbox.south">
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput type="number" placeholder="Log West" name="west" [(ngModel)]="searchObj.bbox.west">
+                    </mat-form-field>
+                </ng-template>
+            </div>
+            <div class="region__btn-functions">
+                <button mat-stroked-button style="margin-right: 10px">
+                    <mat-icon>flip_to_front</mat-icon> Draw
+                </button>
+
+                <button mat-stroked-button>
+                    <mat-icon>visibility</mat-icon> Preview
+                </button>
+            </div>
+        </div>
+
+        <mat-form-field appearance="fill" style="margin-top: 15px">
+            <mat-label>Cloud Cover (min)</mat-label>
+            <input type="number" min="0" max="100" matInput name="cloud" [(ngModel)]="searchObj.cloud">
+            <span matSuffix>%</span>
+        </mat-form-field>
+
+        <hr />
+
+        <mat-form-field appearance="fill" style="width: 50%">
+            <mat-label>Start Date</mat-label>
+            <input matInput 
+                [matDatepicker]="start_date"
+                [min]="rangeTemporal[0]" 
+                [max]="rangeTemporal[1]"
+                placeholder="Start Date" 
+                name="start_date" 
+                [(ngModel)]="searchObj.start_date">
+            <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+            <mat-datepicker #start_date></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" style="width: 50%">
+            <mat-label>Last Date</mat-label>
+            <input matInput
+                [matDatepicker]="last_date" 
+                [min]="rangeTemporal[0]" 
+                [max]="rangeTemporal[1]"
+                placeholder="Last Date" 
+                name="last_date" 
+                [(ngModel)]="searchObj.last_date">
+            <mat-datepicker-toggle matSuffix [for]="last_date"></mat-datepicker-toggle>
+            <mat-datepicker #last_date></mat-datepicker>
+        </mat-form-field>
+    
+        <button type="submit" mat-raised-button color="primary" class="btn-filter">
+            FILTER
+        </button>
+    </form>
+</div>
