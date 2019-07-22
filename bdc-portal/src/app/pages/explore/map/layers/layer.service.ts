@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { BdcLayerWFS, BdcLayer } from './layer.interface';
-import { BaseLayers } from './baseLayers.in-memory';
+import { BaseLayers } from './base-layers.in-memory';
 import { Grids } from './grids.in-memory';
 
 /**

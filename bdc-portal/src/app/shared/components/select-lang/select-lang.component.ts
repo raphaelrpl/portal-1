@@ -8,8 +8,8 @@ import { Language } from './language.interface';
  */
 @Component({
   selector: 'app-select-lang',
-  templateUrl: './selectLang.component.html',
-  styleUrls: ['./selectLang.component.scss']
+  templateUrl: './select-lang.component.html',
+  styleUrls: ['./select-lang.component.scss']
 })
 export class SelectLangComponent implements OnInit {
 

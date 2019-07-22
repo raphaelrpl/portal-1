@@ -20,9 +20,9 @@ export class SearchService {
     }
 
     /**
-     * get RF's in STAC Search
+     * get Collections in STAC Search
      */
-    public async searchRF(query: string): Promise<any> {
+    public async searchCollections(query: string): Promise<any> {
         const urlSuffix = `/search/?${query}`;
         const response = await this.http.get(`${this.stacUrl}${urlSuffix}`).toPromise();
         return response;

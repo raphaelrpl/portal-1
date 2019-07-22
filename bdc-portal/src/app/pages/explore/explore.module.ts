@@ -15,7 +15,6 @@ import {
   MatDatepickerModule,
   MatNativeDateModule
 } from '@angular/material';
-// import { AgmCoreModule } from '@agm/core';
 
 import { ExploreComponent } from './explore.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -25,6 +24,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchComponent } from './sidenav/search/search.component';
 import { FormsModule } from '@angular/forms';
 import { CollectionComponent } from './sidenav/collection/collection.component';
+import { StoreModule } from '@ngrx/store';
+import { exploreReducer } from './explore.reducer';
 
 /**
  * Explore Module
@@ -61,7 +62,8 @@ import { CollectionComponent } from './sidenav/collection/collection.component';
     //AgmCoreModule.forRoot({
     //  apiKey: 'CHAVES_GOOGLE_MAPS'
     //}),
-    LeafletModule.forRoot()
+    LeafletModule.forRoot(),
+    StoreModule.forRoot({ collections: exploreReducer })
   ]
 })
 export class ExploreModule { }

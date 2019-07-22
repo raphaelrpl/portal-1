@@ -1,5 +1,5 @@
 <div class="container-search">
-    <form (ngSubmit)="search()">
+    <form  (ngSubmit)="search()">
         <mat-form-field appearance="fill">
             <mat-label>Select Products</mat-label>
             <mat-select [(value)]="products" multiple>
@@ -22,7 +22,7 @@
                     <mat-radio-button name="typeSearchR" value="address" disabled>Address</mat-radio-button>
                     <mat-radio-button name="typeSearchR" value="coordinates">Coordinates</mat-radio-button>
                 </div>
-            </mat-radio-group>         
+            </mat-radio-group>
 
             <div class="box-content">
                 <span *ngIf="typeSearchRegion == 'address'; then selectByAddress else selectByCoordinates"></span>
@@ -69,12 +69,12 @@
 
         <mat-form-field appearance="fill" style="width: 50%">
             <mat-label>Start Date</mat-label>
-            <input matInput 
+            <input matInput
                 [matDatepicker]="start_date"
-                [min]="rangeTemporal[0]" 
+                [min]="rangeTemporal[0]"
                 [max]="rangeTemporal[1]"
-                placeholder="Start Date" 
-                name="start_date" 
+                placeholder="Start Date"
+                name="start_date"
                 [(ngModel)]="searchObj.start_date">
             <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
             <mat-datepicker #start_date></mat-datepicker>
@@ -83,16 +83,16 @@
         <mat-form-field appearance="fill" style="width: 50%">
             <mat-label>Last Date</mat-label>
             <input matInput
-                [matDatepicker]="last_date" 
-                [min]="rangeTemporal[0]" 
+                [matDatepicker]="last_date"
+                [min]="rangeTemporal[0]"
                 [max]="rangeTemporal[1]"
-                placeholder="Last Date" 
-                name="last_date" 
+                placeholder="Last Date"
+                name="last_date"
                 [(ngModel)]="searchObj.last_date">
             <mat-datepicker-toggle matSuffix [for]="last_date"></mat-datepicker-toggle>
             <mat-datepicker #last_date></mat-datepicker>
         </mat-form-field>
-    
+
         <button type="submit" mat-raised-button color="primary" class="btn-filter">
             FILTER
         </button>

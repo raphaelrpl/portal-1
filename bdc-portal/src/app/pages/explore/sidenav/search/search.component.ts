@@ -20,14 +20,15 @@ export class SearchComponent implements OnInit {
   public searchObj: Object;
   public rangeTemporal: Date[];
 
+
   constructor(private ss: SearchService) { }
 
   ngOnInit() {
     this.productsList = [
       {
-        'title': 'surface reflectance',
+        'title': 'collections',
         'disabled': false,
-        'searchFunction': this.searchRF
+        'searchFunction': this.searchCollections
       }, {
         'title': 'samples',
         'disabled': true
@@ -80,7 +81,7 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  private async searchRF(vm: SearchComponent) {
+  private async searchCollections(vm: SearchComponent) {
     try {
       const bbox = Object.values(vm.searchObj['bbox'])
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
@@ -89,11 +90,11 @@ export class SearchComponent implements OnInit {
       query += `&start_date=${vm.formatDateUSA(vm.searchObj['start_date'])}`;
       query += `&last_date=${vm.formatDateUSA(vm.searchObj['last_date'])}`;
 
-      const response = await vm.ss.searchRF(query);
+      const response = await vm.ss.searchCollections(query);
       console.log(response)
 
     } catch(err) {
-      console.log('==> ERR: ' + err); 
+      console.log('==> ERR: ' + err);
     }
   }
 

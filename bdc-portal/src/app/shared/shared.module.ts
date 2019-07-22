@@ -6,8 +6,9 @@ import {
   MatSelectModule
 } from '@angular/material';
 
-import { SelectLangComponent } from './components/selectLang/selectLang.component';
+import { SelectLangComponent } from './components/select-lang/select-lang.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 
 /**
  * Shared Module
@@ -16,7 +17,8 @@ import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
   declarations: [
     SelectLangComponent,
-    FooterComponent
+    FooterComponent,
+    FormFieldErrorComponent
   ],
   exports: [
     SelectLangComponent,

@@ -17,8 +17,19 @@
 
               <app-search></app-search>
             </mat-expansion-panel>
-            
+
+            <!-- COLLECTION BOX -->
+            <mat-expansion-panel [expanded]="step == 1">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>list</mat-icon> Collections
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <app-collection></app-collection>
+            </mat-expansion-panel>
+
           </mat-accordion>
-          
+
     </div>
 </aside>
