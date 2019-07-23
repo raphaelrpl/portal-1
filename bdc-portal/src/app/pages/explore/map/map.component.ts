@@ -102,7 +102,7 @@ export class MapComponent implements OnInit {
             onEachFeature: (feat, layer) => {
               const lyr = (layer) as any;
               if (feat.geometry.type === 'MultiPolygon') {
-                if (this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
+                if (this.tilesUsed && this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
 
                   // TODO: create markers
                   // vm.markers[l.title] = vm.markers[l.title] || [];

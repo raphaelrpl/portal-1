@@ -1,8 +1,18 @@
-import { createReducer, on } from '@ngrx/store';
-import { updCollections } from './explore.actions';
+import { ExploreAction, ExploreActionTypes } from './explore.action';
+import { ExploreState } from './explore.state';
 
-export const collections = {};
+const initialState: ExploreState = {
+  collections: [{
+    id: '152',
+    name: 'name-test'
+  }]
+}
 
-export const exploreReducer = createReducer(collections,
-    on(updCollections, state => state)
-);
+export function reducer(state: ExploreState = initialState, action: ExploreAction) {
+  switch (action.type) {
+    case ExploreActionTypes.COLLECTIONS:
+      return action.payload
+    default:
+      return state
+  }
+}

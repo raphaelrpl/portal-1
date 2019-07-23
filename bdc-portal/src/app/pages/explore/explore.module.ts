@@ -25,7 +25,7 @@ import { SearchComponent } from './sidenav/search/search.component';
 import { FormsModule } from '@angular/forms';
 import { CollectionComponent } from './sidenav/collection/collection.component';
 import { StoreModule } from '@ngrx/store';
-import { exploreReducer } from './explore.reducer';
+import * as fromExplore from './explore.reducer';
 
 /**
  * Explore Module
@@ -63,7 +63,9 @@ import { exploreReducer } from './explore.reducer';
     //  apiKey: 'CHAVES_GOOGLE_MAPS'
     //}),
     LeafletModule.forRoot(),
-    StoreModule.forRoot({ collections: exploreReducer })
+    StoreModule.forRoot({
+      explore: fromExplore.reducer
+    })
   ]
 })
 export class ExploreModule { }

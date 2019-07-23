@@ -13,7 +13,7 @@ import { Grids } from './grids.in-memory';
 export class LayerService {
 
     /** base URL of the Geoserver from the BDC project */
-    private geoserverUrl = 'http://cbers1.dpi.inpe.br:8095/geoserver/<ds>/ows';
+    private geoserverUrl = 'http://brazildatacube.dpi.inpe.br/geoserver/<ds>/ows';
     /** base URL of the Soilist Service from the BDC project */
     private soilistUrl = 'http://cbers1.dpi.inpe.br:5021';
 
@@ -49,12 +49,11 @@ export class LayerService {
      * gets GeoJson object from a layer in the Geoserver of the BDC project
      * @params {string} datastore
      * @params {string} layer title
-     * @returns layer GeoJson (Promise)
+     * @returns layer GeoJson
      */
-    public async getGeoJsonByLayer(ds: string, title: string): Promise<any> {
+    public getGeoJsonByLayer(ds: string, title: string): Promise<any> {
         const urlSuffix = `?service=WFS&version=1.0.0&request=GetFeature&typeName=${ds}:${title}&&outputFormat=application%2Fjson`;
-        const response = await this.http.get(`${this.geoserverUrl.replace('<ds>', ds)}${urlSuffix}`).toPromise();
-        return response;
+        return this.http.get(`${this.geoserverUrl.replace('<ds>', ds)}${urlSuffix}`).toPromise();
     }
 
 }

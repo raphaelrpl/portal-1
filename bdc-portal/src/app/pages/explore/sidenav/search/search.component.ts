@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+
 import { SearchService } from './search.service';
+import { ExploreState } from '../../explore.state';
+// import { Collection } from '../collection/collection.interface';
+// import { CollectionsAction } from '../../explore.action';
 
 /**
  * component to search data of the BDC project
@@ -20,10 +25,15 @@ export class SearchComponent implements OnInit {
   public searchObj: Object;
   public rangeTemporal: Date[];
 
-
-  constructor(private ss: SearchService) { }
+  constructor(private ss: SearchService, private store: Store<ExploreState>) {}
 
   ngOnInit() {
+    // this.store.dispatch(new CollectionsAction([{
+    //     id: '11122',
+    //     name: 'na1me-layer'
+    //   }]
+    // ));
+
     this.productsList = [
       {
         'title': 'collections',
