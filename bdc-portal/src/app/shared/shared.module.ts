@@ -9,6 +9,8 @@ import {
 import { SelectLangComponent } from './components/select-lang/select-lang.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 /**
  * Shared Module
@@ -18,17 +20,20 @@ import { FormFieldErrorComponent } from './components/form-field-input/form-fiel
   declarations: [
     SelectLangComponent,
     FooterComponent,
-    FormFieldErrorComponent
+    FormFieldErrorComponent,
+    LoadingComponent
   ],
   exports: [
     SelectLangComponent,
-    FooterComponent
+    FooterComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    NgxSpinnerModule
   ]
 })
 export class SharedModule { }

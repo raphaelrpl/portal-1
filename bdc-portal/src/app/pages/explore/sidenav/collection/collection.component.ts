@@ -1,28 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { Collection } from './collection.interface';
 import { ExploreState } from '../../explore.state';
-// import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-collection',
   templateUrl: './collection.component.html',
   styleUrls: ['./collection.component.scss']
 })
-export class CollectionComponent implements OnInit {
+export class CollectionComponent {
 
-  public collections: Collection[];
+  public collections$: Collection[] = [];
 
   constructor(private store: Store<ExploreState>) {
-    // this.collections = this.store.select(state => state.collections);
-    this.store.pipe(select(state => state.collections))
-      .subscribe(cls => {
-        this.collections = cls;
-      });
+    this.store.pipe(select('explore')).subscribe(res => {
+      if (res.collections[0]) {
+        this.collections$.push(res.collections[0]);
+      }
+    });
   }
 
-  ngOnInit() {
-  }
 
 }

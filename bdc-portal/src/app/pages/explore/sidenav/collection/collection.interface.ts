@@ -5,6 +5,10 @@
 export interface Collection {
     /** id (unique) to layer identification */
     id: string;
-    /** layer name shown in the component */
-    name: string;
+    type?: string;
+    assets?: Object;
+    bbox?: Array<number>;
+    links?: Array<Object>;
+    geometry?: Object;
+    properties?: Object;
 }

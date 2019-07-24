@@ -15,7 +15,7 @@
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
-              <app-search></app-search>
+              <app-search (stepToEmit)="changeStep($event)"></app-search>
             </mat-expansion-panel>
 
             <!-- COLLECTION BOX -->

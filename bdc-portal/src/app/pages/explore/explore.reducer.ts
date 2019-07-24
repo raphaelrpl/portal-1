@@ -1,18 +1,20 @@
-import { ExploreAction, ExploreActionTypes } from './explore.action';
+import { createReducer, on } from '@ngrx/store';
+import { collections, showLoading, closeLoading } from './explore.action';
 import { ExploreState } from './explore.state';
 
 const initialState: ExploreState = {
-  collections: [{
-    id: '152',
-    name: 'name-test'
-  }]
+  collections: [],
+  loading: false
 }
 
-export function reducer(state: ExploreState = initialState, action: ExploreAction) {
-  switch (action.type) {
-    case ExploreActionTypes.COLLECTIONS:
-      return action.payload
-    default:
-      return state
-  }
-}
+export const reducer = createReducer(initialState,
+  on(collections, (state, payload) => {
+    return {...state, collections: payload }
+  }),
+  on(showLoading, (state) => {
+    return {...state, loading: true}
+  }),
+  on(closeLoading, (state) => {
+    return {...state, loading: false}
+  }),
+);

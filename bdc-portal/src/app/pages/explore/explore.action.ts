@@ -1,17 +1,15 @@
-import { Action } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
 import { Collection } from './sidenav/collection/collection.interface';
 
-export namespace ExploreActionTypes {
-  export const COLLECTIONS = '[Collection] changeCollections';
-}
+export const collections = createAction(
+    '[Explore Component] Collections',
+    props<Collection[]>()
+);
 
-export class CollectionsAction implements Action {
-  readonly type = ExploreActionTypes.COLLECTIONS;
-  public payload: Collection[];
+export const showLoading = createAction(
+    '[Loading Component] showLoading'
+);
 
-  constructor(public items: Collection[]) {
-    this.payload = items;
-  }
-}
-
-export type ExploreAction = CollectionsAction;
+export const closeLoading = createAction(
+    '[Loading Component] closeLoading'
+);

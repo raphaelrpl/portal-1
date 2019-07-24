@@ -13,4 +13,8 @@ export class SidenavComponent {
 
   public step: number = 0;
 
+  changeStep(value: number) {
+    this.step = value
+  }
+
 }

@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
-// import { Collection } from '../collection/collection.interface';
-// import { CollectionsAction } from '../../explore.action';
+import { formatDateUSA } from 'src/app/shared/helpers/date';
+import { collections, showLoading, closeLoading } from '../../explore.action';
 
 /**
  * component to search data of the BDC project
@@ -17,6 +17,8 @@ import { ExploreState } from '../../explore.state';
 })
 export class SearchComponent implements OnInit {
 
+  @Output() stepToEmit = new EventEmitter();
+
   private products: string[];
   private providersList: object;
   public productsList: Object[];
@@ -25,15 +27,11 @@ export class SearchComponent implements OnInit {
   public searchObj: Object;
   public rangeTemporal: Date[];
 
-  constructor(private ss: SearchService, private store: Store<ExploreState>) {}
+  constructor(
+    private ss: SearchService,
+    private store: Store<ExploreState>) { }
 
   ngOnInit() {
-    // this.store.dispatch(new CollectionsAction([{
-    //     id: '11122',
-    //     name: 'na1me-layer'
-    //   }]
-    // ));
-
     this.productsList = [
       {
         'title': 'collections',
@@ -93,28 +91,29 @@ export class SearchComponent implements OnInit {
 
   private async searchCollections(vm: SearchComponent) {
     try {
+      vm.store.dispatch(showLoading());
+
       const bbox = Object.values(vm.searchObj['bbox'])
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
       query += `&bbox=${bbox[3]},${bbox[2]},${bbox[1]},${bbox[0]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
-      query += `&start_date=${vm.formatDateUSA(vm.searchObj['start_date'])}`;
-      query += `&last_date=${vm.formatDateUSA(vm.searchObj['last_date'])}`;
+      query += `&start_date=${formatDateUSA(vm.searchObj['start_date'])}`;
+      query += `&last_date=${formatDateUSA(vm.searchObj['last_date'])}`;
 
       const response = await vm.ss.searchCollections(query);
       console.log(response)
+      vm.store.dispatch(collections(response['providers']));
+      vm.changeStepNav()
 
     } catch(err) {
       console.log('==> ERR: ' + err);
+
+    } finally {
+      vm.store.dispatch(closeLoading());
     }
   }
 
-  // TODO: move to utils
-  private formatDateUSA(date: Date) {
-    let month: string = (date.getMonth()+1).toString()
-    month = month.toString().length == 1 ? `0${month}`: month
-    let day: string = (date.getDate()).toString()
-    day = day.toString().length == 1 ? `0${day}`: day
-
-    return `${date.getFullYear()}-${month}-${day}`
+  changeStepNav() {
+    this.stepToEmit.emit(1);
   }
 }

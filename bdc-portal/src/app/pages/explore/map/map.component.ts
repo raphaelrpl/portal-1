@@ -105,9 +105,6 @@ export class MapComponent implements OnInit {
                 if (this.tilesUsed && this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
 
                   // TODO: create markers
-                  // vm.markers[l.title] = vm.markers[l.title] || [];
-                  // const center = lyr.getBounds().getCenter();
-                  // vm.markers[l.title].push(marker(center));
 
                   // apply style
                   lyr.setStyle({
@@ -119,9 +116,9 @@ export class MapComponent implements OnInit {
 
                 } else {
                   lyr.setStyle({
-                    color: '#0033cc',
+                    color: '#0033CC',
                     weight: 1,
-                    fillOpacity: 0.1
+                    fillOpacity: 0.2
                   });
                 }
               }

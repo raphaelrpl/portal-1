@@ -27,6 +27,7 @@ import { CollectionComponent } from './sidenav/collection/collection.component';
 import { StoreModule } from '@ngrx/store';
 import * as fromExplore from './explore.reducer';
 
+
 /**
  * Explore Module
  * Module for managing components and service of map pages
