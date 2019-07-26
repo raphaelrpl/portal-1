@@ -1,5 +1,22 @@
-<div *ngIf="collections$.length">
-    <li *ngFor="let collection of collections$">
-      <a [href]="collection.id" target="_blank">{{ collection.id }}</a>
-    </li>
+<div *ngIf="collections$.length"
+     class="collections">
+    <div *ngFor="let collection of collections$">
+
+      <div class="collection">
+        <div class="collection_ql">
+          <img [src]="collection.assets.thumbnail.href" />
+        </div>
+
+        <div class="collection_desc">
+          <p><b>{{ collection.id }}</b></p>
+          <p>{{ collection.properties.collection }}</p>
+          <p>{{ getDateFormated(collection.properties.datetime) }}</p>
+        </div>
+
+        <div class="collection_btn">
+          <mat-icon class="btn-enable">settings</mat-icon>
+        </div>
+      </div>
+
+    </div>
 </div>

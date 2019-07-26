@@ -101,9 +101,8 @@ export class SearchComponent implements OnInit {
       query += `&last_date=${formatDateUSA(vm.searchObj['last_date'])}`;
 
       const response = await vm.ss.searchCollections(query);
-      console.log(response)
-      vm.store.dispatch(collections(response['providers']));
-      vm.changeStepNav()
+      vm.store.dispatch(collections(Object.values(response['providers'])));
+      vm.changeStepNav(1)
 
     } catch(err) {
       console.log('==> ERR: ' + err);
@@ -113,7 +112,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  changeStepNav() {
-    this.stepToEmit.emit(1);
+  changeStepNav(step) {
+    this.stepToEmit.emit(step);
   }
 }

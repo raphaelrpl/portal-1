@@ -15,11 +15,15 @@ export class CollectionComponent {
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
-      if (res.collections[0]) {
-        this.collections$.push(res.collections[0]);
+      if (res.collections) {
+        this.collections$ = <Collection[]>Object.values(res.collections).slice(0, (Object.values(res.collections).length-1));
       }
     });
   }
 
+  getDateFormated(dateStr: string) {
+    let date = new Date(dateStr)
+    return date.toLocaleDateString()
+  }
 
 }

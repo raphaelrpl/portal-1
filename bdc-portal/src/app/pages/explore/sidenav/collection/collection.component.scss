@@ -1,0 +1,43 @@
+.collections {
+    padding: 0;
+    margin: 0;
+
+    .collection {
+        background: rgba(#000, 0.1);
+        display: flex;
+        margin-top: 10px;
+        width: 100%;
+        align-items: center;
+
+        .collection_ql {
+            width: 25%;
+            padding: 5px 5px 0 5px;
+            border-right: 1px solid rgba(#000, 0.1);
+
+            img {
+                width: 100%;
+                border-radius: 5px;
+            }
+        }
+
+        .collection_desc {
+            width: 100%;
+            padding: 5px 10px;
+            p {
+                margin: 0;
+            }
+        }
+
+        .collection_btn {
+            margin-right: 5px;
+            padding: 3px 3px 1px 3px;
+            cursor: pointer;
+            border-radius: 50%;
+
+            &:hover {
+                background: rgba(#000, 0.5);
+            }
+        }
+    }
+
+}
