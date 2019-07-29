@@ -95,14 +95,19 @@ export class SearchComponent implements OnInit {
 
       const bbox = Object.values(vm.searchObj['bbox'])
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
-      query += `&bbox=${bbox[3]},${bbox[2]},${bbox[1]},${bbox[0]}`;
+      query += `&bbox=${bbox[0]},${bbox[3]},${bbox[1]},${bbox[1]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
       query += `&start_date=${formatDateUSA(vm.searchObj['start_date'])}`;
       query += `&last_date=${formatDateUSA(vm.searchObj['last_date'])}`;
 
       const response = await vm.ss.searchCollections(query);
-      vm.store.dispatch(collections(Object.values(response['providers'])));
-      vm.changeStepNav(1)
+      if (response['providers'].length > 0) {
+        vm.store.dispatch(collections(Object.values(response['providers'])));
+        vm.changeStepNav(1);
+      } else {
+        vm.store.dispatch(collections([]));
+        vm.changeStepNav(0);
+      }
 
     } catch(err) {
       console.log('==> ERR: ' + err);

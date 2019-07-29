@@ -4,6 +4,9 @@ import { GeoJsonObject } from 'geojson';
 
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
+import { Store, select } from '@ngrx/store';
+import { ExploreState } from '../explore.state';
+import { setLayers } from '../explore.action';
 
 /**
  * Map component
@@ -26,7 +29,7 @@ export class MapComponent implements OnInit {
   /** layers displayed on the Leaflet control component */
   public layersControl: any;
   /** visible layers in the map */
-  public layers: Layer[];
+  public layers$: Layer[];
   /** all overlay layers read and mounted */
   private overlayers: BdcLayer[];
   /** tiles used with data in the BDC project */
@@ -38,7 +41,15 @@ export class MapComponent implements OnInit {
   private overlays = {};
 
   /** start Layer Service */
-  constructor(private ls: LayerService) {}
+  constructor(
+    private ls: LayerService,
+    private store: Store<ExploreState>) {
+      this.store.pipe(select('explore')).subscribe(res => {
+        if (res.layers) {
+          this.layers$ = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
+        }
+      });
+  }
 
   /** set layers and initial configuration of the map */
   ngOnInit() {
@@ -47,7 +58,6 @@ export class MapComponent implements OnInit {
       center: latLng(-16, -52)
     };
 
-    this.layers = [];
     this.setTilesUsed();
     this.setBaseLayers(this.ls.getBaseLayers());
     this.setGridsLayers(this.ls.getGridsLayers());
@@ -158,9 +168,10 @@ export class MapComponent implements OnInit {
 
       // set base layer with firsty
       newLayers.unshift(baseLayer[0].layer);
-      this.layers = newLayers;
+      this.store.dispatch(setLayers(newLayers));
     } else {
-      this.layers = [baseLayer[0].layer];
+      const newLayers = [baseLayer[0].layer];
+      this.store.dispatch(setLayers(newLayers));
     }
   }
 }

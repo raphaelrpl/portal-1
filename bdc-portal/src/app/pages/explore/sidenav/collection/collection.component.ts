@@ -3,6 +3,8 @@ import { Store, select } from '@ngrx/store';
 
 import { Collection } from './collection.interface';
 import { ExploreState } from '../../explore.state';
+import { tileLayer } from 'leaflet';
+import { setLayers, addLayer } from '../../explore.action';
 
 @Component({
   selector: 'app-collection',
@@ -22,8 +24,17 @@ export class CollectionComponent {
   }
 
   getDateFormated(dateStr: string) {
-    let date = new Date(dateStr)
-    return date.toLocaleDateString()
+    let dates = dateStr.split('/');
+    let startDate = (new Date(dates[0])).toLocaleDateString();
+    return `${startDate}`;
+  }
+
+  enable_layer(path_ql) {
+    const newLayer = tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
+      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    })
+
+    this.store.dispatch(addLayer(newLayer))
   }
 
 }
