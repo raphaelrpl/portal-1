@@ -5,7 +5,7 @@ import { HttpClient } from '@angular/common/http';
 export class SearchService {
 
     /** base URL of the STAC from the BDC project */
-    private stacUrl = 'http://localhost:5050/stac';
+    private stacUrl = 'http://localhost:5000/stac';
 
     /** start http service client */
     constructor(private http: HttpClient) { }

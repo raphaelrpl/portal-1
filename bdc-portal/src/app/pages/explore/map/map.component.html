@@ -2,5 +2,6 @@
      leaflet
      [leafletOptions]="options"
      [leafletLayers]="layers$"
-     [leafletLayersControl]="layersControl">
+     [leafletLayersControl]="layersControl"
+     (leafletMapReady)="onMapReady($event)">
 </div>

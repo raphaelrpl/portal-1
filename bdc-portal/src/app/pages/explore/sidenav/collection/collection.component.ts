@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 
 import { Collection } from './collection.interface';
 import { ExploreState } from '../../explore.state';
-import { tileLayer } from 'leaflet';
-import { setLayers, addLayer } from '../../explore.action';
+import { imageOverlay,  Layer, geoJSON } from 'leaflet';
+import { setLayers, setPositionMap } from '../../explore.action';
 
 @Component({
   selector: 'app-collection',
@@ -14,11 +14,18 @@ import { setLayers, addLayer } from '../../explore.action';
 export class CollectionComponent {
 
   public collections$: Collection[] = [];
+  public layers: Layer[];
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.collections) {
         this.collections$ = <Collection[]>Object.values(res.collections).slice(0, (Object.values(res.collections).length-1));
+      }
+    });
+
+    this.store.pipe(select('explore')).subscribe(res => {
+      if (res.layers) {
+        this.layers = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
       }
     });
   }
@@ -29,12 +36,40 @@ export class CollectionComponent {
     return `${startDate}`;
   }
 
-  enable_layer(path_ql) {
-    const newLayer = tileLayer('http://{s}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}', {
-      subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    })
+  onChangeLayer(event, feature: any) {
+    if (event.checked) {
+      this.collections$ = this.collections$.map( c => {
+        if (c.id == feature.id) {
+          c['enabled'] = true;
+        }
+        return c;
+      })
 
-    this.store.dispatch(addLayer(newLayer))
+      const featureGeoJson = geoJSON(feature);
+      const bounds = featureGeoJson.getBounds();
+      const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
+        'alt': feature.id
+      });
+      this.layers.push(newlayer);
+      this.store.dispatch(setLayers(this.layers));
+
+    } else {
+      this.collections$ = this.collections$.map( c => {
+        if (c.id == feature.id) {
+          c['enabled'] = false;
+        }
+        return c;
+      })
+
+      const newLayers = this.layers.filter( lyr => lyr['options'].alt != feature.id);
+      this.store.dispatch(setLayers(newLayers));
+    }
+  }
+
+  setZoom(feature: any) {
+    const featureGeoJson = geoJSON(feature);
+    const bounds = featureGeoJson.getBounds();
+    this.store.dispatch(setPositionMap(bounds));
   }
 
 }

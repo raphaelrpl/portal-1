@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Collection } from './sidenav/collection/collection.interface';
-import { Layer } from 'leaflet';
+import { Layer, LatLngBounds } from 'leaflet';
 
 export const collections = createAction(
     '[Explore Component] Collections',
@@ -10,6 +10,11 @@ export const collections = createAction(
 export const setLayers = createAction(
     '[Map Component] Layers',
     props<Layer[]>()
+);
+
+export const setPositionMap = createAction(
+    '[Map Component] Position',
+    props<LatLngBounds>()
 );
 
 export const addLayer = createAction(

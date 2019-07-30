@@ -13,7 +13,8 @@ import {
   MatRadioModule,
   MatInputModule,
   MatDatepickerModule,
-  MatNativeDateModule
+  MatNativeDateModule,
+  MatSlideToggleModule
 } from '@angular/material';
 
 import { ExploreComponent } from './explore.component';
@@ -60,6 +61,7 @@ import * as fromExplore from './explore.reducer';
     FormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSlideToggleModule,
     //AgmCoreModule.forRoot({
     //  apiKey: 'CHAVES_GOOGLE_MAPS'
     //}),

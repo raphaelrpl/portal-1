@@ -14,8 +14,13 @@
         </div>
 
         <div class="collection_btn">
-          <mat-icon class="btn-enable" (click)="enable_layer(collection.assets.thumbnail.href)">settings</mat-icon>
+          <mat-icon class="btn-enable">settings</mat-icon>
         </div>
+      </div>
+
+      <div>
+        <mat-slide-toggle (change)="onChangeLayer($event, collection)"></mat-slide-toggle>
+        <mat-icon *ngIf="collection.enabled" (click)="setZoom(collection)">home</mat-icon>
       </div>
 
     </div>
