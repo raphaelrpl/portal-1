@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { BdcLayerWFS, BdcLayer } from './layer.interface';
 import { BaseLayers } from './base-layers.in-memory';
 import { Grids } from './grids.in-memory';
+import { environment } from 'src/environments/environment';
 
 /**
  * Layer Service
@@ -11,11 +12,6 @@ import { Grids } from './grids.in-memory';
  */
 @Injectable({ providedIn: 'root' })
 export class LayerService {
-
-    /** base URL of the Geoserver from the BDC project */
-    private geoserverUrl = 'http://brazildatacube.dpi.inpe.br/geoserver/<ds>/ows';
-    /** base URL of the Soilist Service from the BDC project */
-    private soilistUrl = 'http://cbers1.dpi.inpe.br:5021';
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -41,7 +37,7 @@ export class LayerService {
      */
     public async getTilesUsed(): Promise<any> {
         const urlSuffix = '/tiles';
-        const response = await this.http.get(`${this.soilistUrl}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${environment.urlSoloist}${urlSuffix}`).toPromise();
         return response;
     }
 
@@ -53,7 +49,7 @@ export class LayerService {
      */
     public getGeoJsonByLayer(ds: string, title: string): Promise<any> {
         const urlSuffix = `?service=WFS&version=1.0.0&request=GetFeature&typeName=${ds}:${title}&&outputFormat=application%2Fjson`;
-        return this.http.get(`${this.geoserverUrl.replace('<ds>', ds)}${urlSuffix}`).toPromise();
+        return this.http.get(`${environment.urlGeoserver}/${ds}/ows${urlSuffix}`).toPromise();
     }
 
 }

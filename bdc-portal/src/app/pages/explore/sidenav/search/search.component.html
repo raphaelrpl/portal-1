@@ -50,11 +50,13 @@
             </div>
             <div class="region__btn-functions">
                 <button mat-stroked-button style="margin-right: 10px">
-                    <mat-icon>flip_to_front</mat-icon> Draw
+                    <mat-icon>border_outer</mat-icon> Draw
                 </button>
 
-                <button mat-stroked-button>
-                    <mat-icon>visibility</mat-icon> Preview
+                <button mat-stroked-button class="preview_box" *ngIf="bboxNotEmpty()">
+                    <mat-icon (click)="previewBbox()" class="preview">visibility</mat-icon>
+                    |
+                    <mat-icon (click)="removeLayerBbox()">clear</mat-icon>
                 </button>
             </div>
         </div>

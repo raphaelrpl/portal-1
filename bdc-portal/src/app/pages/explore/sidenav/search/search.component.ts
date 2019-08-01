@@ -1,10 +1,11 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { Store, select } from '@ngrx/store';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { collections, showLoading, closeLoading } from '../../explore.action';
+import { collections, showLoading, closeLoading, setLayers, setPositionMap } from '../../explore.action';
+import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 
 /**
  * component to search data of the BDC project
@@ -26,10 +27,17 @@ export class SearchComponent implements OnInit {
   public typeSearchRegion: string;
   public searchObj: Object;
   public rangeTemporal: Date[];
+  public layers: Layer[];
 
   constructor(
     private ss: SearchService,
-    private store: Store<ExploreState>) { }
+    private store: Store<ExploreState>) {
+      this.store.pipe(select('explore')).subscribe(res => {
+        if (res.layers) {
+          this.layers = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
+        }
+      });
+    }
 
   ngOnInit() {
     this.productsList = [
@@ -66,21 +74,6 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  private resetSearch() {
-    this.searchObj = {
-      'providers': [],
-      'bbox': {
-        'north': null,
-        'south': null,
-        'west': null,
-        'east': null
-      },
-      'cloud': null,
-      'start_date': '',
-      'last_date': ''
-    }
-  }
-
   public search() {
     const vm = this
     this.products.forEach((product: any) => {
@@ -95,7 +88,7 @@ export class SearchComponent implements OnInit {
 
       const bbox = Object.values(vm.searchObj['bbox'])
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
-      query += `&bbox=${bbox[0]},${bbox[3]},${bbox[1]},${bbox[1]}`;
+      query += `&bbox=${bbox[3]},${bbox[2]},${bbox[1]},${bbox[0]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
       query += `&start_date=${formatDateUSA(vm.searchObj['start_date'])}`;
       query += `&last_date=${formatDateUSA(vm.searchObj['last_date'])}`;
@@ -117,7 +110,50 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  changeStepNav(step) {
+  private resetSearch() {
+    this.searchObj = {
+      'providers': [],
+      'bbox': {
+        'north': null,
+        'south': null,
+        'west': null,
+        'east': null
+      },
+      'cloud': null,
+      'start_date': '',
+      'last_date': ''
+    }
+  }
+
+  public changeStepNav(step) {
     this.stepToEmit.emit(step);
+  }
+
+  public previewBbox() {
+    this.removeLayerBbox()
+
+    const bounds: LatLngBoundsExpression = [
+      [this.searchObj['bbox'].north, this.searchObj['bbox'].east],
+      [this.searchObj['bbox'].south, this.searchObj['bbox'].west]
+    ];
+    const newLayers = rectangle(bounds, {
+      color: "#666",
+      weight: 1,
+      className: 'previewBbox'
+    });
+
+    this.layers.push(newLayers);
+    this.store.dispatch(setLayers(this.layers));
+    this.store.dispatch(setPositionMap(newLayers.getBounds()));
+
+  }
+
+  public removeLayerBbox() {
+    this.layers = this.layers.filter( lyr => lyr['options'].className != 'previewBbox');
+    this.store.dispatch(setLayers(this.layers));
+  }
+
+  public bboxNotEmpty() {
+    return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west
   }
 }

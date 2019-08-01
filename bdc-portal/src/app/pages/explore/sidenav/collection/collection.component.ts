@@ -72,4 +72,13 @@ export class CollectionComponent {
     this.store.dispatch(setPositionMap(bounds));
   }
 
+  enableActions(featureId: string) {
+    this.collections$ = this.collections$.map( c => {
+      if (c.id == featureId) {
+        c['actions'] = !(c['actions'] === true)
+      }
+      return c
+    })
+  }
+
 }

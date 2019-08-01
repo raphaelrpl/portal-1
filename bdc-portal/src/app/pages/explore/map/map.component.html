@@ -1,7 +1,9 @@
 <div [ngStyle]="{'width.px': width, 'height.px': height}"
      leaflet
+     leafletDraw
      [leafletOptions]="options"
      [leafletLayers]="layers$"
      [leafletLayersControl]="layersControl"
+     [leafletDrawOptions]="drawOptions"
      (leafletMapReady)="onMapReady($event)">
 </div>

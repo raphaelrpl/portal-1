@@ -1,4 +1,5 @@
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -66,6 +67,7 @@ import * as fromExplore from './explore.reducer';
     //  apiKey: 'CHAVES_GOOGLE_MAPS'
     //}),
     LeafletModule.forRoot(),
+    LeafletDrawModule.forRoot(),
     StoreModule.forRoot({
       explore: fromExplore.reducer
     })

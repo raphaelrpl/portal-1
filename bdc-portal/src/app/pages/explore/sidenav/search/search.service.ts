@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
-
-    /** base URL of the STAC from the BDC project */
-    private stacUrl = 'http://localhost:5000/stac';
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -15,7 +13,7 @@ export class SearchService {
      */
     public async getProviders(): Promise<any> {
         const urlSuffix = '/search/providers';
-        const response = await this.http.get(`${this.stacUrl}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
 
@@ -24,7 +22,7 @@ export class SearchService {
      */
     public async searchCollections(query: string): Promise<any> {
         const urlSuffix = `/search/?${query}`;
-        const response = await this.http.get(`${this.stacUrl}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
 }

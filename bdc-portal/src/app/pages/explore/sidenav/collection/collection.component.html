@@ -2,7 +2,7 @@
      class="collections">
     <div *ngFor="let collection of collections$">
 
-      <div class="collection">
+      <div class="collection" (click)="enableActions(collection.id)">
         <div class="collection_ql">
           <img [src]="collection.assets.thumbnail.href" />
         </div>
@@ -12,15 +12,19 @@
           <p>{{ collection.properties.collection }}</p>
           <p>{{ getDateFormated(collection.properties.datetime) }}</p>
         </div>
-
-        <div class="collection_btn">
-          <mat-icon class="btn-enable">settings</mat-icon>
-        </div>
       </div>
 
-      <div>
-        <mat-slide-toggle (change)="onChangeLayer($event, collection)"></mat-slide-toggle>
-        <mat-icon *ngIf="collection.enabled" (click)="setZoom(collection)">home</mat-icon>
+      <!-- ACTIONS -->
+      <div class="collection-actions" *ngIf="collection.actions">
+        <mat-slide-toggle
+          (change)="onChangeLayer($event, collection)">
+        </mat-slide-toggle>
+        <mat-icon
+          *ngIf="collection.enabled"
+          (click)="setZoom(collection)"
+          class="zoom">
+          zoom_out_map
+        </mat-icon>
       </div>
 
     </div>

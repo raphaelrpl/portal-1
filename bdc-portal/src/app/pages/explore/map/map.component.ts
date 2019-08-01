@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet, LatLngBounds, LatLngBoundsExpression } from 'leaflet';
+import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet, LatLngBoundsExpression, FeatureGroup, Control } from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
-import { setLayers, addLayer } from '../explore.action';
+import { setLayers } from '../explore.action';
 
 /**
  * Map component
@@ -28,6 +28,7 @@ export class MapComponent implements OnInit {
 
   /** object with map settings */
   public options: MapOptions;
+  public optionsDraw: any;
   /** layers displayed on the Leaflet control component */
   public layersControl: any;
   /** visible layers in the map */
@@ -51,6 +52,15 @@ export class MapComponent implements OnInit {
           this.layers$ = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
         }
       });
+
+      this.optionsDraw = {
+        position: 'topright',
+        draw: {
+          polyline: false,
+          circle: false,
+          polygon: false
+        }
+      };
 
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.positionMap) {
@@ -174,10 +184,10 @@ export class MapComponent implements OnInit {
             .filter((l: BdcLayer) => l.enabled)
             .map((l: BdcLayer) => l && l.layer);
 
-      // set base layer with firsty   
+      // set base layer with firsty
       newLayers.unshift(baseLayer[0].layer);
       this.store.dispatch(setLayers(newLayers));
-      
+
     } else {
       const newLayers = [baseLayer[0].layer];
       this.store.dispatch(setLayers(newLayers));
