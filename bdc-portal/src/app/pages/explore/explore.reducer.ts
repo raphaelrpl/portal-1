@@ -1,13 +1,13 @@
 import { createReducer, on } from '@ngrx/store';
-import { collections, showLoading, closeLoading, setLayers, setPositionMap } from './explore.action';
+import { collections, showLoading, closeLoading, setLayers, setBbox, setPositionMap } from './explore.action';
 import { ExploreState } from './explore.state';
-import { LatLngBoundsExpression } from 'leaflet';
 
 const initialState: ExploreState = {
   collections: [],
   layers: [],
   positionMap: null,
-  loading: false
+  loading: false,
+  bbox: null
 }
 
 export const reducer = createReducer(initialState,
@@ -19,6 +19,9 @@ export const reducer = createReducer(initialState,
   }),
   on(setPositionMap, (state, payload) => {
     return {...state, positionMap: payload }
+  }),
+  on(setBbox, (state, payload) => {
+    return {...state, bbox: payload }
   }),
   on(showLoading, (state) => {
     return {...state, loading: true}

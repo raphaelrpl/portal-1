@@ -1,12 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet, LatLngBoundsExpression, FeatureGroup, Control } from 'leaflet';
+import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet, LatLngBoundsExpression, FeatureGroup, Control, Draw, rectangle } from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
-import { setLayers } from '../explore.action';
+import { setLayers, setPositionMap, setBbox } from '../explore.action';
 
 /**
  * Map component
@@ -28,7 +28,6 @@ export class MapComponent implements OnInit {
 
   /** object with map settings */
   public options: MapOptions;
-  public optionsDraw: any;
   /** layers displayed on the Leaflet control component */
   public layersControl: any;
   /** visible layers in the map */
@@ -42,6 +41,7 @@ export class MapComponent implements OnInit {
   private baseLayers = {};
   /** all overlay layers available for viewing (layer object only) */
   private overlays = {};
+  drawOptions: {};
 
   /** start Layer Service */
   constructor(
@@ -51,18 +51,6 @@ export class MapComponent implements OnInit {
         if (res.layers) {
           this.layers$ = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
         }
-      });
-
-      this.optionsDraw = {
-        position: 'topright',
-        draw: {
-          polyline: false,
-          circle: false,
-          polygon: false
-        }
-      };
-
-      this.store.pipe(select('explore')).subscribe(res => {
         if (res.positionMap) {
           this.setPosition(res.positionMap);
         }
@@ -200,5 +188,40 @@ export class MapComponent implements OnInit {
 
   onMapReady(map: MapLeaflet) {
     this.map = map;
+
+    const drawControl = new Control.Draw({
+      draw: {
+        marker: false,
+        circle: false,
+        polyline: false,
+        polygon: false,
+        circlemarker: false,
+        rectangle: {
+          shapeOptions: {
+            color: '#AAA'
+          }
+        }
+      }
+    });
+    this.map.addControl(drawControl);
+
+    this.map.on(Draw.Event.DRAWSTART, _ => {
+      this.layers$ = this.layers$.filter( lyr => lyr['options'].className != 'previewBbox');
+      this.store.dispatch(setLayers(this.layers$));
+    });
+
+    this.map.on(Draw.Event.CREATED, e => {
+      const layer: any = e['layer']
+      const newLayers = rectangle(layer.getBounds(), {
+        color: "#666",
+        weight: 1,
+        className: 'previewBbox',
+      });
+
+      this.layers$.push(newLayers);
+      this.store.dispatch(setLayers(this.layers$));
+      this.store.dispatch(setBbox(newLayers.getBounds()));
+      this.store.dispatch(setPositionMap(newLayers.getBounds()));
+    });
   }
 }

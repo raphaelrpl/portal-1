@@ -17,6 +17,11 @@ export const setPositionMap = createAction(
     props<LatLngBounds>()
 );
 
+export const setBbox = createAction(
+    '[Map Component] Bounding Box',
+    props<LatLngBounds>()
+);
+
 export const addLayer = createAction(
     '[Map Component] Layer',
     props<Layer>()

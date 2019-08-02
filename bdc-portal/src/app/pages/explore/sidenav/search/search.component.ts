@@ -36,6 +36,15 @@ export class SearchComponent implements OnInit {
         if (res.layers) {
           this.layers = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
         }
+        if (res.bbox) {
+          const bbox = Object.values(res.bbox)
+          this.searchObj['bbox'] = {
+            'north': bbox[0]['lat'],
+            'south': bbox[1]['lat'],
+            'west': bbox[1]['lng'],
+            'east': bbox[0]['lng']
+          }
+        }
       });
     }
 
@@ -86,14 +95,17 @@ export class SearchComponent implements OnInit {
     try {
       vm.store.dispatch(showLoading());
 
-      const bbox = Object.values(vm.searchObj['bbox'])
+      const bbox = Object.values(vm.searchObj['bbox']);
+      const lastDate = new Date(vm.searchObj['start_date']);
+      lastDate.setDate(lastDate.getDate() + parseInt(vm.searchObj['step']))
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
       query += `&bbox=${bbox[3]},${bbox[2]},${bbox[1]},${bbox[0]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
       query += `&start_date=${formatDateUSA(vm.searchObj['start_date'])}`;
-      query += `&last_date=${formatDateUSA(vm.searchObj['last_date'])}`;
+      query += `&last_date=${formatDateUSA(lastDate)}`;
 
       const response = await vm.ss.searchCollections(query);
+      console.log(response)
       if (response['providers'].length > 0) {
         vm.store.dispatch(collections(Object.values(response['providers'])));
         vm.changeStepNav(1);
@@ -120,6 +132,7 @@ export class SearchComponent implements OnInit {
         'east': null
       },
       'cloud': null,
+      'step': null,
       'start_date': '',
       'last_date': ''
     }

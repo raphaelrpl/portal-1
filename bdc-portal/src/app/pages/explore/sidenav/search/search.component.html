@@ -49,11 +49,7 @@
                 </ng-template>
             </div>
             <div class="region__btn-functions">
-                <button mat-stroked-button style="margin-right: 10px">
-                    <mat-icon>border_outer</mat-icon> Draw
-                </button>
-
-                <button mat-stroked-button class="preview_box" *ngIf="bboxNotEmpty()">
+                <button type="button" mat-stroked-button class="preview_box" *ngIf="bboxNotEmpty()">
                     <mat-icon (click)="previewBbox()" class="preview">visibility</mat-icon>
                     |
                     <mat-icon (click)="removeLayerBbox()">clear</mat-icon>
@@ -61,13 +57,7 @@
             </div>
         </div>
 
-        <mat-form-field appearance="fill" style="margin-top: 15px">
-            <mat-label>Cloud Cover (min)</mat-label>
-            <input type="number" min="0" max="100" matInput name="cloud" [(ngModel)]="searchObj.cloud">
-            <span matSuffix>%</span>
-        </mat-form-field>
-
-        <hr />
+        <hr  style="margin-top: 15px" />
 
         <mat-form-field appearance="fill" style="width: 50%">
             <mat-label>Start Date</mat-label>
@@ -94,6 +84,19 @@
             <mat-datepicker-toggle matSuffix [for]="last_date"></mat-datepicker-toggle>
             <mat-datepicker #last_date></mat-datepicker>
         </mat-form-field>
+
+        <div>
+            <mat-form-field appearance="fill" style="width: 50%">
+                <mat-label>Cloud Cover (min)</mat-label>
+                <input type="number" min="0" max="100" matInput name="cloud" [(ngModel)]="searchObj.cloud">
+                <span matSuffix>%</span>
+            </mat-form-field>
+            <mat-form-field appearance="fill" style="width: 50%">
+                <mat-label>Step</mat-label>
+                <input type="number" min="1" matInput name="step" [(ngModel)]="searchObj.step">
+                <span matSuffix>day(s)</span>
+            </mat-form-field>
+        </div>
 
         <button type="submit" mat-raised-button color="primary" class="btn-filter">
             FILTER
