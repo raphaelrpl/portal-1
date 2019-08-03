@@ -36,35 +36,35 @@ export class CollectionComponent {
     return `${startDate}`;
   }
 
-  onChangeLayer(event, feature: any) {
-    if (event.checked) {
-      this.collections$ = this.collections$.map( c => {
-        if (c.id == feature.id) {
-          c['enabled'] = true;
-        }
-        return c;
-      })
+  // onChangeLayer(event, feature: any) {
+  //   if (event.checked) {
+  //     this.collections$ = this.collections$.map( c => {
+  //       if (c.id == feature.id) {
+  //         c['enabled'] = true;
+  //       }
+  //       return c;
+  //     })
 
-      const featureGeoJson = geoJSON(feature);
-      const bounds = featureGeoJson.getBounds();
-      const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
-        'alt': feature.id
-      });
-      this.layers.push(newlayer);
-      this.store.dispatch(setLayers(this.layers));
+  //     const featureGeoJson = geoJSON(feature);
+  //     const bounds = featureGeoJson.getBounds();
+  //     const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
+  //       'alt': feature.id
+  //     });
+  //     this.layers.push(newlayer);
+  //     this.store.dispatch(setLayers(this.layers));
 
-    } else {
-      this.collections$ = this.collections$.map( c => {
-        if (c.id == feature.id) {
-          c['enabled'] = false;
-        }
-        return c;
-      })
+  //   } else {
+  //     this.collections$ = this.collections$.map( c => {
+  //       if (c.id == feature.id) {
+  //         c['enabled'] = false;
+  //       }
+  //       return c;
+  //     })
 
-      const newLayers = this.layers.filter( lyr => lyr['options'].alt != feature.id);
-      this.store.dispatch(setLayers(newLayers));
-    }
-  }
+  //     const newLayers = this.layers.filter( lyr => lyr['options'].alt != feature.id);
+  //     this.store.dispatch(setLayers(newLayers));
+  //   }
+  // }
 
   setZoom(feature: any) {
     const featureGeoJson = geoJSON(feature);
@@ -72,13 +72,13 @@ export class CollectionComponent {
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  enableActions(featureId: string) {
-    this.collections$ = this.collections$.map( c => {
-      if (c.id == featureId) {
-        c['actions'] = !(c['actions'] === true)
-      }
-      return c
-    })
-  }
+  // enableActions(featureId: string) {
+  //   this.collections$ = this.collections$.map( c => {
+  //     if (c.id == featureId) {
+  //       c['actions'] = !(c['actions'] === true)
+  //     }
+  //     return c
+  //   })
+  // }
 
 }

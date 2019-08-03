@@ -2,7 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { Collection } from './sidenav/collection/collection.interface';
 import { Layer, LatLngBounds } from 'leaflet';
 
-export const collections = createAction(
+export const setCollections = createAction(
     '[Explore Component] Collections',
     props<Collection[]>()
 );
@@ -22,9 +22,9 @@ export const setBbox = createAction(
     props<LatLngBounds>()
 );
 
-export const addLayer = createAction(
-    '[Map Component] Layer',
-    props<Layer>()
+export const setRangeTemporal = createAction(
+    '[Map Component] Range Temporal',
+    props<Date[]>()
 );
 
 export const showLoading = createAction(

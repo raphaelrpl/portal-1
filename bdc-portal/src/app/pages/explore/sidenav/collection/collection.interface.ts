@@ -1,8 +1,8 @@
 /**
- * Collection
- * interface of each Collection
+ * Feature
+ * interface of each Feature
  */
-export interface Collection {
+export interface Feature {
     /** id (unique) to layer identification */
     id: string;
     type?: string;
@@ -11,4 +11,13 @@ export interface Collection {
     links?: Array<Object>;
     geometry?: Object;
     properties?: Object;
+}
+
+/**
+ * Collection
+ * interface of each Collection
+ */
+export interface Collection {
+    name: string;
+    features: Feature[];
 }

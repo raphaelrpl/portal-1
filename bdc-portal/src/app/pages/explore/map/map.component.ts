@@ -7,6 +7,7 @@ import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
 import { setLayers, setPositionMap, setBbox } from '../explore.action';
+import { SearchService } from '../sidenav/search/search.service';
 
 /**
  * Map component
@@ -24,28 +25,28 @@ export class MapComponent implements OnInit {
   /** props with height of the map */
   @Input() height: number;
 
+  /** pointer to reference map */
   public map: MapLeaflet;
-
   /** object with map settings */
   public options: MapOptions;
   /** layers displayed on the Leaflet control component */
   public layersControl: any;
   /** visible layers in the map */
   public layers$: Layer[];
+
   /** all overlay layers read and mounted */
   private overlayers: BdcLayer[];
   /** tiles used with data in the BDC project */
   private tilesUsed: number[];
-
   /** all available base layers for viewing (layer object only) */
   private baseLayers = {};
   /** all overlay layers available for viewing (layer object only) */
   private overlays = {};
-  drawOptions: {};
 
   /** start Layer Service */
   constructor(
     private ls: LayerService,
+    private ss: SearchService,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
@@ -64,13 +65,28 @@ export class MapComponent implements OnInit {
       center: latLng(-16, -52)
     };
 
-    this.setTilesUsed();
-    this.setBaseLayers(this.ls.getBaseLayers());
-    this.setGridsLayers(this.ls.getGridsLayers());
+    this.getTilesUsed();
+    this.getBaseLayers(this.ls.getBaseLayers());
+    this.mountGridsLayers(this.ls.getGridsLayers());
+  }
+
+  /** get Tiles with data in grids */
+  private async getTilesUsed() {
+    try {
+      const collections = await this.ss.getCollections();
+      this.tilesUsed = collections['assets'].map( async (c: any) => {
+        const collection = await this.ss.getCollectionByName(c.name);
+        return [...this.tilesUsed, collection.data['properties']['bdc:tiles']]
+      });
+
+    } catch (err) {
+      console.log('==> ERR: ' + err);
+      this.tilesUsed = [];
+    }
   }
 
   /** set the visible layers in the layer component of the map */
-  setControlLayers(): void {
+  private setControlLayers(): void {
     this.layersControl = {
       baseLayers: this.baseLayers,
       overlays: this.overlays
@@ -81,22 +97,11 @@ export class MapComponent implements OnInit {
    * get the layer objects from a list of BdcLayer
    * @params {list} list of BdcLayer with the external base Layers
    */
-  setBaseLayers(listLayers: BdcLayer[]) {
+  private getBaseLayers(listLayers: BdcLayer[]) {
     const vm = this;
     listLayers.forEach( (l: BdcLayer) => {
       vm.baseLayers[l.name] = l.layer;
     });
-  }
-
-  async setTilesUsed() {
-    try {
-      const tiles = await this.ls.getTilesUsed();
-      this.tilesUsed = tiles.map( t => t.tileid );
-
-    } catch (err) {
-      console.log('==> ERR: ' + err);
-      this.tilesUsed = [];
-    }
   }
 
   /**
@@ -104,7 +109,7 @@ export class MapComponent implements OnInit {
    * mount the overlayers with GeoJson's consulted from the Geoserver
    * @params {list} list of BdcLayerWFS with the grids of the BDC project
    */
-  async setGridsLayers(listLayersId: BdcLayerWFS[]) {
+  private async mountGridsLayers(listLayersId: BdcLayerWFS[]) {
     try {
       const vm = this;
       this.overlayers = [];
@@ -117,11 +122,8 @@ export class MapComponent implements OnInit {
           {
             onEachFeature: (feat, layer) => {
               const lyr = (layer) as any;
-              if (feat.geometry.type === 'MultiPolygon') {
+              if (feat.geometry.type === 'MultiPolygon' || feat.geometry.type === 'Polygon') {
                 if (this.tilesUsed && this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
-
-                  // TODO: create markers
-
                   // apply style
                   lyr.setStyle({
                     color: '#0033cc',
@@ -182,13 +184,11 @@ export class MapComponent implements OnInit {
     }
   }
 
-  setPosition(bounds: LatLngBoundsExpression) {
+  private setPosition(bounds: LatLngBoundsExpression) {
     this.map.fitBounds(Object.values(bounds).slice(0,2));
   }
 
-  onMapReady(map: MapLeaflet) {
-    this.map = map;
-
+  private setDrawControl() {
     const drawControl = new Control.Draw({
       draw: {
         marker: false,
@@ -223,5 +223,10 @@ export class MapComponent implements OnInit {
       this.store.dispatch(setBbox(newLayers.getBounds()));
       this.store.dispatch(setPositionMap(newLayers.getBounds()));
     });
+  }
+
+  onMapReady(map: MapLeaflet) {
+    this.map = map;
+    this.setDrawControl();
   }
 }

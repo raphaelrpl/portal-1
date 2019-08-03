@@ -4,8 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { collections, showLoading, closeLoading, setLayers, setPositionMap } from '../../explore.action';
+import { setCollections, showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal } from '../../explore.action';
 import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
+import { Collection, Feature } from '../collection/collection.interface';
 
 /**
  * component to search data of the BDC project
@@ -21,12 +22,13 @@ export class SearchComponent implements OnInit {
   @Output() stepToEmit = new EventEmitter();
 
   private products: string[];
-  private providersList: object;
   public productsList: Object[];
-  public providersKeys: string[];
+  public providers: string[];
   public typeSearchRegion: string;
   public searchObj: Object;
   public rangeTemporal: Date[];
+  public filterTemporal: Date[];
+  public rangeTemporalEnabled: Date[];
   public layers: Layer[];
 
   constructor(
@@ -74,21 +76,11 @@ export class SearchComponent implements OnInit {
 
   private async getProviders() {
     try {
-      const response = await this.ss.getProviders()
-      this.providersList = response.providers
-      this.providersKeys = Object.keys(this.providersList)
-
+      const response = await this.ss.getProviders();
+      this.providers = Object.keys(response.providers);
     } catch(err) {
       console.log('==> ERR: ' + err);
     }
-  }
-
-  public search() {
-    const vm = this
-    this.products.forEach((product: any) => {
-      const productObj = this.productsList.filter(p => p['title'] == product)
-      productObj[0]['searchFunction'](vm)
-    });
   }
 
   private async searchCollections(vm: SearchComponent) {
@@ -96,21 +88,40 @@ export class SearchComponent implements OnInit {
       vm.store.dispatch(showLoading());
 
       const bbox = Object.values(vm.searchObj['bbox']);
-      const lastDate = new Date(vm.searchObj['start_date']);
-      lastDate.setDate(lastDate.getDate() + parseInt(vm.searchObj['step']))
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
       query += `&bbox=${bbox[3]},${bbox[2]},${bbox[1]},${bbox[0]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
-      query += `&start_date=${formatDateUSA(vm.searchObj['start_date'])}`;
-      query += `&last_date=${formatDateUSA(lastDate)}`;
+      query += `&start_date=${formatDateUSA(vm.rangeTemporalEnabled[0])}`;
+      query += `&last_date=${formatDateUSA(vm.rangeTemporalEnabled[1])}`;
 
       const response = await vm.ss.searchCollections(query);
-      console.log(response)
       if (response['providers'].length > 0) {
-        vm.store.dispatch(collections(Object.values(response['providers'])));
+        const features: Feature[] = Object.values(response['providers']);
+        let collections: Collection[] = []
+
+        //grouping features by collectionsss
+        features.forEach((feat: Feature) => {
+          const collectionName = feat['properties']['collection'];
+          if (collections.length > 0) {
+            const clts: Collection[] = []
+            collections.forEach((c: Collection) => {
+              if (c.name == collectionName) {
+                c.features.push(feat);
+              }
+              clts.push(c);
+            });
+            collections = clts
+          } else {
+            collections.push({
+              'name': collectionName,
+              'features': [feat]
+            })
+          }
+        })
+        vm.store.dispatch(setCollections(collections));
         vm.changeStepNav(1);
       } else {
-        vm.store.dispatch(collections([]));
+        vm.store.dispatch(setCollections([]));
         vm.changeStepNav(0);
       }
 
@@ -138,13 +149,39 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  public search() {
+    const vm = this
+    this.products.forEach((product: any) => {
+      const productObj = this.productsList.filter(p => p['title'] == product);
+    
+      if (product == 'collection') {
+        //set period filtered
+        vm.store.dispatch(setRangeTemporal([
+          new Date(vm.searchObj['start_date']),
+          new Date(vm.searchObj['last_date'])
+        ]));
+
+        //set dates of first period
+        const lastDate = new Date(vm.searchObj['start_date']);
+        lastDate.setDate(lastDate.getDate() + parseInt(vm.searchObj['step']));
+        vm.rangeTemporalEnabled = [
+          new Date(vm.searchObj['start_date']),
+          lastDate
+        ]
+        productObj[0]['searchFunction'](vm);
+        
+      } else {
+        productObj[0]['searchFunction'](vm);
+      }
+    });
+  }
+
   public changeStepNav(step) {
     this.stepToEmit.emit(step);
   }
 
   public previewBbox() {
     this.removeLayerBbox()
-
     const bounds: LatLngBoundsExpression = [
       [this.searchObj['bbox'].north, this.searchObj['bbox'].east],
       [this.searchObj['bbox'].south, this.searchObj['bbox'].west]
@@ -158,7 +195,6 @@ export class SearchComponent implements OnInit {
     this.layers.push(newLayers);
     this.store.dispatch(setLayers(this.layers));
     this.store.dispatch(setPositionMap(newLayers.getBounds()));
-
   }
 
   public removeLayerBbox() {
@@ -166,7 +202,7 @@ export class SearchComponent implements OnInit {
     this.store.dispatch(setLayers(this.layers));
   }
 
-  public bboxNotEmpty() {
+  public bboxNotEmpty(): boolean {
     return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west
   }
 }

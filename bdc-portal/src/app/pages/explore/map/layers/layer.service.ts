@@ -31,16 +31,7 @@ export class LayerService {
     public getGridsLayers(): BdcLayerWFS[] {
         return Grids;
     }
-
-    /**
-     * get tiles with data in the BDC project
-     */
-    public async getTilesUsed(): Promise<any> {
-        const urlSuffix = '/tiles';
-        const response = await this.http.get(`${environment.urlSoloist}${urlSuffix}`).toPromise();
-        return response;
-    }
-
+    
     /**
      * gets GeoJson object from a layer in the Geoserver of the BDC project
      * @params {string} datastore

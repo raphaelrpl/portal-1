@@ -10,7 +10,7 @@
         <mat-form-field appearance="fill">
             <mat-label>Select Providers</mat-label>
             <mat-select [(value)]="searchObj.providers" multiple>
-                <mat-option *ngFor="let provider of providersKeys" [value]="provider">{{ provider }}</mat-option>
+                <mat-option *ngFor="let provider of providers" [value]="provider">{{ provider }}</mat-option>
             </mat-select>
         </mat-form-field>
 
