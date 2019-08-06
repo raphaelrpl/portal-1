@@ -13,7 +13,7 @@ export class SearchService {
      */
     public async getProviders(): Promise<any> {
         const urlSuffix = '/search/providers';
-        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${environment.urlStacCompose}${urlSuffix}`).toPromise();
         return response;
     }
 
@@ -30,7 +30,7 @@ export class SearchService {
      * get All Collections
      */
     public async getCollectionByName(collection: string): Promise<any> {
-        const urlSuffix = `/collection/${collection}`;
+        const urlSuffix = `/collections/${collection}`;
         const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
@@ -40,7 +40,7 @@ export class SearchService {
      */
     public async searchCollections(query: string): Promise<any> {
         const urlSuffix = `/search/?${query}`;
-        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${environment.urlStacCompose}${urlSuffix}`).toPromise();
         return response;
     }
 }

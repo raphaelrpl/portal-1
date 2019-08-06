@@ -21,6 +21,7 @@ import {
 import { ExploreComponent } from './explore.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { MapComponent } from './map/map.component';
+import { SliderComponent } from './map/slider/slider.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchComponent } from './sidenav/search/search.component';
@@ -41,7 +42,8 @@ import * as fromExplore from './explore.reducer';
     MapComponent,
     SidenavComponent,
     SearchComponent,
-    CollectionComponent
+    CollectionComponent,
+    SliderComponent
   ],
   exports: [
     RouterModule

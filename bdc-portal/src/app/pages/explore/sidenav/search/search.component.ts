@@ -153,8 +153,8 @@ export class SearchComponent implements OnInit {
     const vm = this
     this.products.forEach((product: any) => {
       const productObj = this.productsList.filter(p => p['title'] == product);
-    
-      if (product == 'collection') {
+
+      if (product == 'collections') {
         //set period filtered
         vm.store.dispatch(setRangeTemporal([
           new Date(vm.searchObj['start_date']),
@@ -169,7 +169,7 @@ export class SearchComponent implements OnInit {
           lastDate
         ]
         productObj[0]['searchFunction'](vm);
-        
+
       } else {
         productObj[0]['searchFunction'](vm);
       }

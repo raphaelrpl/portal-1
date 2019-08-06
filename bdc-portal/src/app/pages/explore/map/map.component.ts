@@ -67,21 +67,25 @@ export class MapComponent implements OnInit {
 
     this.getTilesUsed();
     this.getBaseLayers(this.ls.getBaseLayers());
-    this.mountGridsLayers(this.ls.getGridsLayers());
+    setTimeout(() => {
+      this.mountGridsLayers(this.ls.getGridsLayers());
+    }, 1000);
   }
 
   /** get Tiles with data in grids */
   private async getTilesUsed() {
     try {
       const collections = await this.ss.getCollections();
-      this.tilesUsed = collections['assets'].map( async (c: any) => {
-        const collection = await this.ss.getCollectionByName(c.name);
-        return [...this.tilesUsed, collection.data['properties']['bdc:tiles']]
+      this.tilesUsed = []
+      collections['links'].forEach( async (c: any) => {
+        if (c.title) {
+          const collection = await this.ss.getCollectionByName(c.title)
+          this.tilesUsed = [...this.tilesUsed, ...collection.properties['bdc:tiles']]
+        }
       });
 
     } catch (err) {
-      console.log('==> ERR: ' + err);
-      this.tilesUsed = [];
+      // console.log('==> ERR: ' + err);
     }
   }
 
@@ -161,7 +165,7 @@ export class MapComponent implements OnInit {
 
       setTimeout(() => {
         this.applyLayersInMap();
-      }, 1000);
+      }, 100);
     }
   }
 
