@@ -15,7 +15,8 @@ import {
   MatInputModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatSlideToggleModule
+  MatSlideToggleModule,
+  MatSnackBarModule
 } from '@angular/material';
 
 import { ExploreComponent } from './explore.component';
@@ -65,6 +66,7 @@ import * as fromExplore from './explore.reducer';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
+    MatSnackBarModule,
     //AgmCoreModule.forRoot({
     //  apiKey: 'CHAVES_GOOGLE_MAPS'
     //}),

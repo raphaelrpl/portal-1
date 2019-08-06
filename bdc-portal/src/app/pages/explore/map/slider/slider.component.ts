@@ -15,7 +15,7 @@ export class SliderComponent implements OnInit {
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (Object.values(res.rangeTemporal).length) {
-        this.steps = [res.rangeTemporal['0'], res.rangeTemporal['0']]
+        this.steps = [res.rangeTemporal['0'], res.rangeTemporal['1']]
       }
     });
   }

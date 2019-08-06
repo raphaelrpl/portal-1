@@ -8,6 +8,7 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
 import { setLayers, setPositionMap, setBbox } from '../explore.action';
 import { SearchService } from '../sidenav/search/search.service';
+import { MatSnackBar } from '@angular/material';
 
 /**
  * Map component
@@ -47,6 +48,7 @@ export class MapComponent implements OnInit {
   constructor(
     private ls: LayerService,
     private ss: SearchService,
+    private _snackBar: MatSnackBar,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
@@ -84,9 +86,7 @@ export class MapComponent implements OnInit {
         }
       });
 
-    } catch (err) {
-      // console.log('==> ERR: ' + err);
-    }
+    } catch (err) {}
   }
 
   /** set the visible layers in the layer component of the map */
@@ -158,8 +158,6 @@ export class MapComponent implements OnInit {
       });
 
     } catch (err) {
-      console.log('==> ERR: ' + err);
-
     } finally {
       this.setControlLayers();
 

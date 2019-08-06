@@ -1,32 +1,40 @@
 <div *ngIf="collections$.length"
      class="collections">
-    <div *ngFor="let collection of collections$">
+    <div *ngFor="let collection of collections$" class="collection">
 
-      <!-- <div class="collection" (click)="enableActions(collection.id)"> -->
-      <div class="collection">
-        <div class="collection_ql">
-          <img [src]="collection.assets.thumbnail.href" />
+      <p class="collection_title">
+        <mat-icon class="title_icon">ballot</mat-icon>
+        {{ collection.name }}
+      </p>
+
+      <!-- FEATURE -->
+      <div *ngFor="let feature of collection.features">
+        <div class="feature" (click)="enableActions(collection.name, feature.id)">
+          <div class="feature_ql">
+            <img [src]="feature.assets.thumbnail.href" />
+          </div>
+
+          <div class="feature_desc">
+            <p><b>{{ feature.id }}</b></p>
+            <p>{{ feature.properties.collection }}</p>
+            <p>{{ getDateFormated(feature.properties.datetime) }}</p>
+          </div>
         </div>
 
-        <div class="collection_desc">
-          <p><b>{{ collection.id }}</b></p>
-          <p>{{ collection.properties.collection }}</p>
-          <p>{{ getDateFormated(collection.properties.datetime) }}</p>
-        </div>
-      </div>
+        <!-- ACTIONS FEATURE -->
+        <div class="feature-actions" *ngIf="feature.actions">
+          <mat-slide-toggle
+            [(ngModel)]="feature.enabled"
+            (change)="onChangeLayer($event, collection.name, feature)">
+          </mat-slide-toggle>
 
-      <!-- ACTIONS -->
-      <div class="collection-actions" *ngIf="collection.actions">
-        <!--<mat-slide-toggle
-          (change)="onChangeLayer($event, collection)">
-        </mat-slide-toggle>-->
-        <mat-slide-toggle></mat-slide-toggle>
-        <mat-icon
-          *ngIf="collection.enabled"
-          (click)="setZoom(collection)"
-          class="zoom">
-          zoom_out_map
-        </mat-icon>
+          <mat-icon
+            *ngIf="feature.enabled"
+            (click)="setZoom(feature)"
+            class="zoom">
+            zoom_out_map
+          </mat-icon>
+        </div>
       </div>
 
     </div>

@@ -19,6 +19,7 @@ export class CollectionComponent {
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.collections) {
+        console.log(res.collections)
         this.collections$ = <Collection[]>Object.values(res.collections).slice(0, (Object.values(res.collections).length-1));
       }
     });
@@ -36,35 +37,43 @@ export class CollectionComponent {
     return `${startDate}`;
   }
 
-  // onChangeLayer(event, feature: any) {
-  //   if (event.checked) {
-  //     this.collections$ = this.collections$.map( c => {
-  //       if (c.id == feature.id) {
-  //         c['enabled'] = true;
-  //       }
-  //       return c;
-  //     })
+  onChangeLayer(event, collectionName: string, feature: any) {
+    if (event.checked) {
+      this.collections$ = this.collections$.map( c => {
+        if (c.name == collectionName) {
+          return {...c, features: c.features.map( f => {
+            if (f.id == feature.id) {
+              f['enabled'] = true;
+            }
+            return f
+          })}
+        }
+      })
 
-  //     const featureGeoJson = geoJSON(feature);
-  //     const bounds = featureGeoJson.getBounds();
-  //     const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
-  //       'alt': feature.id
-  //     });
-  //     this.layers.push(newlayer);
-  //     this.store.dispatch(setLayers(this.layers));
+      const featureGeoJson = geoJSON(feature);
+      const bounds = featureGeoJson.getBounds();
+      const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
+        'alt': feature.id
+      });
+      this.layers.push(newlayer);
+      this.store.dispatch(setLayers(this.layers));
 
-  //   } else {
-  //     this.collections$ = this.collections$.map( c => {
-  //       if (c.id == feature.id) {
-  //         c['enabled'] = false;
-  //       }
-  //       return c;
-  //     })
+    } else {
+      this.collections$ = this.collections$.map( c => {
+        if (c.name == collectionName) {
+          return {...c, features: c.features.map( f => {
+            if (f.id == feature.id) {
+              f['enabled'] = false;
+            }
+            return f
+          })}
+        }
+      })
 
-  //     const newLayers = this.layers.filter( lyr => lyr['options'].alt != feature.id);
-  //     this.store.dispatch(setLayers(newLayers));
-  //   }
-  // }
+      const newLayers = this.layers.filter( lyr => lyr['options'].alt != feature.id);
+      this.store.dispatch(setLayers(newLayers));
+    }
+  }
 
   setZoom(feature: any) {
     const featureGeoJson = geoJSON(feature);
@@ -72,13 +81,17 @@ export class CollectionComponent {
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  // enableActions(featureId: string) {
-  //   this.collections$ = this.collections$.map( c => {
-  //     if (c.id == featureId) {
-  //       c['actions'] = !(c['actions'] === true)
-  //     }
-  //     return c
-  //   })
-  // }
+  enableActions(collectionName: string, featureId: string) {
+    this.collections$ = this.collections$.map( c => {
+      if (c.name == collectionName) {
+        return {...c, features: c.features.map( f => {
+          if (f.id == featureId) {
+            f['actions'] = !(f['actions'] === true)
+          }
+          return f
+        })}
+      }
+    })
+  }
 
 }

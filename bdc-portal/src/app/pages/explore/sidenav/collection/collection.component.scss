@@ -1,57 +1,78 @@
 .collections {
     padding: 0;
-    margin: 0;
+    margin: 15px 0;
 
     .collection {
-        background: rgba(#000, 0.1);
-        border-top: 1px solid rgba(#000, 0.2);
-        border-bottom: 1px solid rgba(#000, 0.2);
-        display: flex;
         margin-top: 10px;
-        width: 100%;
-        align-items: center;
-        cursor: pointer;
+        background: rgba(#000, 0.1);
+        padding: 10px 5px 10px 5px;
+        
+        .collection_title {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin: 0 0 10px 0;
+            color: #333;
+            padding-left: 5px;
+            display: flex;
+            align-items: center;
 
-        &:hover {
-            background: rgba(#000, 0.15);
-        }
-
-        .collection_ql {
-            width: 25%;
-            padding: 5px 5px 0 5px;
-            border-right: 1px solid rgba(#000, 0.1);
-
-            img {
-                width: 100%;
-                border-radius: 5px;
+            .title_icon {
+                margin: 0 7.5px 0 0;
+                padding: 0;
             }
         }
 
-        .collection_desc {
+        .feature {
+            background: rgba(#000, 0.1);
+            border-top: 1px solid rgba(#000, 0.2);
+            border-bottom: 1px solid rgba(#000, 0.2);
+            display: flex;
+            margin-top: 5px;
             width: 100%;
-            padding: 5px 10px;
-            p {
-                margin: 0;
+            align-items: center;
+            cursor: pointer;
+    
+            &:hover {
+                background: rgba(#000, 0.15);
+            }
+    
+            .feature_ql {
+                width: 25%;
+                padding: 5px 5px 0 5px;
+                border-right: 1px solid rgba(#000, 0.1);
+    
+                img {
+                    width: 100%;
+                    border-radius: 5px;
+                }
+            }
+    
+            .feature_desc {
+                width: 100%;
+                padding: 5px 10px;
+                p {
+                    margin: 0;
+                }
             }
         }
-    }
-
-    .collection-actions {
-        padding: 5px 10px;
-        background: rgba(#000, 0.15);
-        border-bottom: 1px solid rgba(#000, 0.2);
-        border-radius: 0px 0px 0px 15px;
-        width: 90%;
-        display: flex;
-        margin-left: 10%;
-
-        .zoom {
-            margin-left: 10px;
-            cursor: pointer;
-            border-radius: 5px;
-
-            &:hover {
-                background: rgba(#000, 0.1);
+        
+        .feature-actions {
+            padding: 5px 10px;
+            background: rgba(#000, 0.15);
+            border-bottom: 1px solid rgba(#000, 0.2);
+            border-radius: 0px 0px 0px 15px;
+            width: 90%;
+            display: flex;
+            margin-left: 10%;
+    
+            .zoom {
+                margin-left: 10px;
+                cursor: pointer;
+                border-radius: 5px;
+    
+                &:hover {
+                    background: rgba(#000, 0.1);
+                }
             }
         }
     }

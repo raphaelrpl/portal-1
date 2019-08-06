@@ -89,20 +89,20 @@ export class SearchComponent implements OnInit {
 
       const bbox = Object.values(vm.searchObj['bbox']);
       let query = `providers=${vm.searchObj['providers'].join(',')}`;
-      query += `&bbox=${bbox[3]},${bbox[2]},${bbox[1]},${bbox[0]}`;
+      query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
       query += `&start_date=${formatDateUSA(vm.rangeTemporalEnabled[0])}`;
       query += `&last_date=${formatDateUSA(vm.rangeTemporalEnabled[1])}`;
 
       const response = await vm.ss.searchCollections(query);
-      if (response['providers'].length > 0) {
-        const features: Feature[] = Object.values(response['providers']);
+      if (response.length > 0) {
+        const features: Feature[] = Object.values(response);
         let collections: Collection[] = []
 
         //grouping features by collectionsss
         features.forEach((feat: Feature) => {
-          const collectionName = feat['properties']['collection'];
-          if (collections.length > 0) {
+          const collectionName = feat['collection'];
+          if (collections.filter( coll => coll.name == collectionName).length > 0) {
             const clts: Collection[] = []
             collections.forEach((c: Collection) => {
               if (c.name == collectionName) {
@@ -110,7 +110,7 @@ export class SearchComponent implements OnInit {
               }
               clts.push(c);
             });
-            collections = clts
+            collections = clts;
           } else {
             collections.push({
               'name': collectionName,
@@ -124,7 +124,6 @@ export class SearchComponent implements OnInit {
         vm.store.dispatch(setCollections([]));
         vm.changeStepNav(0);
       }
-
     } catch(err) {
       console.log('==> ERR: ' + err);
 
