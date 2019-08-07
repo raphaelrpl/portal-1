@@ -4,7 +4,8 @@ import { Store, select } from '@ngrx/store';
 import { Collection } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import { imageOverlay,  Layer, geoJSON } from 'leaflet';
-import { setLayers, setPositionMap } from '../../explore.action';
+import { setLayers, setPositionMap, setCollections } from '../../explore.action';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-collection',
@@ -16,10 +17,10 @@ export class CollectionComponent {
   public collections$: Collection[] = [];
   public layers: Layer[];
 
-  constructor(private store: Store<ExploreState>) {
+  constructor(private _snackBar: MatSnackBar,
+    private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.collections) {
-        console.log(res.collections)
         this.collections$ = <Collection[]>Object.values(res.collections).slice(0, (Object.values(res.collections).length-1));
       }
     });
@@ -45,18 +46,26 @@ export class CollectionComponent {
             if (f.id == feature.id) {
               f['enabled'] = true;
             }
-            return f
+            return f;
           })}
+        } else {
+          return c;
         }
       })
 
       const featureGeoJson = geoJSON(feature);
       const bounds = featureGeoJson.getBounds();
       const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
-        'alt': feature.id
-      });
+        'alt': `qls_${feature.id}`
+      }).setZIndex(999);
+
       this.layers.push(newlayer);
       this.store.dispatch(setLayers(this.layers));
+      this._snackBar.open('LAYER ENABLED!', '', {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-success'
+      });
 
     } else {
       this.collections$ = this.collections$.map( c => {
@@ -65,13 +74,20 @@ export class CollectionComponent {
             if (f.id == feature.id) {
               f['enabled'] = false;
             }
-            return f
+            return f;
           })}
+        } else {
+          return c;
         }
       })
 
-      const newLayers = this.layers.filter( lyr => lyr['options'].alt != feature.id);
+      const newLayers = this.layers.filter( lyr => lyr['options'].alt != `qls_${feature.id}` );
       this.store.dispatch(setLayers(newLayers));
+      this._snackBar.open('LAYER DISABLED!', '', {
+        duration: 2000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-success'
+      });
     }
   }
 
@@ -79,6 +95,17 @@ export class CollectionComponent {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
+  }
+
+  enableFeatures(collectionName: string) {
+    this.collections$ = this.collections$.map( c => {
+      if (c.name == collectionName) {
+        return {...c, viewFeatures: !c['viewFeatures']}
+      } else {
+        return c
+      }
+    })
+    this.store.dispatch(setCollections(this.collections$));
   }
 
   enableActions(collectionName: string, featureId: string) {
@@ -90,8 +117,11 @@ export class CollectionComponent {
           }
           return f
         })}
+      } else {
+        return c
       }
     })
+    this.store.dispatch(setCollections(this.collections$));
   }
 
 }

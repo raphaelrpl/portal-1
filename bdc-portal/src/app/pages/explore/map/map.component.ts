@@ -8,7 +8,6 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
 import { setLayers, setPositionMap, setBbox } from '../explore.action';
 import { SearchService } from '../sidenav/search/search.service';
-import { MatSnackBar } from '@angular/material';
 
 /**
  * Map component
@@ -43,18 +42,20 @@ export class MapComponent implements OnInit {
   private baseLayers = {};
   /** all overlay layers available for viewing (layer object only) */
   private overlays = {};
+  /** bounding box of Map */
+  private bbox = null;
 
   /** start Layer Service */
   constructor(
     private ls: LayerService,
     private ss: SearchService,
-    private _snackBar: MatSnackBar,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
           this.layers$ = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
         }
-        if (res.positionMap) {
+        if (res.positionMap && res.positionMap != this.bbox) {
+          this.bbox = res.positionMap;
           this.setPosition(res.positionMap);
         }
       });

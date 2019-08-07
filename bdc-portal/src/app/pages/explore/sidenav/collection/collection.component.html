@@ -2,38 +2,40 @@
      class="collections">
     <div *ngFor="let collection of collections$" class="collection">
 
-      <p class="collection_title">
+      <p class="collection_title" (click)="enableFeatures(collection.name)">
         <mat-icon class="title_icon">ballot</mat-icon>
         {{ collection.name }}
       </p>
 
       <!-- FEATURE -->
-      <div *ngFor="let feature of collection.features">
-        <div class="feature" (click)="enableActions(collection.name, feature.id)">
-          <div class="feature_ql">
-            <img [src]="feature.assets.thumbnail.href" />
+      <div *ngIf="collection.viewFeatures" class="box-features">
+        <div *ngFor="let feature of collection.features">
+          <div class="feature" (click)="enableActions(collection.name, feature.id)">
+            <div class="feature_ql">
+              <img [src]="feature.assets.thumbnail.href" />
+            </div>
+
+            <div class="feature_desc">
+              <p><b>{{ feature.id }}</b></p>
+              <p>{{ feature.properties.collection }}</p>
+              <p>{{ getDateFormated(feature.properties.datetime) }}</p>
+            </div>
           </div>
 
-          <div class="feature_desc">
-            <p><b>{{ feature.id }}</b></p>
-            <p>{{ feature.properties.collection }}</p>
-            <p>{{ getDateFormated(feature.properties.datetime) }}</p>
+          <!-- ACTIONS FEATURE -->
+          <div class="feature-actions" *ngIf="feature.actions">
+            <mat-slide-toggle
+              [(ngModel)]="feature.enabled"
+              (change)="onChangeLayer($event, collection.name, feature)">
+            </mat-slide-toggle>
+
+            <mat-icon
+              *ngIf="feature.enabled"
+              (click)="setZoom(feature)"
+              class="zoom">
+              zoom_out_map
+            </mat-icon>
           </div>
-        </div>
-
-        <!-- ACTIONS FEATURE -->
-        <div class="feature-actions" *ngIf="feature.actions">
-          <mat-slide-toggle
-            [(ngModel)]="feature.enabled"
-            (change)="onChangeLayer($event, collection.name, feature)">
-          </mat-slide-toggle>
-
-          <mat-icon
-            *ngIf="feature.enabled"
-            (click)="setZoom(feature)"
-            class="zoom">
-            zoom_out_map
-          </mat-icon>
         </div>
       </div>
 

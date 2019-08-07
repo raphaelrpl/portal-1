@@ -7,6 +7,7 @@ import { formatDateUSA } from 'src/app/shared/helpers/date';
 import { setCollections, showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal } from '../../explore.action';
 import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 import { Collection, Feature } from '../collection/collection.interface';
+import { MatSnackBar } from '@angular/material';
 
 /**
  * component to search data of the BDC project
@@ -33,6 +34,7 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private ss: SearchService,
+    private _snackBar: MatSnackBar,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
@@ -120,14 +122,21 @@ export class SearchComponent implements OnInit {
         })
         vm.store.dispatch(setCollections(collections));
         vm.changeStepNav(1);
+
       } else {
         vm.store.dispatch(setCollections([]));
         vm.changeStepNav(0);
+        vm._snackBar.open('RESULTS NOT FOUND!', '', {
+          duration: 5000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-error'
+        });
       }
-    } catch(err) {
-      console.log('==> ERR: ' + err);
 
+    } catch(err) {
     } finally {
+      const newLayers = vm.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0))
+      vm.store.dispatch(setLayers(newLayers));
       vm.store.dispatch(closeLoading());
     }
   }
@@ -189,7 +198,7 @@ export class SearchComponent implements OnInit {
       color: "#666",
       weight: 1,
       className: 'previewBbox'
-    });
+    }).bringToFront();
 
     this.layers.push(newLayers);
     this.store.dispatch(setLayers(this.layers));
