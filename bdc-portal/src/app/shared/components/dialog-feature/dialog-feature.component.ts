@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-dialog-feature',
   templateUrl: './dialog-feature.component.html',
   styleUrls: ['./dialog-feature.component.scss']
 })
-export class DialogFeatureComponent implements OnInit {
+export class DialogFeatureComponent {
 
-  constructor() { }
+  constructor(public dialogRef: MatDialogRef<DialogFeatureComponent>) {}
 
-  ngOnInit() {
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 
 }

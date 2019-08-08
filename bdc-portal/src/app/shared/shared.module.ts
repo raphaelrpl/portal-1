@@ -36,6 +36,9 @@ import { DialogFeatureComponent } from './components/dialog-feature/dialog-featu
     MatIconModule,
     MatSelectModule,
     NgxSpinnerModule
+  ],
+  entryComponents: [
+    DialogFeatureComponent
   ]
 })
 export class SharedModule { }

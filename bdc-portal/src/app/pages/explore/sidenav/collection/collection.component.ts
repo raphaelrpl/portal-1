@@ -5,7 +5,8 @@ import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import { imageOverlay,  Layer, geoJSON } from 'leaflet';
 import { setLayers, setPositionMap, setFeatures } from '../../explore.action';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MatDialog } from '@angular/material';
+import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
 @Component({
   selector: 'app-collection',
@@ -17,7 +18,8 @@ export class CollectionComponent {
   public features$: Feature[] = [];
   public layers: Layer[];
 
-  constructor(private _snackBar: MatSnackBar,
+  constructor(public dialog: MatDialog,
+    private _snackBar: MatSnackBar,
     private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
@@ -95,6 +97,16 @@ export class CollectionComponent {
 
   public viewFeatureDetails(feature: any){
     const bands = feature.properties['bdc:bands'];
-    console.log(feature);
+    const dialogRef = this.dialog.open(DialogFeatureComponent, {
+      width: '250px'
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+    });
+  }
+
+  openDialog(): void {
+
   }
 }
