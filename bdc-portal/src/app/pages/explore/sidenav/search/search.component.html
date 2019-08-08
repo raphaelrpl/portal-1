@@ -34,18 +34,30 @@
                 </ng-template>
 
                 <ng-template #selectByCoordinates>
-                    <mat-form-field>
-                        <input matInput type="number" placeholder="Lat North" name="north" [(ngModel)]="searchObj.bbox.north">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput type="number" placeholder="Log East" name="east" [(ngModel)]="searchObj.bbox.east">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput type="number" placeholder="Lat South" name="south" [(ngModel)]="searchObj.bbox.south">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput type="number" placeholder="Log West" name="west" [(ngModel)]="searchObj.bbox.west">
-                    </mat-form-field>
+                    <div class="box-coordinates">
+                        <mat-form-field appearance="outline"
+                            style="margin-bottom: -20px"
+                            class="field-top-bottom">
+                            <mat-label>North</mat-label>
+                            <input matInput type="number" name="north" placeholder="N" [(ngModel)]="searchObj.bbox.north">
+                        </mat-form-field>
+                        <div>
+                            <mat-form-field appearance="outline">
+                                <mat-label>West</mat-label>
+                                <input matInput type="number" name="west" placeholder="W" [(ngModel)]="searchObj.bbox.west">
+                            </mat-form-field>
+                            <mat-form-field appearance="outline">
+                                <mat-label>East</mat-label>
+                                <input matInput type="number" name="east" placeholder="E" [(ngModel)]="searchObj.bbox.east">
+                            </mat-form-field>
+                        </div>
+                        <mat-form-field appearance="outline"
+                            style="margin-top: -20px"
+                            class="field-top-bottom">
+                            <mat-label>South</mat-label>
+                            <input matInput type="number" name="south" placeholder="S" [(ngModel)]="searchObj.bbox.south">
+                        </mat-form-field>
+                    </div>
                 </ng-template>
             </div>
             <div class="region__btn-functions">
