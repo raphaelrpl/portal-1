@@ -27,7 +27,7 @@ export class SearchService {
     }
 
     /**
-     * get All Collections
+     * get Collection by name
      */
     public async getCollectionByName(collection: string): Promise<any> {
         const urlSuffix = `/collections/${collection}`;
@@ -36,11 +36,11 @@ export class SearchService {
     }
 
     /**
-     * get Collections in STAC Search
+     * get Features in STAC Search
      */
-    public async searchCollections(query: string): Promise<any> {
-        const urlSuffix = `/search/?${query}`;
-        const response = await this.http.get(`${environment.urlStacCompose}${urlSuffix}`).toPromise();
+    public async searchSTAC(query: string): Promise<any> {
+        const urlSuffix = `/stac/search?${query}`;
+        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
 }

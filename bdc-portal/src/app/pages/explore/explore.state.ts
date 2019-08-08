@@ -1,8 +1,8 @@
-import { Collection } from './sidenav/collection/collection.interface';
-import { Layer, LatLngBoundsExpression, Map as MapLealet } from 'leaflet';
+import { Feature } from './sidenav/collection/collection.interface';
+import { Layer, LatLngBoundsExpression } from 'leaflet';
 
 export interface ExploreState {
-    readonly collections: Collection[];
+    readonly features: Feature[];
     readonly layers: Layer[];
     readonly positionMap: LatLngBoundsExpression;
     readonly rangeTemporal: Date[];

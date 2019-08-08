@@ -6,12 +6,12 @@ import {
   setBbox,
   setPositionMap,
   setRangeTemporal,
-  setCollections
+  setFeatures
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
 const initialState: ExploreState = {
-  collections: [],
+  features: [],
   layers: [],
   positionMap: null,
   loading: false,
@@ -20,8 +20,8 @@ const initialState: ExploreState = {
 }
 
 export const reducer = createReducer(initialState,
-  on(setCollections, (state, payload) => {
-    return { ...state, collections: payload }
+  on(setFeatures, (state, payload) => {
+    return { ...state, features: payload }
   }),
   on(setLayers, (state, payload) => {
     return { ...state, layers: payload }

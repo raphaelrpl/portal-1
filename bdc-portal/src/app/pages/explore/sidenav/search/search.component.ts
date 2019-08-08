@@ -4,9 +4,9 @@ import { Store, select } from '@ngrx/store';
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { setCollections, showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal } from '../../explore.action';
+import { showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal, setFeatures } from '../../explore.action';
 import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
-import { Collection, Feature } from '../collection/collection.interface';
+import { Feature } from '../collection/collection.interface';
 import { MatSnackBar } from '@angular/material';
 
 /**
@@ -22,12 +22,14 @@ export class SearchComponent implements OnInit {
 
   @Output() stepToEmit = new EventEmitter();
 
-  private products: string[];
   public productsList: Object[];
-  public providers: string[];
+  public products: string[];
+  public collections: string[];
   public typeSearchRegion: string;
-  public searchObj: Object;
   public rangeTemporal: Date[];
+  public typesCollection: String[];
+  public searchObj: Object;
+
   public filterTemporal: Date[];
   public rangeTemporalEnabled: Date[];
   public layers: Layer[];
@@ -55,9 +57,9 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.productsList = [
       {
-        'title': 'collections',
+        'title': 'cubes',
         'disabled': false,
-        'searchFunction': this.searchCollections
+        'searchFunction': this.searchFeatures
       }, {
         'title': 'samples',
         'disabled': true
@@ -67,64 +69,45 @@ export class SearchComponent implements OnInit {
       }
     ]
 
-    this.getProviders();
+    this.getCollections();
     this.resetSearch();
     this.typeSearchRegion = 'coordinates';
-    this.rangeTemporal = [
-      new Date(2016, 8, 1),
-      new Date()
-    ]
+    this.rangeTemporal = [];
   }
 
-  private async getProviders() {
+  private async getCollections() {
     try {
-      const response = await this.ss.getProviders();
-      this.providers = Object.keys(response.providers);
+      const response = await this.ss.getCollections();
+      this.collections = []
+      response.links.forEach( c => {
+        if (c.rel == 'child') {
+          this.collections.push(c.title)
+        }
+      })
     } catch(err) {
-      console.log('==> ERR: ' + err);
     }
   }
 
-  private async searchCollections(vm: SearchComponent) {
+  private async searchFeatures(vm: SearchComponent) {
     try {
       vm.store.dispatch(showLoading());
 
       const bbox = Object.values(vm.searchObj['bbox']);
-      let query = `providers=${vm.searchObj['providers'].join(',')}`;
+      let query = `type=${vm.searchObj['types'].join(',')}`;
+      query += `&collections=${vm.searchObj['cube']}`;
       query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
       query += `&cloud=${vm.searchObj['cloud']}`;
-      query += `&start_date=${formatDateUSA(vm.rangeTemporalEnabled[0])}`;
-      query += `&last_date=${formatDateUSA(vm.rangeTemporalEnabled[1])}`;
+      query += `&time=${formatDateUSA(new Date(vm.searchObj['start_date']))}`;
+      query += `/${formatDateUSA(new Date(vm.searchObj['last_date']))}`;
+      query += `&limit=10000`;
 
-      const response = await vm.ss.searchCollections(query);
-      if (response.length > 0) {
-        const features: Feature[] = Object.values(response);
-        let collections: Collection[] = []
-
-        //grouping features by collectionsss
-        features.forEach((feat: Feature) => {
-          const collectionName = feat['collection'];
-          if (collections.filter( coll => coll.name == collectionName).length > 0) {
-            const clts: Collection[] = []
-            collections.forEach((c: Collection) => {
-              if (c.name == collectionName) {
-                c.features.push(feat);
-              }
-              clts.push(c);
-            });
-            collections = clts;
-          } else {
-            collections.push({
-              'name': collectionName,
-              'features': [feat]
-            })
-          }
-        })
-        vm.store.dispatch(setCollections(collections));
+      const response = await vm.ss.searchSTAC(query);
+      if (response.features.length > 0) {
+        vm.store.dispatch(setFeatures(response.features));
         vm.changeStepNav(1);
 
       } else {
-        vm.store.dispatch(setCollections([]));
+        vm.store.dispatch(setFeatures([]));
         vm.changeStepNav(0);
         vm._snackBar.open('RESULTS NOT FOUND!', '', {
           duration: 5000,
@@ -134,6 +117,13 @@ export class SearchComponent implements OnInit {
       }
 
     } catch(err) {
+      vm.changeStepNav(0);
+      vm._snackBar.open('INCORRECT SEARCH!', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+
     } finally {
       const newLayers = vm.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0))
       vm.store.dispatch(setLayers(newLayers));
@@ -143,13 +133,14 @@ export class SearchComponent implements OnInit {
 
   private resetSearch() {
     this.searchObj = {
-      'providers': [],
+      'cube': '',
       'bbox': {
         'north': null,
         'south': null,
         'west': null,
         'east': null
       },
+      'type': [],
       'cloud': null,
       'step': null,
       'start_date': '',
@@ -157,30 +148,47 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  public async getCollection(name: string) {
+    try {
+      const response = await this.ss.getCollectionByName(name);
+
+      //set times (range temporal of cube)
+      const times = response.extent.time
+      this.rangeTemporal = [
+        new Date(times[0]),
+        new Date(times[1])
+      ]
+      //set collection types
+      this.typesCollection = response.properties['bdc:time_aggregations'].map(t => t.name);
+
+    } catch(_) {
+    }
+  }
+
   public search() {
     const vm = this
     this.products.forEach((product: any) => {
       const productObj = this.productsList.filter(p => p['title'] == product);
+      productObj[0]['searchFunction'](vm);
+      // if (product == 'collections') {
+      //   //set period filtered
+      //   vm.store.dispatch(setRangeTemporal([
+      //     new Date(vm.searchObj['start_date']),
+      //     new Date(vm.searchObj['last_date'])
+      //   ]));
 
-      if (product == 'collections') {
-        //set period filtered
-        vm.store.dispatch(setRangeTemporal([
-          new Date(vm.searchObj['start_date']),
-          new Date(vm.searchObj['last_date'])
-        ]));
+      //   //set dates of first period
+      //   const lastDate = new Date(vm.searchObj['start_date']);
+      //   lastDate.setDate(lastDate.getDate() + parseInt(vm.searchObj['step']));
+      //   vm.rangeTemporalEnabled = [
+      //     new Date(vm.searchObj['start_date']),
+      //     lastDate
+      //   ]
+      //   productObj[0]['searchFunction'](vm);
 
-        //set dates of first period
-        const lastDate = new Date(vm.searchObj['start_date']);
-        lastDate.setDate(lastDate.getDate() + parseInt(vm.searchObj['step']));
-        vm.rangeTemporalEnabled = [
-          new Date(vm.searchObj['start_date']),
-          lastDate
-        ]
-        productObj[0]['searchFunction'](vm);
-
-      } else {
-        productObj[0]['searchFunction'](vm);
-      }
+      // } else {
+      //   productObj[0]['searchFunction'](vm);
+      // }
     });
   }
 
@@ -211,6 +219,6 @@ export class SearchComponent implements OnInit {
   }
 
   public bboxNotEmpty(): boolean {
-    return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west
+    return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west;
   }
 }

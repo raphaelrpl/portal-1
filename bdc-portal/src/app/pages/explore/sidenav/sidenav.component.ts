@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Collection } from './collection/collection.interface';
+import { Feature } from './collection/collection.interface';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
 
@@ -15,12 +15,12 @@ import { ExploreState } from '../explore.state';
 export class SidenavComponent {
 
   public step: number = 0;
-  public collections$: Collection[] = [];
+  public features$: Feature[] = [];
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
-      if (res.collections) {
-        this.collections$ = <Collection[]>Object.values(res.collections).slice(0, (Object.values(res.collections).length-1));
+      if (res.features) {
+        this.features$ = <Feature[]>Object.values(res.features).slice(0, (Object.values(res.features).length-1));
       }
     });
   }

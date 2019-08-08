@@ -1,5 +1,5 @@
 <div class="container-search">
-    <form  (ngSubmit)="search()">
+    <form (ngSubmit)="search()">
         <mat-form-field appearance="fill">
             <mat-label>Select Products</mat-label>
             <mat-select [(value)]="products" multiple>
@@ -7,10 +7,13 @@
             </mat-select>
         </mat-form-field>
 
-        <mat-form-field appearance="fill">
-            <mat-label>Select Providers</mat-label>
-            <mat-select [(value)]="searchObj.providers" multiple>
-                <mat-option *ngFor="let provider of providers" [value]="provider">{{ provider }}</mat-option>
+        <mat-form-field appearance="fill" *ngIf="products && products.indexOf('cubes') >= 0">
+            <mat-label>Select Cube</mat-label>
+            <mat-select [(value)]="searchObj.cube">
+                <mat-option
+                    *ngFor="let collection of collections"
+                    [value]="collection"
+                    (click)="getCollection(collection)">{{ collection }}</mat-option>
             </mat-select>
         </mat-form-field>
 
@@ -71,42 +74,45 @@
 
         <hr  style="margin-top: 15px" />
 
-        <mat-form-field appearance="fill" style="width: 50%">
-            <mat-label>Start Date</mat-label>
-            <input matInput
-                [matDatepicker]="start_date"
-                [min]="rangeTemporal[0]"
-                [max]="rangeTemporal[1]"
-                placeholder="Start Date"
-                name="start_date"
-                [(ngModel)]="searchObj.start_date">
-            <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
-            <mat-datepicker #start_date></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width: 50%">
-            <mat-label>Last Date</mat-label>
-            <input matInput
-                [matDatepicker]="last_date"
-                [min]="rangeTemporal[0]"
-                [max]="rangeTemporal[1]"
-                placeholder="Last Date"
-                name="last_date"
-                [(ngModel)]="searchObj.last_date">
-            <mat-datepicker-toggle matSuffix [for]="last_date"></mat-datepicker-toggle>
-            <mat-datepicker #last_date></mat-datepicker>
-        </mat-form-field>
-
         <div>
+            <mat-form-field appearance="fill" style="width: 50%">
+                <mat-label>Start Date</mat-label>
+                <input matInput
+                    [matDatepicker]="start_date"
+                    [min]="rangeTemporal[0]"
+                    [max]="rangeTemporal[1]"
+                    placeholder="Start Date"
+                    name="start_date"
+                    [(ngModel)]="searchObj.start_date">
+                <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
+                <mat-datepicker #start_date></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="width: 50%">
+                <mat-label>Last Date</mat-label>
+                <input matInput
+                    [matDatepicker]="last_date"
+                    [min]="rangeTemporal[0]"
+                    [max]="rangeTemporal[1]"
+                    placeholder="Last Date"
+                    name="last_date"
+                    [(ngModel)]="searchObj.last_date">
+                <mat-datepicker-toggle matSuffix [for]="last_date"></mat-datepicker-toggle>
+                <mat-datepicker #last_date></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <div *ngIf="searchObj.cube">
             <mat-form-field appearance="fill" style="width: 50%">
                 <mat-label>Cloud Cover (min)</mat-label>
                 <input type="number" min="0" max="100" matInput name="cloud" [(ngModel)]="searchObj.cloud">
                 <span matSuffix>%</span>
             </mat-form-field>
             <mat-form-field appearance="fill" style="width: 50%">
-                <mat-label>Step</mat-label>
-                <input type="number" min="1" matInput name="step" [(ngModel)]="searchObj.step">
-                <span matSuffix>day(s)</span>
+                <mat-label>Type</mat-label>
+                <mat-select [(value)]="searchObj.types" multiple>
+                    <mat-option *ngFor="let type of typesCollection" [value]="type">{{ type }}</mat-option>
+                </mat-select>
             </mat-form-field>
         </div>
 

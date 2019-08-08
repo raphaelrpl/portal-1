@@ -11,6 +11,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { DialogFeatureComponent } from './components/dialog-feature/dialog-feature.component';
 
 /**
  * Shared Module
@@ -21,7 +22,8 @@ import { NgxSpinnerModule } from 'ngx-spinner';
     SelectLangComponent,
     FooterComponent,
     FormFieldErrorComponent,
-    LoadingComponent
+    LoadingComponent,
+    DialogFeatureComponent
   ],
   exports: [
     SelectLangComponent,
