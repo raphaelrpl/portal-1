@@ -103,12 +103,7 @@
         </div>
 
         <div *ngIf="searchObj.cube">
-            <mat-form-field appearance="fill" style="width: 50%">
-                <mat-label>Cloud Cover (min)</mat-label>
-                <input type="number" min="0" max="100" matInput name="cloud" [(ngModel)]="searchObj.cloud">
-                <span matSuffix>%</span>
-            </mat-form-field>
-            <mat-form-field appearance="fill" style="width: 50%">
+            <mat-form-field appearance="fill">
                 <mat-label>Type</mat-label>
                 <mat-select [(value)]="searchObj.types" multiple>
                     <mat-option *ngFor="let type of typesCollection" [value]="type">{{ type }}</mat-option>

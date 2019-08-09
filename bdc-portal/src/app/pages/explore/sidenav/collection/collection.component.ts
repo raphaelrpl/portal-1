@@ -105,9 +105,5 @@ export class CollectionComponent {
       width: '600px',
       data: {...feature, bands: this.bands}
     });
-
-    dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-    });
   }
 }

@@ -96,7 +96,6 @@ export class SearchComponent implements OnInit {
       let query = `type=${vm.searchObj['types'].join(',')}`;
       query += `&collections=${vm.searchObj['cube']}`;
       query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
-      query += `&cloud=${vm.searchObj['cloud']}`;
       query += `&time=${formatDateUSA(new Date(vm.searchObj['start_date']))}`;
       query += `/${formatDateUSA(new Date(vm.searchObj['last_date']))}`;
       query += `&limit=10000`;
@@ -141,7 +140,6 @@ export class SearchComponent implements OnInit {
         'east': null
       },
       'type': [],
-      'cloud': null,
       'step': null,
       'start_date': '',
       'last_date': ''

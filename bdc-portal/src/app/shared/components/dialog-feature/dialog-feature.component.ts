@@ -12,7 +12,6 @@ export class DialogFeatureComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogFeatureComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Feature) {
-      console.log(data)
     }
 
 }
