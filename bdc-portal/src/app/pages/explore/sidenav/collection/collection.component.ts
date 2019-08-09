@@ -17,6 +17,7 @@ export class CollectionComponent {
 
   public features$: Feature[] = [];
   public layers: Layer[];
+  public period: Number;
   private bands: string[];
 
   constructor(public dialog: MatDialog,
@@ -33,6 +34,10 @@ export class CollectionComponent {
 
       if (res.bands) {
         this.bands = <string[]>Object.values(res.bands).slice(0, (Object.values(res.bands).length-1));
+      }
+
+      if (res.period) {
+        this.period = <Number>Object.values(res.bands)[0];
       }
     });
   }
@@ -101,8 +106,9 @@ export class CollectionComponent {
   }
 
   public viewFeatureDetails(feature: Feature){
-    const dialogRef = this.dialog.open(DialogFeatureComponent, {
+    this.dialog.open(DialogFeatureComponent, {
       width: '600px',
+      height: '550px',
       data: {...feature, bands: this.bands}
     });
   }

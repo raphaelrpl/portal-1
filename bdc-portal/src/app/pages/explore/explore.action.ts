@@ -32,6 +32,11 @@ export const setRangeTemporal = createAction(
     props<Date[]>()
 );
 
+export const setPeriod = createAction(
+    '[Map Component] Period',
+    props<Number>()
+);
+
 export const showLoading = createAction(
     '[Loading Component] showLoading'
 );

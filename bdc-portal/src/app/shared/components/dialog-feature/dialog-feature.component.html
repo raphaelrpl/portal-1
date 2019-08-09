@@ -5,7 +5,7 @@
             {{ data.id }}
         </h1>
         <p><b>CUBE:</b> {{ data.collection }}</p>
-        <p><b>DATE:</b> {{ data.properties.datetime }}</p>
+        <p><b>DATE:</b> {{ getDateFormated(data.properties.datetime) }}</p>
     </header>
 
     <div class="box-assets">

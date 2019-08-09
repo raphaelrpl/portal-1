@@ -102,6 +102,10 @@ export class SearchComponent implements OnInit {
 
       const response = await vm.ss.searchSTAC(query);
       if (response.features.length > 0) {
+        vm.store.dispatch(setRangeTemporal([
+          new Date(vm.searchObj['start_date']),
+          new Date(vm.searchObj['last_date'])
+        ]));
         vm.store.dispatch(setFeatures(response.features));
         vm.changeStepNav(1);
 
@@ -170,11 +174,6 @@ export class SearchComponent implements OnInit {
       const productObj = this.productsList.filter(p => p['title'] == product);
       productObj[0]['searchFunction'](vm);
       // if (product == 'collections') {
-      //   //set period filtered
-      //   vm.store.dispatch(setRangeTemporal([
-      //     new Date(vm.searchObj['start_date']),
-      //     new Date(vm.searchObj['last_date'])
-      //   ]));
 
       //   //set dates of first period
       //   const lastDate = new Date(vm.searchObj['start_date']);

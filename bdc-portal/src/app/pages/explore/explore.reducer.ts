@@ -7,7 +7,8 @@ import {
   setPositionMap,
   setRangeTemporal,
   setFeatures,
-  setBands
+  setBands,
+  setPeriod
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -18,6 +19,7 @@ const initialState: ExploreState = {
   positionMap: null,
   loading: false,
   bbox: null,
+  period: 1,
   rangeTemporal: []
 }
 
@@ -30,6 +32,9 @@ export const reducer = createReducer(initialState,
   }),
   on(setBands, (state, payload) => {
     return { ...state, bands: payload }
+  }),
+  on(setPeriod, (state, payload) => {
+    return { ...state, period: payload }
   }),
   on(setPositionMap, (state, payload) => {
     return { ...state, positionMap: payload }

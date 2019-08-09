@@ -7,6 +7,7 @@ export interface ExploreState {
     readonly bands: string[];
     readonly positionMap: LatLngBoundsExpression;
     readonly rangeTemporal: Date[];
+    readonly period: Number;
     readonly bbox: LatLngBoundsExpression;
     readonly loading: boolean;
 }

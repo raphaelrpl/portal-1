@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Feature } from 'src/app/pages/explore/sidenav/collection/collection.interface';
+import { formatDateUSA } from '../../helpers/date';
 
 @Component({
   selector: 'app-dialog-feature',
@@ -12,6 +13,10 @@ export class DialogFeatureComponent {
   constructor(
     public dialogRef: MatDialogRef<DialogFeatureComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Feature) {
+    }
+
+    getDateFormated(date: string) {
+      return formatDateUSA(new Date(date));
     }
 
 }
