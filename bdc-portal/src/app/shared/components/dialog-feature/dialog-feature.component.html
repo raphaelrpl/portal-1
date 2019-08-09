@@ -1,1 +1,21 @@
-<p>dialog-feature works!</p>
+<section class="dialog-feature">
+    <header class="header">
+        <h1>
+            <mat-icon style="margin-right: 10px">list</mat-icon>
+            {{ data.id }}
+        </h1>
+        <p><b>CUBE:</b> {{ data.collection }}</p>
+        <p><b>DATE:</b> {{ data.properties.datetime }}</p>
+    </header>
+
+    <div class="box-assets">
+        <div *ngFor="let band of data.bands">
+            <div class="assets" *ngIf="data.assets[band]">
+                <p>{{ band.toUpperCase() }}</p>
+                <a [href]="data.assets[band].href" target="_blank">
+                    <mat-icon style="color: #000">arrow_downward</mat-icon>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>

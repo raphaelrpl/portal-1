@@ -17,6 +17,7 @@ export class CollectionComponent {
 
   public features$: Feature[] = [];
   public layers: Layer[];
+  private bands: string[];
 
   constructor(public dialog: MatDialog,
     private _snackBar: MatSnackBar,
@@ -28,6 +29,10 @@ export class CollectionComponent {
 
       if (res.layers) {
         this.layers = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
+      }
+
+      if (res.bands) {
+        this.bands = <string[]>Object.values(res.bands).slice(0, (Object.values(res.bands).length-1));
       }
     });
   }
@@ -95,18 +100,14 @@ export class CollectionComponent {
     this.store.dispatch(setFeatures(this.features$));
   }
 
-  public viewFeatureDetails(feature: any){
-    const bands = feature.properties['bdc:bands'];
+  public viewFeatureDetails(feature: Feature){
     const dialogRef = this.dialog.open(DialogFeatureComponent, {
-      width: '250px'
+      width: '600px',
+      data: {...feature, bands: this.bands}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
     });
-  }
-
-  openDialog(): void {
-
   }
 }

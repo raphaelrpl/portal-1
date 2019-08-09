@@ -12,6 +12,11 @@ export const setLayers = createAction(
     props<Layer[]>()
 );
 
+export const setBands = createAction(
+    '[Map Component] Bands',
+    props<string[]>()
+);
+
 export const setPositionMap = createAction(
     '[Map Component] Position',
     props<LatLngBounds>()

@@ -6,13 +6,15 @@ import {
   setBbox,
   setPositionMap,
   setRangeTemporal,
-  setFeatures
+  setFeatures,
+  setBands
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
 const initialState: ExploreState = {
   features: [],
   layers: [],
+  bands: [],
   positionMap: null,
   loading: false,
   bbox: null,
@@ -25,6 +27,9 @@ export const reducer = createReducer(initialState,
   }),
   on(setLayers, (state, payload) => {
     return { ...state, layers: payload }
+  }),
+  on(setBands, (state, payload) => {
+    return { ...state, bands: payload }
   }),
   on(setPositionMap, (state, payload) => {
     return { ...state, positionMap: payload }

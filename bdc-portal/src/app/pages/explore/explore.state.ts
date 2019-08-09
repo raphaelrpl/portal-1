@@ -4,6 +4,7 @@ import { Layer, LatLngBoundsExpression } from 'leaflet';
 export interface ExploreState {
     readonly features: Feature[];
     readonly layers: Layer[];
+    readonly bands: string[];
     readonly positionMap: LatLngBoundsExpression;
     readonly rangeTemporal: Date[];
     readonly bbox: LatLngBoundsExpression;

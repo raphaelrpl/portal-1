@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Feature } from 'src/app/pages/explore/sidenav/collection/collection.interface';
 
 @Component({
   selector: 'app-dialog-feature',
@@ -8,10 +9,10 @@ import { MatDialogRef } from '@angular/material';
 })
 export class DialogFeatureComponent {
 
-  constructor(public dialogRef: MatDialogRef<DialogFeatureComponent>) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
+  constructor(
+    public dialogRef: MatDialogRef<DialogFeatureComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: Feature) {
+      console.log(data)
+    }
 
 }

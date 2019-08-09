@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal, setFeatures } from '../../explore.action';
+import { showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal, setFeatures, setBands } from '../../explore.action';
 import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 import { Feature } from '../collection/collection.interface';
 import { MatSnackBar } from '@angular/material';
@@ -160,9 +160,10 @@ export class SearchComponent implements OnInit {
       ]
       //set collection types
       this.typesCollection = response.properties['bdc:time_aggregations'].map(t => t.name);
+      //set bands
+      this.store.dispatch(setBands(response.properties['bdc:bands']));
 
-    } catch(_) {
-    }
+    } catch(_) {}
   }
 
   public search() {
