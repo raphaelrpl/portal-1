@@ -16,6 +16,7 @@ import {
   MatDatepickerModule,
   MatNativeDateModule,
   MatSlideToggleModule,
+  MatSliderModule,
   MatSnackBarModule
 } from '@angular/material';
 
@@ -29,6 +30,7 @@ import { SearchComponent } from './sidenav/search/search.component';
 import { FormsModule } from '@angular/forms';
 import { CollectionComponent } from './sidenav/collection/collection.component';
 import { StoreModule } from '@ngrx/store';
+import { Ng5SliderModule } from 'ng5-slider';
 import * as fromExplore from './explore.reducer';
 
 
@@ -66,7 +68,9 @@ import * as fromExplore from './explore.reducer';
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,
+    MatSliderModule,
     MatSnackBarModule,
+    Ng5SliderModule,
     //AgmCoreModule.forRoot({
     //  apiKey: 'CHAVES_GOOGLE_MAPS'
     //}),

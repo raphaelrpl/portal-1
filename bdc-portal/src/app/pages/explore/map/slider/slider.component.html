@@ -1,3 +1,7 @@
 <div class="container-slider" *ngIf="steps.length">
-    {{ formatDateToString(steps[0]) }} // {{ formatDateToString(steps[1]) }}
+    <ng5-slider
+        [(value)]="value"
+        [options]="options"
+        (userChange)="changeValue()">
+    </ng5-slider>
 </div>
