@@ -9,15 +9,6 @@ export class SearchService {
     constructor(private http: HttpClient) { }
 
     /**
-     * get STAC providers in the BDC project
-     */
-    public async getProviders(): Promise<any> {
-        const urlSuffix = '/search/providers';
-        const response = await this.http.get(`${environment.urlStacCompose}${urlSuffix}`).toPromise();
-        return response;
-    }
-
-    /**
      * get All Collections
      */
     public async getCollections(): Promise<any> {

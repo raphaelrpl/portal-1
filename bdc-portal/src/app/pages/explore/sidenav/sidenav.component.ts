@@ -14,9 +14,12 @@ import { ExploreState } from '../explore.state';
 })
 export class SidenavComponent {
 
+  /** step menu opened of the sidenav */
   public step = 0;
+  /** features selected by search */
   public features$: Feature[] = [];
 
+  /** get infos by store application */
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
@@ -25,6 +28,7 @@ export class SidenavComponent {
     });
   }
 
+  /** change menu opened */
   changeStep(value: number) {
     this.step = value;
   }

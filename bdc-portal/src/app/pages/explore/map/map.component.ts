@@ -46,7 +46,7 @@ export class MapComponent implements OnInit {
   /** bounding box of Map */
   private bbox = null;
 
-  /** start Layer Service */
+  /** start Layer and Seatch Services */
   constructor(
     private ls: LayerService,
     private ss: SearchService,
@@ -188,10 +188,12 @@ export class MapComponent implements OnInit {
     }
   }
 
+  /** set position of the Map */
   private setPosition(bounds: LatLngBoundsExpression) {
     this.map.fitBounds(Object.values(bounds).slice(0, 2));
   }
 
+  /** set Draw control of the map */
   private setDrawControl() {
     const drawControl = new Control.Draw({
       draw: {
@@ -229,6 +231,7 @@ export class MapComponent implements OnInit {
     });
   }
 
+  /** event used when change Map */
   onMapReady(map: MapLeaflet) {
     this.map = map;
     this.setDrawControl();

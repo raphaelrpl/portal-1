@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
-import { formatDateUSA } from 'src/app/shared/helpers/date';
 import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
 
+/**
+ * Map Slider component
+ * component to manage slider of the map
+ */
 @Component({
   selector: 'app-map-slider',
   templateUrl: './slider.component.html',
@@ -12,9 +15,13 @@ import { Feature } from '../../sidenav/collection/collection.interface';
 })
 export class SliderComponent implements OnInit {
 
+  /** all features */
+  private features: Feature[] = [];
+  /** steps - list dates to mount slider */
   public steps: Date[] = [];
+  /** position selected in slider */
   public value = 0;
-  public features: Feature[] = [];
+  /** options used to mount slider */
   public options: Options = {};
 
   constructor(private store: Store<ExploreState>) {
@@ -42,6 +49,7 @@ export class SliderComponent implements OnInit {
     });
   }
 
+  /** set basic infos to mount Slider component */
   ngOnInit(): void {
     this.options = {
       showTicks: true,
@@ -51,10 +59,7 @@ export class SliderComponent implements OnInit {
     };
   }
 
-  public formatDateToString(date: Date): string {
-    return date ? formatDateUSA(date) : '';
-  }
-
+  /** select the features by value selected in slider */
   public changeValue() {
     const startPeriod = new Date(this.value);
     const endPeriod = new Date(startPeriod.setMonth(startPeriod.getMonth() + 1));
