@@ -6,11 +6,11 @@ export interface Feature {
     /** id (unique) to layer identification */
     id: string;
     type?: string;
-    assets?: Object;
+    assets?: object;
     bbox?: Array<number>;
-    links?: Array<Object>;
-    geometry?: Object;
-    properties?: Object;
+    links?: Array<object>;
+    geometry?: object;
+    properties?: object;
 }
 
 /**

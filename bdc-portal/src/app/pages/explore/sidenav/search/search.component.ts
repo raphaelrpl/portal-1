@@ -22,13 +22,13 @@ export class SearchComponent implements OnInit {
 
   @Output() stepToEmit = new EventEmitter();
 
-  public productsList: Object[];
+  public productsList: object[];
   public products: string[];
   public collections: string[];
   public typeSearchRegion: string;
   public rangeTemporal: Date[];
-  public typesCollection: String[];
-  public searchObj: Object;
+  public typesCollection: string[];
+  public searchObj: object;
 
   public filterTemporal: Date[];
   public rangeTemporalEnabled: Date[];
@@ -36,20 +36,20 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private ss: SearchService,
-    private _snackBar: MatSnackBar,
+    private snackBar: MatSnackBar,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
-          this.layers = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
+          this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
         }
         if (res.bbox) {
-          const bbox = Object.values(res.bbox)
+          const bbox = Object.values(res.bbox);
           this.searchObj['bbox'] = {
-            'north': bbox[0]['lat'],
-            'south': bbox[1]['lat'],
-            'west': bbox[1]['lng'],
-            'east': bbox[0]['lng']
-          }
+            north: bbox[0]['lat'],
+            south: bbox[1]['lat'],
+            west: bbox[1]['lng'],
+            east: bbox[0]['lng']
+          };
         }
       });
     }
@@ -57,17 +57,17 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
     this.productsList = [
       {
-        'title': 'cubes',
-        'disabled': false,
-        'searchFunction': this.searchFeatures
+        title: 'cubes',
+        disabled: false,
+        searchFunction: this.searchFeatures
       }, {
-        'title': 'samples',
-        'disabled': true
+        title: 'samples',
+        disabled: true
       }, {
-        'title': 'classification',
-        'disabled': true
+        title: 'classification',
+        disabled: true
       }
-    ]
+    ];
 
     this.getCollections();
     this.resetSearch();
@@ -78,13 +78,13 @@ export class SearchComponent implements OnInit {
   private async getCollections() {
     try {
       const response = await this.ss.getCollections();
-      this.collections = []
+      this.collections = [];
       response.links.forEach( c => {
-        if (c.rel == 'child') {
-          this.collections.push(c.title)
+        if (c.rel === 'child') {
+          this.collections.push(c.title);
         }
-      })
-    } catch(err) {
+      });
+    } catch (err) {
     }
   }
 
@@ -112,23 +112,23 @@ export class SearchComponent implements OnInit {
       } else {
         vm.store.dispatch(setFeatures([]));
         vm.changeStepNav(0);
-        vm._snackBar.open('RESULTS NOT FOUND!', '', {
+        vm.snackBar.open('RESULTS NOT FOUND!', '', {
           duration: 5000,
           verticalPosition: 'top',
           panelClass: 'app_snack-bar-error'
         });
       }
 
-    } catch(err) {
+    } catch (err) {
       vm.changeStepNav(0);
-      vm._snackBar.open('INCORRECT SEARCH!', '', {
+      vm.snackBar.open('INCORRECT SEARCH!', '', {
         duration: 5000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-error'
       });
 
     } finally {
-      const newLayers = vm.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0))
+      const newLayers = vm.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
       vm.store.dispatch(setLayers(newLayers));
       vm.store.dispatch(closeLoading());
     }
@@ -136,42 +136,42 @@ export class SearchComponent implements OnInit {
 
   private resetSearch() {
     this.searchObj = {
-      'cube': '',
-      'bbox': {
-        'north': null,
-        'south': null,
-        'west': null,
-        'east': null
+      cube: '',
+      bbox: {
+        north: null,
+        south: null,
+        west: null,
+        east: null
       },
-      'type': [],
-      'step': null,
-      'start_date': '',
-      'last_date': ''
-    }
+      type: [],
+      step: null,
+      start_date: '',
+      last_date: ''
+    };
   }
 
   public async getCollection(name: string) {
     try {
       const response = await this.ss.getCollectionByName(name);
 
-      //set times (range temporal of cube)
-      const times = response.extent.time
+      // set times (range temporal of cube)
+      const times = response.extent.time;
       this.rangeTemporal = [
         new Date(times[0]),
         new Date(times[1])
-      ]
-      //set collection types
+      ];
+      // set collection types
       this.typesCollection = response.properties['bdc:time_aggregations'].map(t => t.name);
-      //set bands
+      // set bands
       this.store.dispatch(setBands(response.properties['bdc:bands']));
 
-    } catch(_) {}
+    } catch (_) {}
   }
 
   public search() {
-    const vm = this
+    const vm = this;
     this.products.forEach((product: any) => {
-      const productObj = this.productsList.filter(p => p['title'] == product);
+      const productObj = this.productsList.filter(p => p['title'] === product);
       productObj[0]['searchFunction'](vm);
       // if (product == 'collections') {
 
@@ -195,13 +195,13 @@ export class SearchComponent implements OnInit {
   }
 
   public previewBbox() {
-    this.removeLayerBbox()
+    this.removeLayerBbox();
     const bounds: LatLngBoundsExpression = [
       [this.searchObj['bbox'].north, this.searchObj['bbox'].east],
       [this.searchObj['bbox'].south, this.searchObj['bbox'].west]
     ];
     const newLayers = rectangle(bounds, {
-      color: "#666",
+      color: '#666',
       weight: 1,
       className: 'previewBbox'
     }).bringToFront();
@@ -212,7 +212,7 @@ export class SearchComponent implements OnInit {
   }
 
   public removeLayerBbox() {
-    this.layers = this.layers.filter( lyr => lyr['options'].className != 'previewBbox');
+    this.layers = this.layers.filter( lyr => lyr['options'].className !== 'previewBbox');
     this.store.dispatch(setLayers(this.layers));
   }
 

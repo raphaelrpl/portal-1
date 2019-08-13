@@ -71,9 +71,6 @@ import * as fromExplore from './explore.reducer';
     MatSliderModule,
     MatSnackBarModule,
     Ng5SliderModule,
-    //AgmCoreModule.forRoot({
-    //  apiKey: 'CHAVES_GOOGLE_MAPS'
-    //}),
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot(),
     StoreModule.forRoot({

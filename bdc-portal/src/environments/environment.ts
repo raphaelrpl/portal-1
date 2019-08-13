@@ -4,8 +4,7 @@
 export const environment = {
   /** environment */
   production: false,
-  urlSoloist: 'http://cbers1.dpi.inpe.br:5021',
   urlGeoserver: 'http://brazildatacube.dpi.inpe.br/geoserver',
-  urlStac: 'http://cbers1.dpi.inpe.br:5051',
+  urlStac: 'http://localhost:5051',
   urlStacCompose: 'http://localhost:5000/stac'
 };

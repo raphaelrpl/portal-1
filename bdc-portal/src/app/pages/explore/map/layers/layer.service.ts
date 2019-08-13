@@ -31,7 +31,7 @@ export class LayerService {
     public getGridsLayers(): BdcLayerWFS[] {
         return Grids;
     }
-    
+
     /**
      * gets GeoJson object from a layer in the Geoserver of the BDC project
      * @params {string} datastore

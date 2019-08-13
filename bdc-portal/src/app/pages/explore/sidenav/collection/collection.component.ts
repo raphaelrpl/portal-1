@@ -21,51 +21,48 @@ export class CollectionComponent {
   private bands: string[];
 
   constructor(public dialog: MatDialog,
-    private _snackBar: MatSnackBar,
-    private store: Store<ExploreState>) {
+              private snackBar: MatSnackBar,
+              private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
-        this.features$ = <Feature[]>Object.values(res.features).slice(0, (Object.values(res.features).length-1));
+        this.features$ = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
       }
-
       if (res.layers) {
-        this.layers = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
+        this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
       }
-
       if (res.bands) {
-        this.bands = <string[]>Object.values(res.bands).slice(0, (Object.values(res.bands).length-1));
+        this.bands = Object.values(res.bands).slice(0, (Object.values(res.bands).length - 1)) as string[];
       }
-
       if (res.period) {
-        this.period = <Number>Object.values(res.bands)[0];
+        this.period = Object.values(res.bands)[0] as Number;
       }
     });
   }
 
   public getDateFormated(dateStr: string) {
-    let dates = dateStr.split('/');
-    let startDate = (new Date(dates[0])).toLocaleDateString();
+    const dates = dateStr.split('/');
+    const startDate = (new Date(dates[0])).toLocaleDateString();
     return `${startDate}`;
   }
 
   public onChangeLayer(event, feature: any) {
     if (event.checked) {
       this.features$ = this.features$.map( f => {
-        if (f.id == feature.id) {
+        if (f.id === feature.id) {
           f['enabled'] = true;
         }
         return f;
-      })
+      });
 
       const featureGeoJson = geoJSON(feature);
       const bounds = featureGeoJson.getBounds();
       const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
-        'alt': `qls_${feature.id}`
+        alt: `qls_${feature.id}`
       }).setZIndex(999);
 
       this.layers.push(newlayer);
       this.store.dispatch(setLayers(this.layers));
-      this._snackBar.open('LAYER ENABLED!', '', {
+      this.snackBar.open('LAYER ENABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-success'
@@ -73,15 +70,15 @@ export class CollectionComponent {
 
     } else {
       this.features$ = this.features$.map( f => {
-        if (f.id == feature.id) {
+        if (f.id === feature.id) {
           f['enabled'] = false;
         }
         return f;
-      })
+      });
 
-      const newLayers = this.layers.filter( lyr => lyr['options'].alt != `qls_${feature.id}` );
+      const newLayers = this.layers.filter( lyr => lyr['options'].alt !== `qls_${feature.id}` );
       this.store.dispatch(setLayers(newLayers));
-      this._snackBar.open('LAYER DISABLED!', '', {
+      this.snackBar.open('LAYER DISABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-success'
@@ -97,15 +94,15 @@ export class CollectionComponent {
 
   public enableActions(featureId: string) {
     this.features$ = this.features$.map( f => {
-      if (f.id == featureId) {
-        f['actions'] = !(f['actions'] === true)
+      if (f.id === featureId) {
+        f['actions'] = !(f['actions'] === true);
       }
-      return f
-    })
+      return f;
+    });
     this.store.dispatch(setFeatures(this.features$));
   }
 
-  public viewFeatureDetails(feature: Feature){
+  public viewFeatureDetails(feature: Feature) {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
       height: '550px',

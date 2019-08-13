@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet, LatLngBoundsExpression, FeatureGroup, Control, Draw, rectangle } from 'leaflet';
+import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet,
+  LatLngBoundsExpression, Control, Draw, rectangle } from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
@@ -52,9 +53,9 @@ export class MapComponent implements OnInit {
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
-          this.layers$ = <Layer[]>Object.values(res.layers).slice(0, (Object.values(res.layers).length-1));
+          this.layers$ = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
         }
-        if (res.positionMap && res.positionMap != this.bbox) {
+        if (res.positionMap && res.positionMap !== this.bbox) {
           this.bbox = res.positionMap;
           this.setPosition(res.positionMap);
         }
@@ -79,11 +80,11 @@ export class MapComponent implements OnInit {
   private async getTilesUsed() {
     try {
       const collections = await this.ss.getCollections();
-      this.tilesUsed = []
+      this.tilesUsed = [];
       collections['links'].forEach( async (c: any) => {
         if (c.title) {
-          const collection = await this.ss.getCollectionByName(c.title)
-          this.tilesUsed = [...this.tilesUsed, ...collection.properties['bdc:tiles']]
+          const collection = await this.ss.getCollectionByName(c.title);
+          this.tilesUsed = [...this.tilesUsed, ...collection.properties['bdc:tiles']];
         }
       });
 
@@ -188,7 +189,7 @@ export class MapComponent implements OnInit {
   }
 
   private setPosition(bounds: LatLngBoundsExpression) {
-    this.map.fitBounds(Object.values(bounds).slice(0,2));
+    this.map.fitBounds(Object.values(bounds).slice(0, 2));
   }
 
   private setDrawControl() {
@@ -209,14 +210,14 @@ export class MapComponent implements OnInit {
     this.map.addControl(drawControl);
 
     this.map.on(Draw.Event.DRAWSTART, _ => {
-      this.layers$ = this.layers$.filter( lyr => lyr['options'].className != 'previewBbox');
+      this.layers$ = this.layers$.filter( lyr => lyr['options'].className !== 'previewBbox');
       this.store.dispatch(setLayers(this.layers$));
     });
 
     this.map.on(Draw.Event.CREATED, e => {
-      const layer: any = e['layer']
+      const layer: any = e['layer'];
       const newLayers = rectangle(layer.getBounds(), {
-        color: "#666",
+        color: '#666',
         weight: 1,
         className: 'previewBbox',
       });

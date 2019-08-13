@@ -14,19 +14,19 @@ import { ExploreState } from '../explore.state';
 })
 export class SidenavComponent {
 
-  public step: number = 0;
+  public step = 0;
   public features$: Feature[] = [];
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
-        this.features$ = <Feature[]>Object.values(res.features).slice(0, (Object.values(res.features).length-1));
+        this.features$ = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
       }
     });
   }
 
   changeStep(value: number) {
-    this.step = value
+    this.step = value;
   }
 
 }
