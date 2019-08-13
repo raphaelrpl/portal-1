@@ -27,6 +27,7 @@ import { SliderComponent } from './map/slider/slider.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchComponent } from './sidenav/search/search.component';
+import { TimeSeriesComponent } from './map/timeSeries/timeSeries.component';
 import { FormsModule } from '@angular/forms';
 import { CollectionComponent } from './sidenav/collection/collection.component';
 import { StoreModule } from '@ngrx/store';
@@ -46,7 +47,8 @@ import * as fromExplore from './explore.reducer';
     SidenavComponent,
     SearchComponent,
     CollectionComponent,
-    SliderComponent
+    SliderComponent,
+    TimeSeriesComponent
   ],
   exports: [
     RouterModule

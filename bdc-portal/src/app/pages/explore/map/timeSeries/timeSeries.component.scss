@@ -1,0 +1,43 @@
+.container-timeseries {
+    z-index: 999;
+    top: 130px;
+    left: 10px;
+    position: absolute;
+    display: flex;
+    
+    .btn-start { 
+        width: 34px;
+        height: 34px;
+        border-radius: 2px;
+        border: 2px solid rgba(#000, 0.2);
+        cursor: pointer;
+
+        .mat-icon {
+            background: #FFF;
+            width: 100%;
+            margin: 0;
+            height: 100%;
+            border-radius: 2px;
+            padding: 2.5px 0 0 2.5px;
+
+            &:hover {
+                background: #EEE;
+            }
+        }
+    }
+
+    .btn-cancel {
+        background: #919187;
+        border-radius: 0 4px 4px 0;
+        padding: 4px 10px;
+        margin: 2px 0 5px 0;
+        font-size: 12px;
+        color: #FFF;
+        font-family: Arial, Helvetica, sans-serif;
+        cursor: pointer;
+
+        &:hover {
+            color: var(--mainColor);
+        }
+    }
+}
