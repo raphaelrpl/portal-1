@@ -106,7 +106,10 @@ export class CollectionComponent {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
       height: '550px',
-      data: {...feature, bands: this.bands}
+      data: {
+        feature: {...feature, bands: this.bands},
+        features: this.features$
+      }
     });
   }
 }

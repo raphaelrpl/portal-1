@@ -1,4 +1,9 @@
-export function formatDateUSA(date: Date) {
+/** 
+ * convert date to string with USA template
+ * @params {date} Date object
+ * @returns date string
+ */
+export function formatDateUSA(date: Date): string {
     let month: string = (date.getMonth() + 1).toString();
     month = month.toString().length === 1 ? `0${month}` : month;
     let day: string = (date.getDate()).toString();

@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   MatButtonModule,
   MatIconModule,
-  MatSelectModule
+  MatSelectModule,
+  MatRadioModule,
+  MatInputModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { SelectLangComponent } from './components/select-lang/select-lang.component';
@@ -34,7 +38,11 @@ import { DialogFeatureComponent } from './components/dialog-feature/dialog-featu
     CommonModule,
     MatButtonModule,
     MatIconModule,
+    FormsModule,
+    MatRadioModule,
     MatSelectModule,
+    MatInputModule,
+    MatCheckboxModule,
     NgxSpinnerModule
   ],
   entryComponents: [

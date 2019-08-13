@@ -6,7 +6,6 @@ import { ExploreState } from '../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 import { showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal, setFeatures, setBands } from '../../explore.action';
 import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
-import { Feature } from '../collection/collection.interface';
 import { MatSnackBar } from '@angular/material';
 
 /**

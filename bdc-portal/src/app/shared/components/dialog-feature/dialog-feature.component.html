@@ -1,21 +1,52 @@
 <section class="dialog-feature">
     <header class="header">
-        <h1>
+        <h1 *ngIf="typeDownload == 'feature'">
             <mat-icon style="margin-right: 10px">list</mat-icon>
-            {{ data.id }}
+            {{ feature.id }}
         </h1>
-        <p><b>CUBE:</b> {{ data.collection }}</p>
-        <p><b>DATE:</b> {{ getDateFormated(data.properties.datetime) }}</p>
+        <p><b>CUBE:</b> {{ feature.collection }}</p>
+        <p><b>DATE:</b> {{ typeDownload == 'feature' ? getDateFormated(feature.properties.datetime) : '2019-05-01' }}</p>
     </header>
 
     <div class="box-assets">
-        <div *ngFor="let band of data.bands">
-            <div class="assets" *ngIf="data.assets[band]">
-                <p>{{ band.toUpperCase() }}</p>
-                <a [href]="data.assets[band].href" target="_blank">
-                    <mat-icon style="color: #000">arrow_downward</mat-icon>
+        <mat-radio-group name="typeD" [(ngModel)]="typeDownload">
+            <div class="box-radio">
+                <mat-radio-button name="typeD" value="feature">Download Feature</mat-radio-button>
+                <mat-radio-button name="typeD" value="cube">Download Cube</mat-radio-button>
+            </div>
+        </mat-radio-group>
+
+        <span *ngIf="typeDownload == 'feature'; then downByFeature else downByCube"></span>
+        <!-- FEATURE DOWNLOAD -->
+        <ng-template #downByFeature>
+            <div *ngFor="let band of feature.bands">
+                <div class="assets" *ngIf="feature.assets[band]">
+                    <p>{{ band.toUpperCase() }}</p>
+                    <a [href]="feature.assets[band].href" target="_blank">
+                        <mat-icon style="color: #000">arrow_downward</mat-icon>
+                    </a>
+                </div>
+            </div>
+        </ng-template>
+
+        <!-- CUBE DOWNLOAD -->
+        <ng-template #downByCube>
+            <div *ngFor="let band of feature.bands">
+                <mat-checkbox [(ngModel)]="bands[band]">{{ band }}</mat-checkbox>
+            </div>
+            
+            <div class="buttons">
+                <button mat-raised-button color="primary" (click)="generateLinks()">
+                    Generate Links
+                </button>
+
+                <a [href]="fileUrl" 
+                    [download]="fileName"
+                    [ngClass]="(fileUrl === '') ? 'disabled' : ''">
+                    DownloadFile
                 </a>
             </div>
-        </div>
+        </ng-template>
+        
     </div>
 </section>

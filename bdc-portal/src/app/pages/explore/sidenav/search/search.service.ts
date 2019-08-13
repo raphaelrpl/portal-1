@@ -10,6 +10,7 @@ export class SearchService {
 
     /**
      * get All Collections
+     * @returns promise with collections list
      */
     public async getCollections(): Promise<any> {
         const urlSuffix = `/collections`;
@@ -19,6 +20,8 @@ export class SearchService {
 
     /**
      * get Collection by name
+     * @params {string} collection name
+     * @returns promise with collection infos
      */
     public async getCollectionByName(collection: string): Promise<any> {
         const urlSuffix = `/collections/${collection}`;
@@ -28,6 +31,8 @@ export class SearchService {
 
     /**
      * get Features in STAC Search
+     * @params {string} query with params to stac search
+     * @returns promise with features list
      */
     public async searchSTAC(query: string): Promise<any> {
         const urlSuffix = `/stac/search?${query}`;
