@@ -17,7 +17,9 @@ import {
   MatNativeDateModule,
   MatSlideToggleModule,
   MatSliderModule,
-  MatSnackBarModule
+  MatSnackBarModule,
+  MatBottomSheetModule,
+  MatCheckboxModule
 } from '@angular/material';
 
 import { ExploreComponent } from './explore.component';
@@ -33,6 +35,7 @@ import { CollectionComponent } from './sidenav/collection/collection.component';
 import { StoreModule } from '@ngrx/store';
 import { Ng5SliderModule } from 'ng5-slider';
 import * as fromExplore from './explore.reducer';
+import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
 
 
 /**
@@ -48,7 +51,8 @@ import * as fromExplore from './explore.reducer';
     SearchComponent,
     CollectionComponent,
     SliderComponent,
-    TimeSeriesComponent
+    TimeSeriesComponent,
+    BoxTimeSeriesComponent
   ],
   exports: [
     RouterModule
@@ -65,6 +69,7 @@ import * as fromExplore from './explore.reducer';
     HttpClientModule,
     MatExpansionModule,
     MatRadioModule,
+    MatBottomSheetModule,
     MatInputModule,
     FormsModule,
     MatDatepickerModule,
@@ -73,11 +78,15 @@ import * as fromExplore from './explore.reducer';
     MatSliderModule,
     MatSnackBarModule,
     Ng5SliderModule,
+    MatCheckboxModule,
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot(),
     StoreModule.forRoot({
       explore: fromExplore.reducer
     })
+  ],
+  entryComponents: [
+    BoxTimeSeriesComponent
   ]
 })
 export class ExploreModule { }

@@ -1,0 +1,11 @@
+<div class="box-time_series" *ngIf="bands.length">
+    <div *ngFor="let band of Object.keys(bands)">
+        <mat-checkbox [(ngModel)]="bands[band]">
+            {{ band }}
+        </mat-checkbox>
+    </div>
+
+    <button mat-raised-button color="primary" (click)="viewGraphic()">
+        View
+    </button>
+</div>
