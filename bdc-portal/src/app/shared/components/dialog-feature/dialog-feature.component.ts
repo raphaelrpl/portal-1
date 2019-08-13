@@ -17,7 +17,7 @@ import { formatDateUSA } from '../../helpers/date';
 export class DialogFeatureComponent {
 
   /** type download - by feature or cube */
-  public typeDownload = 'feature'
+  public typeDownload = 'feature';
   /** list all features selected by search */
   public features = [];
   /** feature selected by user */
@@ -36,8 +36,11 @@ export class DialogFeatureComponent {
     @Inject(MAT_DIALOG_DATA) public data: any) {
       this.feature = data.feature;
       this.features = data.features;
-      data.feature['bands'].forEach( (band: string) => {
-        this.bands[band] = true
+      if (this.features) {
+        this.typeDownload = 'cube';
+      }
+      data['bands'].forEach( (band: string) => {
+        this.bands[band] = true;
       });
   }
 
@@ -51,7 +54,7 @@ export class DialogFeatureComponent {
     let links = [];
     await this.features.forEach( (feat: Feature) => {
       Object.keys(this.bands).forEach( band => {
-        if (this.bands[band]) {
+        if (this.bands[band] === true) {
           links.push(feat.assets[band].href);
         }
       })

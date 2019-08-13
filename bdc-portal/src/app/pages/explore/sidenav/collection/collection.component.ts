@@ -107,8 +107,19 @@ export class CollectionComponent {
       width: '600px',
       height: '550px',
       data: {
-        feature: {...feature, bands: this.bands},
-        features: this.features$
+        feature: feature,
+        bands: this.bands
+      }
+    });
+  }
+
+  public viewCubeDetails() {
+    this.dialog.open(DialogFeatureComponent, {
+      width: '600px',
+      height: '550px',
+      data: {
+        features: this.features$,
+        bands: this.bands
       }
     });
   }

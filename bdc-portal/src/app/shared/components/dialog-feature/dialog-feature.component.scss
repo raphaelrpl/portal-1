@@ -23,31 +23,47 @@
         width: 100%;
         display: flex;
         flex-direction: column;
+        
+        .assets_features {
+            .assets {
+                display: flex;
+                border: 1px solid #999;
+                padding: 0px 15px;
+                justify-content: space-between;
+                align-items: center;
 
-        .box-radio {
-            width: 70%;
-            margin: 5px 15%;
-            background: rgba(#000, 0.1);
-            padding: 10px 15px;
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
+                a {
+                    background: rgba(#000, 0.2);
+                    border-radius: 50%;
+                    padding: 5px 5px 0 5px;
+
+                    &:hover {
+                        background: rgba(#000, 0.4);
+                    }
+                }
+            }
         }
 
-        .assets {
+        .assets_cubes {
+            padding: 20px;
             display: flex;
-            border: 1px solid #999;
-            padding: 0px 15px;
-            justify-content: space-between;
-            align-items: center;
 
-            a {
-                background: rgba(#000, 0.2);
-                border-radius: 50%;
-                padding: 5px 5px 0 5px;
+            .buttons {
+                display: flex;
+                align-items: center;
+                justify-content: center;
 
-                &:hover {
-                    background: rgba(#000, 0.4);
+                a {
+                    padding: 10px;
+                    margin-left: 10px;
+
+                    &:hover {
+                        background: rgba(#000, 0.2);
+                    }
+
+                    .disabled {
+                        cursor: not-allowed;
+                    }
                 }
             }
         }
