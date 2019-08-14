@@ -8,12 +8,14 @@ import {
   setRangeTemporal,
   setFeatures,
   setBands,
-  setPeriod
+  setPeriod,
+  setFeaturesPeriod
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
 const initialState: ExploreState = {
   features: [],
+  featuresPeriod: [],
   layers: [],
   bands: [],
   positionMap: null,
@@ -26,6 +28,9 @@ const initialState: ExploreState = {
 export const reducer = createReducer(initialState,
   on(setFeatures, (state, payload) => {
     return { ...state, features: payload };
+  }),
+  on(setFeaturesPeriod, (state, payload) => {
+    return { ...state, featuresPeriod: payload };
   }),
   on(setLayers, (state, payload) => {
     return { ...state, layers: payload };

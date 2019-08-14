@@ -4,7 +4,10 @@ import { Store, select } from '@ngrx/store';
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { showLoading, closeLoading, setLayers, setPositionMap, setRangeTemporal, setFeatures, setBands } from '../../explore.action';
+import {
+  showLoading, closeLoading, setLayers, setPositionMap,
+  setRangeTemporal, setFeatures, setBands
+} from '../../explore.action';
 import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 import { MatSnackBar } from '@angular/material';
 
@@ -172,20 +175,6 @@ export class SearchComponent implements OnInit {
     this.products.forEach((product: any) => {
       const productObj = this.productsList.filter(p => p['title'] === product);
       productObj[0]['searchFunction'](vm);
-      // if (product == 'collections') {
-
-      //   //set dates of first period
-      //   const lastDate = new Date(vm.searchObj['start_date']);
-      //   lastDate.setDate(lastDate.getDate() + parseInt(vm.searchObj['step']));
-      //   vm.rangeTemporalEnabled = [
-      //     new Date(vm.searchObj['start_date']),
-      //     lastDate
-      //   ]
-      //   productObj[0]['searchFunction'](vm);
-
-      // } else {
-      //   productObj[0]['searchFunction'](vm);
-      // }
     });
   }
 

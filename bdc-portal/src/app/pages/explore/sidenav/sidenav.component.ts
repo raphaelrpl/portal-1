@@ -16,7 +16,7 @@ export class SidenavComponent {
 
   /** step menu opened of the sidenav */
   public step = 0;
-  /** features selected by search */
+  /** features selected by search in this period */
   public features$: Feature[] = [];
 
   /** get infos by store application */

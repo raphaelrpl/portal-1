@@ -11,7 +11,7 @@
 
     <!-- FEATURE -->
     <div class="box-features">
-      <div *ngFor="let feature of features$">
+      <div *ngFor="let feature of featuresPeriod$">
         <div [ngClass]="(feature.enabled==true)?'feature feature-actived':'feature'"
              (click)="enableActions(feature.id)">
           <div class="feature_ql">

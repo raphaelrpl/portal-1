@@ -4,15 +4,14 @@
             <mat-icon style="margin-right: 10px">list</mat-icon>
             {{ feature.id }}
         </h1>
-        <p><b>CUBE:</b> {{ typeDownload == 'feature' ? feature.collection : features['0'].collection }}</p>
-        <p><b>DATE:</b>
-            <span *ngIf="typeDownload == 'feature'">
-                {{ getDateFormated(feature.properties.datetime) }}
-            </span>
-            <span *ngIf="typeDownload == 'cube'">
-                {{ getDateFormated(rangeTemporal['0']) }} / {{ getDateFormated(rangeTemporal['1']) }}
-            </span>
-        </p>
+        <span *ngIf="typeDownload == 'feature'">
+            <p><b>CUBE:</b> {{ feature.collection }}</p>
+            <p><b>DATE:</b> {{ getDateFormated(feature.properties.datetime) }}</p>
+        </span>
+        <span *ngIf="typeDownload == 'cube'">
+            <p><b>CUBE:</b> {{ features['0'].collection }} ({{ features['0'].properties['bdc:time_aggregation'] }})</p>
+            <p><b>DATE:</b> {{ getDateFormated(rangeTemporal['0']) }} / {{ getDateFormated(rangeTemporal['1']) }}</p>
+        </span>
     </header>
 
     <div class="box-assets">
