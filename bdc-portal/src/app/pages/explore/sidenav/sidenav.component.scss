@@ -1,19 +1,80 @@
-.container-sidenav {
+.sidenav {
     display: flex;
-    flex-direction: column;
-    justify-content: stretch;
-    width: 350px;
+    height: 100%;
+    background: var(--mainBgDark);
+    overflow: auto;
 
-    header {
-        padding: 10px;
+    .container-sidenav {
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+        width: 399px;
 
-        .sidenav_title {
-            padding: 30px 0;
-            text-align: center;
-            font-size: 2em;
-            color: var(--mainColor);
-            font-weight: 600;
-            border-bottom: 1px solid #CCC;
+        header {
+            .sidenav_logo {
+                padding: 15px 0;
+                display: flex;
+                justify-content: center;
+
+                img {
+                    width: 60%;
+                    max-height: 150px;
+                }
+            }
         }
+
+        .mat-expansion-panel {
+            border-radius: 0;
+            box-shadow: none;
+            border-top: 1px solid var(--mainBgPrimary);
+            background: var(--mainBgLight);
+
+            &:last-child {
+                border-bottom: 0.5px solid var(--mainBgPrimary);
+            }
+
+            .mat-expansion-panel-header {
+                background: rgba(#000, 0.15);
+                border: none;
+                font-weight: 600;
+                font-size: 1.2em;
+                display: flex;
+                align-items: center;
+
+                .mat-expansion-panel-header-title {
+                    color: var(--mainBgDark);
+                    
+                    .mat-icon {
+                        margin-right: 10px;
+                    }
+                }
+
+                &:hover {
+                    background: rgba(#000, 0.3);
+                }
+            }
+        }
+
+        .mat-expansion-panel-spacing {
+            margin: 0;
+        }
+    }
+
+    /* SCROLL */
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: var(--mainBgDark); 
+    }        
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: rgba(#FFF, 0.3);
+        border-radius: 5px;
+    }
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: rgba(#FFF, 0.3);
     }
 }

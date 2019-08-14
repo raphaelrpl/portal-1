@@ -11,7 +11,7 @@ import { ExploreModule } from './pages/explore/explore.module';
  */
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

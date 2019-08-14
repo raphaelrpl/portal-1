@@ -1,0 +1,76 @@
+.dialog-feature {
+    width: 100%;
+    overflow: auto;
+
+    .header {
+        border-bottom: 1px solid #999;
+        padding: 0 10px 10px 10px;
+
+        h1 {
+            display: flex;
+            align-items: center;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin: 5px 0 0 0;
+            font-size: 1.2em;
+        }
+    }
+
+    .box-assets {
+        padding: 15px 10px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        .assets_features {
+            .assets {
+                display: flex;
+                border: 1px solid #999;
+                padding: 0px 15px;
+                justify-content: space-between;
+                align-items: center;
+
+                a {
+                    background: rgba(#000, 0.2);
+                    border-radius: 50%;
+                    padding: 5px 5px 0 5px;
+
+                    &:hover {
+                        background: rgba(#000, 0.4);
+                    }
+                }
+            }
+        }
+
+        .assets_cubes {
+            padding: 20px;
+            display: flex;
+            flex-wrap: wrap;
+
+            .checkbox {
+                padding: 5px 20px;
+                font-size: 1.2em;
+            }
+
+            .buttons {
+                width: 100%;
+                margin-top: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                a {
+                    padding: 10px;
+                    margin-left: 10px;
+
+                    &:hover {
+                        color: var(--mainColor);
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,13 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import {
   MatButtonModule,
   MatIconModule,
-  MatSelectModule
+  MatSelectModule,
+  MatRadioModule,
+  MatInputModule,
+  MatCheckboxModule
 } from '@angular/material';
 
-import { SelectLangComponent } from './components/selectLang/selectLang.component';
+import { SelectLangComponent } from './components/select-lang/select-lang.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
+import { LoadingComponent } from './components/loading/loading.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { DialogFeatureComponent } from './components/dialog-feature/dialog-feature.component';
 
 /**
  * Shared Module
@@ -16,17 +24,29 @@ import { FooterComponent } from './components/footer/footer.component';
 @NgModule({
   declarations: [
     SelectLangComponent,
-    FooterComponent
+    FooterComponent,
+    FormFieldErrorComponent,
+    LoadingComponent,
+    DialogFeatureComponent
   ],
   exports: [
     SelectLangComponent,
-    FooterComponent
+    FooterComponent,
+    LoadingComponent
   ],
   imports: [
     CommonModule,
     MatButtonModule,
     MatIconModule,
-    MatSelectModule
+    FormsModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatInputModule,
+    MatCheckboxModule,
+    NgxSpinnerModule
+  ],
+  entryComponents: [
+    DialogFeatureComponent
   ]
 })
 export class SharedModule { }

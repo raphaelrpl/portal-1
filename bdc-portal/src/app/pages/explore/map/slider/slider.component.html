@@ -1,0 +1,7 @@
+<div class="container-slider" *ngIf="steps.length">
+    <ng5-slider
+        [(value)]="value"
+        [options]="options"
+        (userChange)="changeValue()">
+    </ng5-slider>
+</div>

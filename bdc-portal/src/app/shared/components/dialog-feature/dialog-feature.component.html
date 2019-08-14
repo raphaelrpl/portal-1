@@ -1,0 +1,61 @@
+<section class="dialog-feature">
+    <header class="header">
+        <h1 *ngIf="typeDownload == 'feature'">
+            <mat-icon style="margin-right: 10px">list</mat-icon>
+            {{ feature.id }}
+        </h1>
+        <span *ngIf="typeDownload == 'feature'">
+            <p><b>CUBE:</b> {{ feature.collection }}</p>
+            <p><b>DATE:</b> {{ getDateFormated(feature.properties.datetime) }}</p>
+        </span>
+        <span *ngIf="typeDownload == 'cube'">
+            <p><b>CUBE:</b> {{ features['0'].collection }} ({{ features['0'].properties['bdc:time_aggregation'] }})</p>
+            <p><b>DATE:</b> {{ getDateFormated(rangeTemporal['0']) }} / {{ getDateFormated(rangeTemporal['1']) }}</p>
+        </span>
+    </header>
+
+    <div class="box-assets">
+        <span *ngIf="typeDownload == 'feature'; then downByFeature else downByCube"></span>
+        <!-- FEATURE DOWNLOAD -->
+        <ng-template #downByFeature>
+            <div class="assets_features">
+                <div *ngFor="let band of bandsList">
+                    <div class="assets" *ngIf="feature.assets[band]">
+                        <p>{{ band.toUpperCase() }}</p>
+                        <a [href]="feature.assets[band].href" target="_blank">
+                            <mat-icon style="color: #000">arrow_downward</mat-icon>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+        <!-- CUBE DOWNLOAD -->
+        <ng-template #downByCube>
+            <div class="assets_cubes">
+                <div *ngFor="let band of bandsList">
+                    <div class="checkbox">
+                        <mat-checkbox [(ngModel)]="bands[band]" (click)="changeFilter()">{{ band }}</mat-checkbox>
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button
+                        [disabled]="file==true"
+                        mat-raised-button
+                        color="primary"
+                        (click)="generateLinks()">
+                        Generate Links
+                    </button>
+
+                    <a [href]="fileUrl"
+                        *ngIf="file==true"
+                        [download]="fileName">
+                        Download File
+                    </a>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>
+</section>
