@@ -24,10 +24,15 @@ export class DialogFeatureComponent {
   public feature: Feature;
   /** bands of the cube */
   public bands: object = {};
+  public bandsList = [];
   /** file with images links to download */
   public fileUrl: SafeResourceUrl;
   /** file name */
   public fileName: string;
+  /** status file - if mounted */
+  public file = false;
+  /** range temporal of the cube */
+  public rangeTemporal: Date[];
 
   /** receive infos to display in this component */
   constructor(
@@ -38,30 +43,40 @@ export class DialogFeatureComponent {
       this.features = data.features;
       if (this.features) {
         this.typeDownload = 'cube';
+        this.rangeTemporal = data['range'];
       }
       data['bands'].forEach( (band: string) => {
         this.bands[band] = true;
       });
+      this.bandsList = data['bands'];
   }
 
   /** format date to USA template */
   getDateFormated(date: string) {
     return formatDateUSA(new Date(date));
   }
-  
+
   /** generate file with links of the bands to download */
   async generateLinks() {
     let links = [];
     await this.features.forEach( (feat: Feature) => {
       Object.keys(this.bands).forEach( band => {
-        if (this.bands[band] === true) {
+        if (this.bands[band] === true && feat.assets[band]) {
           links.push(feat.assets[band].href);
+          links.push('\n');
         }
       })
     });
 
     const blob = new Blob(links, {type: "text/plain;charset=utf-8"});
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    this.fileName = `${this.data['collections']}.txt`;
+    this.fileName = `${this.typeDownload == 'feature' ? this.feature['collection'] : this.features['0'].collection}.txt`;
+    this.file = true;
+  }
+
+  changeFilter() {
+    this.fileUrl = null;
+    this.fileName = '';
+    this.file = false;
   }
 }

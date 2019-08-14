@@ -19,6 +19,7 @@ export class CollectionComponent {
   public layers: Layer[];
   public period: Number;
   private bands: string[];
+  private range: Date[];
 
   constructor(public dialog: MatDialog,
               private snackBar: MatSnackBar,
@@ -35,6 +36,9 @@ export class CollectionComponent {
       }
       if (res.period) {
         this.period = Object.values(res.bands)[0] as Number;
+      }
+      if (Object.values(res.rangeTemporal).length) {
+        this.range = Object.values(res.rangeTemporal);
       }
     });
   }
@@ -116,10 +120,10 @@ export class CollectionComponent {
   public viewCubeDetails() {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
-      height: '550px',
       data: {
         features: this.features$,
-        bands: this.bands
+        bands: this.bands,
+        range: this.range
       }
     });
   }
