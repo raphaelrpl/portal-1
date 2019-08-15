@@ -3,6 +3,9 @@ import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet,
   LatLngBoundsExpression, Control, Draw, rectangle } from 'leaflet';
 import { GeoJsonObject } from 'geojson';
 
+import * as L from 'leaflet';
+import 'leaflet.fullscreen/Control.FullScreen.js';
+
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
@@ -231,9 +234,21 @@ export class MapComponent implements OnInit {
     });
   }
 
+  /** set FullScreen option in the map */
+  setFullscreenControl() {
+    (L.control as any).fullscreen({
+      position: 'topleft',
+      title: 'Show Map Fullscreen',
+      titleCancel: 'Exit Fullscreen',
+      content: null,
+      forceSeparateButton: true
+    }).addTo(this.map);
+  }
+
   /** event used when change Map */
   onMapReady(map: MapLeaflet) {
     this.map = map;
     this.setDrawControl();
+    this.setFullscreenControl();
   }
 }
