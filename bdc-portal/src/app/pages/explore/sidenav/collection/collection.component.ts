@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import { imageOverlay,  Layer, geoJSON } from 'leaflet';
-import { setLayers, setPositionMap, setFeatures } from '../../explore.action';
+import { setLayers, setPositionMap, setFeaturesPeriod } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
@@ -16,9 +16,11 @@ import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature
 export class CollectionComponent {
 
   public features$: Feature[] = [];
+  public featuresPeriod$: Feature[] = [];
   public layers: Layer[];
   public period: Number;
   private bands: string[];
+  private range: Date[];
 
   constructor(public dialog: MatDialog,
               private snackBar: MatSnackBar,
@@ -26,6 +28,9 @@ export class CollectionComponent {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
         this.features$ = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
+      }
+      if (res.featuresPeriod) {
+        this.featuresPeriod$ = Object.values(res.featuresPeriod).slice(0, (Object.values(res.featuresPeriod).length - 1)) as Feature[];
       }
       if (res.layers) {
         this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
@@ -35,6 +40,9 @@ export class CollectionComponent {
       }
       if (res.period) {
         this.period = Object.values(res.bands)[0] as Number;
+      }
+      if (Object.values(res.rangeTemporal).length) {
+        this.range = Object.values(res.rangeTemporal);
       }
     });
   }
@@ -47,7 +55,7 @@ export class CollectionComponent {
 
   public onChangeLayer(event, feature: any) {
     if (event.checked) {
-      this.features$ = this.features$.map( f => {
+      this.featuresPeriod$ = this.featuresPeriod$.map( f => {
         if (f.id === feature.id) {
           f['enabled'] = true;
         }
@@ -69,7 +77,7 @@ export class CollectionComponent {
       });
 
     } else {
-      this.features$ = this.features$.map( f => {
+      this.featuresPeriod$ = this.featuresPeriod$.map( f => {
         if (f.id === feature.id) {
           f['enabled'] = false;
         }
@@ -93,13 +101,13 @@ export class CollectionComponent {
   }
 
   public enableActions(featureId: string) {
-    this.features$ = this.features$.map( f => {
+    this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
         f['actions'] = !(f['actions'] === true);
       }
       return f;
     });
-    this.store.dispatch(setFeatures(this.features$));
+    this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
   }
 
   public viewFeatureDetails(feature: Feature) {
@@ -116,10 +124,10 @@ export class CollectionComponent {
   public viewCubeDetails() {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
-      height: '550px',
       data: {
         features: this.features$,
-        bands: this.bands
+        bands: this.bands,
+        range: this.range
       }
     });
   }

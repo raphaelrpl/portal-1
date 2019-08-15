@@ -2,8 +2,8 @@ import { createAction, props } from '@ngrx/store';
 import { Feature } from './sidenav/collection/collection.interface';
 import { Layer, LatLngBounds } from 'leaflet';
 
-/** 
- * set Features in store application 
+/**
+ * set Features in store application
  * @params {Feature[]} list of features
  */
 export const setFeatures = createAction(
@@ -11,7 +11,12 @@ export const setFeatures = createAction(
     props<Feature[]>()
 );
 
-/** 
+export const setFeaturesPeriod = createAction(
+    '[Explore Component] Features By Period',
+    props<Feature[]>()
+);
+
+/**
  * set Layers enabled in the map
  * @params {Layer[]} list of layers
  */
@@ -20,16 +25,16 @@ export const setLayers = createAction(
     props<Layer[]>()
 );
 
-/** 
- * set Features in store application 
- * @params {string[]} 
+/**
+ * set Features in store application
+ * @params {string[]}
  */
 export const setBands = createAction(
     '[Map Component] Bands',
     props<string[]>()
 );
 
-/** 
+/**
  * set position of the map
  * @params {LatLngBounds} latitude and longitude
  */
@@ -38,7 +43,7 @@ export const setPositionMap = createAction(
     props<LatLngBounds>()
 );
 
-/** 
+/**
  * set Bounding Box selected in search form
  * @params {LatLngBounds} latitude and longitude
  */
@@ -47,8 +52,8 @@ export const setBbox = createAction(
     props<LatLngBounds>()
 );
 
-/** 
- * set Features in store application 
+/**
+ * set Features in store application
  * @params {Date[]} list of dates to mount step in slider
  */
 export const setRangeTemporal = createAction(
@@ -56,7 +61,7 @@ export const setRangeTemporal = createAction(
     props<Date[]>()
 );
 
-/** 
+/**
  * set Period selected in slider
  * @params {Number} period of the slider
  */

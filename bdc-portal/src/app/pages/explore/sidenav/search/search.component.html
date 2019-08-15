@@ -2,7 +2,7 @@
 
     <form (ngSubmit)="search()">
         <mat-form-field appearance="fill">
-            <mat-label>Select Products</mat-label>
+            <mat-label>Select Resources</mat-label>
             <mat-select [(value)]="products" multiple>
                 <mat-option *ngFor="let product of productsList" [value]="product.title" [disabled]="product.disabled">{{ product.title }}</mat-option>
             </mat-select>

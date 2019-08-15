@@ -2,67 +2,93 @@
     padding: 0;
     margin: 15px 0;
 
-    .box-features {
-        padding: 0 5px 5px 5px;
+    .collection {
+        background: rgba(#000, 0.1);
 
-        .feature {
-            background: rgba(#000, 0.1);
-            border-top: 1px solid rgba(#000, 0.2);
-            border-bottom: 1px solid rgba(#000, 0.2);
-            display: flex;
-            margin-top: 5px;
+        .collection-header {
             width: 100%;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                background: rgba(#000, 0.15);
-            }
-
-            .feature_ql {
-                width: 25%;
-                padding: 5px 5px 0 5px;
-                border-right: 1px solid rgba(#000, 0.1);
-
-                img {
-                    width: 100%;
-                    border-radius: 5px;
-                }
-            }
-
-            .feature_desc {
-                width: 100%;
-                padding: 5px 10px;
-                p {
-                    margin: 0;
-                }
-            }
-        }
-
-        .feature-actived {
-            background: rgba(#009933, 0.15);
-
-            &:hover {
-                background: rgba(#009933, 0.25) !important;
-            }
-        }
-
-        .feature-actions {
-            padding: 5px 10px;
-            background: rgba(#000, 0.15);
-            border-bottom: 1px solid rgba(#000, 0.2);
-            border-radius: 0px 0px 0px 15px;
-            width: 90%;
             display: flex;
-            margin-left: 10%;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 15px;
+            background: rgba(#000, 0.1);
 
-            .zoom {
-                margin-left: 10px;
+            p {
+                font-weight: 600;
+                font-size: 1.2em;
+            }
+
+            .mat-icon {
                 cursor: pointer;
-                border-radius: 5px;
 
                 &:hover {
-                    background: rgba(#000, 0.1);
+                    color: var(--mainColor);
+                }
+            }
+        }
+
+        .box-features {
+            padding: 5px 5px 10px 15px;
+
+            .feature {
+                background: rgba(#000, 0.1);
+                border-top: 1px solid rgba(#000, 0.2);
+                border-bottom: 1px solid rgba(#000, 0.2);
+                display: flex;
+                margin-top: 5px;
+                width: 100%;
+                align-items: center;
+                cursor: pointer;
+
+                &:hover {
+                    background: rgba(#000, 0.15);
+                }
+
+                .feature_ql {
+                    width: 25%;
+                    padding: 5px 5px 0 5px;
+                    border-right: 1px solid rgba(#000, 0.1);
+
+                    img {
+                        width: 100%;
+                        border-radius: 5px;
+                    }
+                }
+
+                .feature_desc {
+                    width: 100%;
+                    padding: 5px 10px;
+                    p {
+                        margin: 0;
+                    }
+                }
+            }
+
+            .feature-actived {
+                background: rgba(#009933, 0.15);
+
+                &:hover {
+                    background: rgba(#009933, 0.25) !important;
+                }
+            }
+
+            .feature-actions {
+                padding: 5px 10px;
+                background: rgba(#000, 0.15);
+                border-bottom: 1px solid rgba(#000, 0.2);
+                border-radius: 0px 0px 0px 15px;
+                width: 90%;
+                display: flex;
+                margin-left: 10%;
+
+                .zoom {
+                    margin-left: 10px;
+                    cursor: pointer;
+                    border-radius: 5px;
+
+                    &:hover {
+                        background: rgba(#000, 0.1);
+                    }
                 }
             }
         }

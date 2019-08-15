@@ -1,12 +1,17 @@
 <div class="features">
 
-    <mat-icon (click)="viewCubeDetails()">
-      cloud_download
-    </mat-icon>
+  <div class="collection">
+    <div class="collection-header">
+      <p>{{ features$['0'].collection.toUpperCase() }}</p>
+
+      <mat-icon (click)="viewCubeDetails()">
+        cloud_download
+      </mat-icon>
+    </div>
 
     <!-- FEATURE -->
     <div class="box-features">
-      <div *ngFor="let feature of features$">
+      <div *ngFor="let feature of featuresPeriod$">
         <div [ngClass]="(feature.enabled==true)?'feature feature-actived':'feature'"
              (click)="enableActions(feature.id)">
           <div class="feature_ql">
@@ -15,7 +20,6 @@
 
           <div class="feature_desc">
             <p><b>{{ feature.id }}</b></p>
-            <p>{{ feature.properties.collection }}</p>
             <p>{{ getDateFormated(feature.properties.datetime) }}</p>
           </div>
         </div>
@@ -43,5 +47,6 @@
         </div>
       </div>
     </div>
+  </div>
 
 </div>
