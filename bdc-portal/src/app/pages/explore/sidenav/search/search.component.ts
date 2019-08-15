@@ -1,9 +1,9 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
-import { formatDateUSA } from 'src/app/shared/helpers/date';
+import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   showLoading, closeLoading, setLayers, setPositionMap,
   setRangeTemporal, setFeatures, setBands
@@ -94,19 +94,23 @@ export class SearchComponent implements OnInit {
     try {
       vm.store.dispatch(showLoading());
 
+      // set FIRST DAY in start date and LAST DAY in last date
+      const startDate = new Date(vm.searchObj['start_date'].setDate(1));
+      const lastDate = new Date(vm.searchObj['last_date'].setDate(getLastDateMonth(new Date(vm.searchObj['last_date']))));
+
       const bbox = Object.values(vm.searchObj['bbox']);
       let query = `type=${vm.searchObj['types'].join(',')}`;
       query += `&collections=${vm.searchObj['cube']}`;
       query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
-      query += `&time=${formatDateUSA(new Date(vm.searchObj['start_date']))}`;
-      query += `/${formatDateUSA(new Date(vm.searchObj['last_date']))}`;
+      query += `&time=${formatDateUSA(startDate)}`;
+      query += `/${formatDateUSA(lastDate)}`;
       query += `&limit=10000`;
 
       const response = await vm.ss.searchSTAC(query);
       if (response.features.length > 0) {
         vm.store.dispatch(setRangeTemporal([
-          new Date(vm.searchObj['start_date']),
-          new Date(vm.searchObj['last_date'])
+          startDate,
+          lastDate
         ]));
         vm.store.dispatch(setFeatures(response.features));
         vm.changeStepNav(1);

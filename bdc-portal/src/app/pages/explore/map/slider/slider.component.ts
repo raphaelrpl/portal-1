@@ -5,6 +5,7 @@ import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
 import { setFeaturesPeriod, setLayers } from '../../explore.action';
 import { Layer, imageOverlay, geoJSON } from 'leaflet';
+import { addMonth } from 'src/app/shared/helpers/date';
 
 /**
  * Map Slider component
@@ -21,8 +22,8 @@ export class SliderComponent implements OnInit {
   private features: Feature[] = [];
   /** steps - list dates to mount slider */
   public steps: Date[] = [];
-  /** position selected in slider */
-  public value = 0;
+  /** position selected in slider - actual date */
+  public value: Date;
   /** options used to mount slider */
   public options: Options = {};
   /** layers/features visibled in the map */
@@ -38,11 +39,11 @@ export class SliderComponent implements OnInit {
         this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
       }
       if (Object.values(res.rangeTemporal).length) {
-        const lastDate = new Date(res.rangeTemporal['1']);
         let startDate = new Date(res.rangeTemporal['0']);
+        const lastDate = new Date(res.rangeTemporal['1']);
         while (startDate <= lastDate) {
           this.steps.push(startDate);
-          startDate = new Date(startDate.setMonth(startDate.getMonth() + 1));
+          startDate = addMonth(startDate);
         }
 
         this.steps.unshift(new Date(res.rangeTemporal['0']));
@@ -69,17 +70,15 @@ export class SliderComponent implements OnInit {
     // remove features ploted in map
     const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
     this.store.dispatch(setLayers(newLayers));
-    // filter new features
 
+    // filter new features
     // TODO:
-    const schema = 'm';
-    let startPeriod = new Date(this.value);
-    if (schema == 'm') {
-      startPeriod = new Date(startPeriod.setDate(1));
-    }
-    const endPeriod = new Date(startPeriod.setMonth(startPeriod.getMonth() + 1));
+    const thisDate = new Date(this.value);
+    let startPeriod = new Date(thisDate.setMonth(thisDate.getMonth()));
+    const endPeriod = addMonth(thisDate);
+
     const featSelected = this.features.filter(feat => {
-      return new Date(feat.properties['datetime']) >= new Date(this.value) && new Date(feat.properties['datetime']) < endPeriod;
+      return new Date(feat.properties['datetime']) >= startPeriod && new Date(feat.properties['datetime']) < endPeriod;
     });
 
     // plot new features
