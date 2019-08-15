@@ -248,7 +248,7 @@ export class MapComponent implements OnInit {
   /** event used when change Map */
   onMapReady(map: MapLeaflet) {
     this.map = map;
-    this.setDrawControl();
     this.setFullscreenControl();
+    this.setDrawControl();
   }
 }

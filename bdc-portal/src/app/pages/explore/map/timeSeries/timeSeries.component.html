@@ -1,8 +1,15 @@
-<div class="container-timeseries">
+<div class="timeseries_label-msg" *ngIf="actived">
+    move the point
+</div>
+
+<div class="container-timeseries" *ngIf="features$.length">
     <div class="btn-start" (click)="active()">
         <mat-icon>show_chart</mat-icon>
     </div>
 
+    <div class="btn-view" *ngIf="actived" (click)="showBox()">
+        VIEW
+    </div>
     <div class="btn-cancel" *ngIf="actived" (click)="desactive()">
         Cancel
     </div>

@@ -1,11 +1,36 @@
-<div class="box-time_series" *ngIf="bands.length">
-    <div *ngFor="let band of Object.keys(bands)">
-        <mat-checkbox [(ngModel)]="bands[band]">
-            {{ band }}
-        </mat-checkbox>
+<div class="box-time_series" *ngIf="listBands.length">
+    <div class="filter-bands">
+        <p><mat-icon>location_on</mat-icon>
+            Lat Lng = [
+            <b>{{ latLng['lat'] }}</b>,
+            <b>{{ latLng['lng'] }}</b>
+        ]</p>
+
+        <p><mat-icon>apps</mat-icon>
+            Select Bands:
+        </p>
+        <div class="bands">
+            <div *ngFor="let band of listBands">
+                <mat-checkbox [(ngModel)]="bands[band]">
+                    {{ band.toUpperCase() }}
+                </mat-checkbox>
+            </div>
+        </div>
+
+        <button mat-stroked-button color="primary" (click)="viewGraphic()">
+            Generate Time Series
+        </button>
     </div>
 
-    <button mat-raised-button color="primary" (click)="viewGraphic()">
-        View
-    </button>
+    <div class="graphic" *ngIf="graphicShow">
+        <canvas baseChart
+            style="height: 250px; width: 600px;"
+            [datasets]="lineChartData"
+            [labels]="lineChartLabels"
+            [options]="lineChartOptions"
+            [colors]="lineChartColors"
+            [legend]="lineChartLegend"
+            chartType="line">
+          </canvas>
+    </div>
 </div>

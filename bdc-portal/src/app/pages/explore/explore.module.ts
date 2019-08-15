@@ -21,6 +21,7 @@ import {
   MatBottomSheetModule,
   MatCheckboxModule
 } from '@angular/material';
+import { ChartsModule } from 'ng2-charts';
 
 import { ExploreComponent } from './explore.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -79,6 +80,7 @@ import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
     MatSnackBarModule,
     Ng5SliderModule,
     MatCheckboxModule,
+    ChartsModule,
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot(),
     StoreModule.forRoot({
