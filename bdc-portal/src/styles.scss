@@ -43,3 +43,13 @@ body {
     background: rgba(#ff4d4d, 0.9);
     color: #ffffff;
 }
+
+.leaflet-control-container .leaflet-control-coordinates .uiHidden {
+    display: none !important;
+}
+
+.leaflet-control-container .leaflet-control-coordinates .label {
+    padding: 5px 10px;
+    border-radius: 5px;
+    background: rgba(#FFF, 0.5);
+}
