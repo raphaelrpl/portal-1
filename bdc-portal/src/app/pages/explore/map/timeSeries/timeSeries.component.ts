@@ -4,7 +4,7 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { BoxTimeSeriesComponent } from './box/box.component';
 import { MatBottomSheet } from '@angular/material';
-import { Marker, Layer, LatLngExpression, LatLngBoundsExpression, LatLngBounds, LatLngBoundsLiteral, LatLng } from 'leaflet';
+import { Marker, Layer, LatLngBounds, LatLng } from 'leaflet';
 import { setLayers } from '../../explore.action';
 
 /**

@@ -4,7 +4,7 @@
     .filter-bands {
         p {
             display: flex;
-            font-size: 1.3em;
+            font-size: 1.2em;
             align-items: center;
 
             .mat-icon {
@@ -38,6 +38,12 @@
     .graphic {
         border-top: 2px dotted #000;
         margin-top: 15px;
-        padding: 25px 0;
+        padding: 25px 0 15px 0;
+    }
+
+    .box-tension {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
     }
 }

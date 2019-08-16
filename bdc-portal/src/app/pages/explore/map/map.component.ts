@@ -249,6 +249,7 @@ export class MapComponent implements OnInit {
   /** set Coordinates options in the map */
   setCoordinatesControl() {
     (L.control as any).coordinates({
+      position: "bottomleft",
       decimals: 5,
       decimalSeperator: ".",
       labelTemplateLat:"Lat: {y}",

@@ -1,11 +1,16 @@
 <div class="box-time_series" *ngIf="listBands.length">
     <div class="filter-bands">
+        <p><mat-icon>burst_mode</mat-icon>
+            {{ collection }} ({{ subCollection }})
+        </p>
+        <p><mat-icon>date_range</mat-icon>
+            {{ rangeTemporal[0] }} / {{ rangeTemporal[1] }}
+        </p>
         <p><mat-icon>location_on</mat-icon>
             Lat Lng = [
             <b>{{ latLng['lat'] }}</b>,
             <b>{{ latLng['lng'] }}</b>
         ]</p>
-
         <p><mat-icon>apps</mat-icon>
             Select Bands:
         </p>
@@ -17,20 +22,30 @@
             </div>
         </div>
 
-        <button mat-stroked-button color="primary" (click)="viewGraphic()">
+        <button mat-stroked-button color="primary" (click)="search()">
             Generate Time Series
         </button>
     </div>
 
-    <div class="graphic" *ngIf="graphicShow">
-        <canvas baseChart
-            style="height: 250px; width: 600px;"
-            [datasets]="lineChartData"
-            [labels]="lineChartLabels"
-            [options]="lineChartOptions"
-            [colors]="lineChartColors"
-            [legend]="lineChartLegend"
-            chartType="line">
-          </canvas>
+    <div *ngIf="graphicShow">
+        <div class="graphic">
+            <canvas baseChart
+                style="height: 250px;"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="true"
+                chartType="line">
+            </canvas>
+
+        </div>
+        <div class="box-tension">
+            <mat-slide-toggle
+                [(ngModel)]="lineTension"
+                (change)="changeLineTension($event)">
+            </mat-slide-toggle>
+            <p style="margin-left: 10px;">Line Tension</p>
+        </div>
     </div>
 </div>

@@ -167,7 +167,7 @@ export class SearchComponent implements OnInit {
         new Date(times[1])
       ];
       // set collection types
-      this.typesCollection = response.properties['bdc:time_aggregations'].map(t => t.name);
+      this.typesCollection = response.properties['bdc:time_aggregations'].filter(t => t.name !== "SCENE" && t.name !== "MERGED").map((t => t.name));
       // set bands
       this.store.dispatch(setBands(response.properties['bdc:bands']));
 
