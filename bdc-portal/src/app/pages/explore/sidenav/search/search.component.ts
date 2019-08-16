@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
 import { SearchService } from './search.service';

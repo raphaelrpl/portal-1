@@ -49,7 +49,11 @@ body {
 }
 
 .leaflet-control-container .leaflet-control-coordinates .label {
-    padding: 5px 10px;
     border-radius: 5px;
     background: rgba(#FFF, 0.5);
+    margin: 0px;
+
+    .labelFirst {
+        padding: 20px 7.5px;
+    }
 }
