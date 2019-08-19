@@ -12,7 +12,7 @@ $bdc_theme-primary: mat-palette($mat-blue);
 $bdc_theme-accent : mat-palette($mat-green);
 $bdc_theme-warn   : mat-palette($mat-amber);
 
-$bdc_theme: mat-light-theme( 
+$bdc_theme: mat-light-theme(
   $bdc_theme-primary,
   $bdc_theme-accent,
   $bdc_theme-warn

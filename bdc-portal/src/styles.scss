@@ -57,3 +57,7 @@ body {
         padding: 20px 7.5px;
     }
 }
+
+.mat-slider-track-fill, .mat-slider-thumb, .mat-slider-thumb-label {
+    background-color: gray !important;
+}

@@ -58,6 +58,15 @@ export class MapComponent implements OnInit {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
           this.layers$ = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
+          if (res.opacity) {
+            const opacity = parseFloat(res.opacity);
+            this.layers$ = this.layers$.map( (lyr: L.ImageOverlay) => {
+              if (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') >= 0) {
+                lyr.setOpacity(opacity);
+              }
+              return lyr
+            })
+          }
         }
         if (res.positionMap && res.positionMap !== this.bbox) {
           this.bbox = res.positionMap;

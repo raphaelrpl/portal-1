@@ -20,6 +20,8 @@ export class SliderComponent {
 
   /** all features */
   private features: Feature[] = [];
+  /** status cube - actived ou disactived */
+  private actived: Boolean;
   /** steps - list dates to mount slider */
   public steps: Date[] = [];
   /** position selected in slider - actual date */
@@ -34,6 +36,10 @@ export class SliderComponent {
       this.steps = [];
       if (res.features) {
         this.features = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
+      }
+      if (res.featuresPeriod) {
+        const features = Object.values(res.featuresPeriod).slice(0, 1) as Feature[];
+        this.actived = features[0] && features[0]['enabled'] !== false;
       }
       if (res.layers) {
         this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
@@ -88,9 +94,11 @@ export class SliderComponent {
         alt: `qls_${f.id}`
       }).setZIndex(999);
 
-      this.layers.push(newlayer);
-      this.store.dispatch(setLayers(this.layers));
-      return {...f, enabled: true}
+      if (this.actived) {
+        this.layers.push(newlayer);
+        this.store.dispatch(setLayers(this.layers));
+      }
+      return {...f, enabled: this.actived}
     });
     this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
   }
