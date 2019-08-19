@@ -87,9 +87,8 @@ export class BoxTimeSeriesComponent {
 
       } else {
         let query = `?coverage=bdc:${this.collection}:${this.subCollection}`;
-        // query += `&latitude=${this.latLng.lat}`;
-        // query += `&longitude=${this.latLng.lng}`;
-        query += `&latitude=-14.4&longitude=-52`;
+        query += `&latitude=${this.latLng.lat}`;
+        query += `&longitude=${this.latLng.lng}`;
         query += `&start_date=${this.rangeTemporal[0]}`;
         query += `&end_date=${this.rangeTemporal[1]}`;
         query += `&attributes=${Object.values(bands)}`;
