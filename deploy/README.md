@@ -9,7 +9,7 @@ Make sure you have the following libraries installed:
 - [`Angular CLI >= 7`](https://angular.io/)
 
 ```
-npm install
+cd ../bdc-portal && npm install
 ```
 
 ## Runnig

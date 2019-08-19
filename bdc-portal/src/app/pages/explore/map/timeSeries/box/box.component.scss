@@ -1,0 +1,49 @@
+.box-time_series {
+    padding: 0 15px;
+
+    .filter-bands {
+        p {
+            display: flex;
+            font-size: 1.2em;
+            align-items: center;
+
+            .mat-icon {
+                margin-right: 10px;
+            }
+        }
+
+        .bands {
+            display: flex;
+            flex-wrap: wrap;
+
+            .mat-checkbox {
+                font-size: 1.1em;
+                padding: 5px 15px 10px 15px;
+                margin: 5px;
+                border-radius: 5px;
+                border: 1px solid #CCC;
+
+                &:hover {
+                    background: rgba(#000, 0.1);
+                }
+            }
+        }
+    }
+
+    button {
+        display: block;
+        margin: 20px auto;
+    }
+
+    .graphic {
+        border-top: 2px dotted #000;
+        margin-top: 15px;
+        padding: 25px 0 15px 0;
+    }
+
+    .box-tension {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+}

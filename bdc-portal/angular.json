@@ -29,6 +29,9 @@
             ],
             "styles": [
               "src/styles.scss",
+              "node_modules/leaflet.fullscreen/Control.FullScreen.css",
+              "src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.css",
+              "src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.ie.css",
               "node_modules/primeicons/primeicons.css",
               "node_modules/primeng/resources/themes/nova-light/theme.css",
               "node_modules/primeng/resources/primeng.min.css"
