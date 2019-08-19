@@ -106,7 +106,7 @@
         <div *ngIf="searchObj.cube">
             <mat-form-field appearance="fill">
                 <mat-label>Type</mat-label>
-                <mat-select [(value)]="searchObj.types" multiple>
+                <mat-select [(value)]="searchObj.types">
                     <mat-option *ngFor="let type of typesCollection" [value]="type">{{ type }}</mat-option>
                 </mat-select>
             </mat-form-field>
