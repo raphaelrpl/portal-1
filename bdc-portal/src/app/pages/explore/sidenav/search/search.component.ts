@@ -99,7 +99,7 @@ export class SearchComponent implements OnInit {
       const lastDate = new Date(vm.searchObj['last_date'].setDate(getLastDateMonth(new Date(vm.searchObj['last_date']))));
 
       const bbox = Object.values(vm.searchObj['bbox']);
-      let query = `type=${vm.searchObj['types'].join(',')}`;
+      let query = `type=${vm.searchObj['types']}`;
       query += `&collections=${vm.searchObj['cube']}`;
       query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
       query += `&time=${formatDateUSA(startDate)}`;

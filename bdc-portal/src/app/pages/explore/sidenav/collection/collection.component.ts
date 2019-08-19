@@ -3,8 +3,8 @@ import { Store, select } from '@ngrx/store';
 
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
-import { imageOverlay,  Layer, geoJSON } from 'leaflet';
-import { setLayers, setPositionMap, setFeaturesPeriod } from '../../explore.action';
+import { imageOverlay,  Layer, geoJSON, featureGroup } from 'leaflet';
+import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
@@ -19,6 +19,8 @@ export class CollectionComponent {
   public featuresPeriod$: Feature[] = [];
   public layers: Layer[];
   public period: Number;
+  public opacity = 10;
+  public opacityEnabled = false;
   private bands: string[];
   private range: Date[];
 
@@ -38,9 +40,6 @@ export class CollectionComponent {
       if (res.bands) {
         this.bands = Object.values(res.bands).slice(0, (Object.values(res.bands).length - 1)) as string[];
       }
-      if (res.period) {
-        this.period = Object.values(res.bands)[0] as Number;
-      }
       if (Object.values(res.rangeTemporal).length) {
         this.range = Object.values(res.rangeTemporal);
       }
@@ -53,24 +52,20 @@ export class CollectionComponent {
     return `${startDate}`;
   }
 
-  public onChangeLayer(event, feature: any) {
+  public onChangeLayer(event) {
     if (event.checked) {
-      this.featuresPeriod$ = this.featuresPeriod$.map( f => {
-        if (f.id === feature.id) {
-          f['enabled'] = true;
-        }
-        return f;
+      this.featuresPeriod$ = this.featuresPeriod$.map( (f: any) => {
+        const featureGeoJson = geoJSON(f);
+        const bounds = featureGeoJson.getBounds();
+        this.layers.push(imageOverlay(f.assets.thumbnail.href, bounds, {
+          alt: `qls_${f.id}`
+        }).setZIndex(999));
+
+        return {...f, enabled: true};
       });
 
-      const featureGeoJson = geoJSON(feature);
-      const bounds = featureGeoJson.getBounds();
-      const newlayer = imageOverlay(feature.assets.thumbnail.href, bounds, {
-        alt: `qls_${feature.id}`
-      }).setZIndex(999);
-
-      this.layers.push(newlayer);
       this.store.dispatch(setLayers(this.layers));
-      this.snackBar.open('LAYER ENABLED!', '', {
+      this.snackBar.open('LAYERS ENABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-success'
@@ -78,15 +73,12 @@ export class CollectionComponent {
 
     } else {
       this.featuresPeriod$ = this.featuresPeriod$.map( f => {
-        if (f.id === feature.id) {
-          f['enabled'] = false;
-        }
-        return f;
+        return {...f, enabled: false};
       });
 
-      const newLayers = this.layers.filter( lyr => lyr['options'].alt !== `qls_${feature.id}` );
+      const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0) );
       this.store.dispatch(setLayers(newLayers));
-      this.snackBar.open('LAYER DISABLED!', '', {
+      this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-success'
@@ -94,13 +86,28 @@ export class CollectionComponent {
     }
   }
 
-  public setZoom(feature: any) {
+  public setZoomByFeature(feature: any) {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  public enableActions(featureId: string) {
+  public setZoomByCube() {
+    const featuresGeoJson = featureGroup(this.featuresPeriod$.map((f: any) => geoJSON(f)));
+    const bounds = featuresGeoJson.getBounds();
+    this.store.dispatch(setPositionMap(bounds));
+  }
+
+  public viewOpacityCube() {
+    this.opacityEnabled = !this.opacityEnabled;
+  }
+
+  public setOpacityCube() {
+    const newOpacity = (this.opacity/10).toString();
+    this.store.dispatch(setOpacity({opacity: newOpacity}));
+  }
+
+  public enableFeatureActions(featureId: string) {
     this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
         f['actions'] = !(f['actions'] === true);

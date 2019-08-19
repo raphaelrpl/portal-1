@@ -35,6 +35,15 @@ export const setBands = createAction(
 );
 
 /**
+ * set Opacity Cube in store application
+ * @params {String}
+ */
+export const setOpacity = createAction(
+    '[Map Component] Opacity Layer',
+    props()
+);
+
+/**
  * set position of the map
  * @params {LatLngBounds} latitude and longitude
  */
@@ -59,15 +68,6 @@ export const setBbox = createAction(
 export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',
     props<Date[]>()
-);
-
-/**
- * set Period selected in slider
- * @params {Number} period of the slider
- */
-export const setPeriod = createAction(
-    '[Map Component] Period',
-    props<Number>()
 );
 
 /** set loading as true */

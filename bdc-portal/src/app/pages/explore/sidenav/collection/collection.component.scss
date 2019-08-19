@@ -11,7 +11,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 0 15px;
-            background: rgba(#000, 0.1);
+            background: rgba(#000, 0.2);
 
             p {
                 font-weight: 600;
@@ -27,8 +27,38 @@
             }
         }
 
+        .collection-functions {
+            background: rgba(#000, 0.1);
+            margin: 0 7.5px;
+            padding: 10px 10px;
+            display: flex;
+            align-items: center;
+            border-radius: 0 0 5px 5px;
+
+            .btns {
+                margin-left: 10px;
+                cursor: pointer;
+                border-radius: 5px;
+
+                &:hover {
+                    background: rgba(#000, 0.1);
+                }
+            }
+        }
+
+        .box-opacity {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            button {
+                margin-left: 20px;
+            }
+        }
+
         .box-features {
-            padding: 5px 5px 10px 15px;
+            padding: 10px 7.5px 15px 7.5px;
 
             .feature {
                 background: rgba(#000, 0.1);
@@ -64,24 +94,16 @@
                 }
             }
 
-            .feature-actived {
-                background: rgba(#009933, 0.15);
-
-                &:hover {
-                    background: rgba(#009933, 0.25) !important;
-                }
-            }
-
             .feature-actions {
                 padding: 5px 10px;
                 background: rgba(#000, 0.15);
                 border-bottom: 1px solid rgba(#000, 0.2);
                 border-radius: 0px 0px 0px 15px;
-                width: 90%;
                 display: flex;
-                margin-left: 10%;
+                justify-content: flex-end;
+                margin-left: 250px;
 
-                .zoom {
+                .btns {
                     margin-left: 10px;
                     cursor: pointer;
                     border-radius: 5px;
@@ -93,5 +115,4 @@
             }
         }
     }
-
 }

@@ -87,9 +87,8 @@ export class BoxTimeSeriesComponent {
 
       } else {
         let query = `?coverage=bdc:${this.collection}:${this.subCollection}`;
-        // query += `&latitude=${this.latLng.lat}`;
-        // query += `&longitude=${this.latLng.lng}`;
-        query += `&latitude=-14.4&longitude=-52`;
+        query += `&latitude=${this.latLng.lat}`;
+        query += `&longitude=${this.latLng.lng}`;
         query += `&start_date=${this.rangeTemporal[0]}`;
         query += `&end_date=${this.rangeTemporal[1]}`;
         query += `&attributes=${Object.values(bands)}`;
@@ -121,8 +120,9 @@ export class BoxTimeSeriesComponent {
         }
       }
 
-    } catch(_) {
-      this.snackBar.open('INCORRECT SEARCH IN WTSS', '', {
+    } catch(err) {
+      const msg = err.error && err.error.message || 'INCORRECT SEARCH IN WTSS';
+      this.snackBar.open(msg, '', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-error'
@@ -135,7 +135,7 @@ export class BoxTimeSeriesComponent {
 
   changeLineTension() {
     this.lineChartData = this.lineChartData.map( bandValues => {
-      return {...bandValues, lineTension: this.lineTension ? 5 : 0};
+      return {...bandValues, lineTension: this.lineTension ? 0.4 : 0};
     });
     this.ref.detectChanges();
   }

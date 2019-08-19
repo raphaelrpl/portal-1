@@ -8,8 +8,8 @@ import {
   setRangeTemporal,
   setFeatures,
   setBands,
-  setPeriod,
-  setFeaturesPeriod
+  setFeaturesPeriod,
+  setOpacity
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -21,8 +21,8 @@ const initialState: ExploreState = {
   positionMap: null,
   loading: false,
   bbox: null,
-  period: 1,
-  rangeTemporal: []
+  rangeTemporal: [],
+  opacity: '1'
 };
 
 export const reducer = createReducer(initialState,
@@ -38,9 +38,6 @@ export const reducer = createReducer(initialState,
   on(setBands, (state, payload) => {
     return { ...state, bands: payload };
   }),
-  on(setPeriod, (state, payload) => {
-    return { ...state, period: payload };
-  }),
   on(setPositionMap, (state, payload) => {
     return { ...state, positionMap: payload };
   }),
@@ -49,6 +46,9 @@ export const reducer = createReducer(initialState,
   }),
   on(setBbox, (state, payload) => {
     return { ...state, bbox: payload };
+  }),
+  on(setOpacity, (state, payload) => {
+    return { ...state, opacity: payload['opacity'].toString() };
   }),
   on(showLoading, (state) => {
     return { ...state, loading: true };

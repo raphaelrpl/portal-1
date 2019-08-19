@@ -3,17 +3,51 @@
   <div class="collection">
     <div class="collection-header">
       <p>{{ features$['0'].collection.toUpperCase() }}</p>
+    </div>
 
-      <mat-icon (click)="viewCubeDetails()">
-        cloud_download
-      </mat-icon>
+    <!-- ACTIONS COLLECTION -->
+    <div *ngIf="featuresPeriod$.length">
+      <div class="collection-functions">
+        <mat-slide-toggle
+          [(ngModel)]="featuresPeriod$['0'].enabled"
+          (change)="onChangeLayer($event)">
+        </mat-slide-toggle>
+
+        <mat-icon
+          class="btns"
+          (click)="setZoomByCube()">
+          zoom_out_map
+        </mat-icon>
+
+        <mat-icon
+          class="btns"
+          *ngIf="featuresPeriod$['0'].enabled"
+          (click)="viewOpacityCube()">
+          brightness_medium
+        </mat-icon>
+
+        <mat-icon
+          class="btns"
+          (click)="viewCubeDetails()">
+          cloud_download
+        </mat-icon>
+      </div>
+
+      <div class="box-opacity" *ngIf="opacityEnabled">
+        <mat-slider
+          [max]="10"
+          [min]="0"
+          [(ngModel)]="opacity">
+        </mat-slider>
+        <button mat-stroked-button (click)="setOpacityCube()">update</button>
+      </div>
     </div>
 
     <!-- FEATURE -->
     <div class="box-features">
       <div *ngFor="let feature of featuresPeriod$">
-        <div [ngClass]="(feature.enabled==true)?'feature feature-actived':'feature'"
-             (click)="enableActions(feature.id)">
+        <div class="feature"
+             (click)="enableFeatureActions(feature.id)">
           <div class="feature_ql">
             <img [src]="feature.assets.thumbnail.href" />
           </div>
@@ -26,22 +60,15 @@
 
         <!-- ACTIONS FEATURE -->
         <div class="feature-actions" *ngIf="feature.actions">
-          <mat-slide-toggle
-            [(ngModel)]="feature.enabled"
-            (change)="onChangeLayer($event, feature)">
-          </mat-slide-toggle>
-
           <mat-icon
-            *ngIf="feature.enabled"
-            (click)="setZoom(feature)"
-            class="zoom">
+            (click)="setZoomByFeature(feature)"
+            class="btns">
             zoom_out_map
           </mat-icon>
 
           <mat-icon
-            *ngIf="feature.enabled"
             (click)="viewFeatureDetails(feature)"
-            class="zoom">
+            class="btns">
             cloud_download
           </mat-icon>
         </div>

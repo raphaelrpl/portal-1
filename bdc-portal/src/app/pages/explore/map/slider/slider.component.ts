@@ -20,6 +20,8 @@ export class SliderComponent {
 
   /** all features */
   private features: Feature[] = [];
+  /** status cube - actived ou disactived */
+  private actived: Boolean;
   /** steps - list dates to mount slider */
   public steps: Date[] = [];
   /** position selected in slider - actual date */
@@ -31,9 +33,14 @@ export class SliderComponent {
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
+      let lastStep = this.steps;
       this.steps = [];
       if (res.features) {
         this.features = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
+      }
+      if (res.featuresPeriod) {
+        const features = Object.values(res.featuresPeriod).slice(0, 1) as Feature[];
+        this.actived = !features.length || (features[0] && features[0]['enabled'] !== false);
       }
       if (res.layers) {
         this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
@@ -60,19 +67,25 @@ export class SliderComponent {
             return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
           }
         }
+
+        setTimeout( _ => {
+          if (this.steps.length !== lastStep.length) {
+            this.changeValue(new Date(res.rangeTemporal['0']));
+          }
+        });
       }
     });
   }
 
   /** select the features by value selected in slider */
-  public changeValue() {
+  public changeValue(startDate) {
     // remove features ploted in map
     const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
     this.store.dispatch(setLayers(newLayers));
 
     // filter new features
     // TODO:
-    const thisDate = new Date(this.value);
+    const thisDate = this.value ? new Date(this.value) : startDate;
     let startPeriod = new Date(thisDate.setMonth(thisDate.getMonth()));
     const endPeriod = addMonth(thisDate);
 
@@ -88,9 +101,11 @@ export class SliderComponent {
         alt: `qls_${f.id}`
       }).setZIndex(999);
 
-      this.layers.push(newlayer);
-      this.store.dispatch(setLayers(this.layers));
-      return {...f, enabled: true}
+      if (this.actived) {
+        this.layers.push(newlayer);
+        this.store.dispatch(setLayers(this.layers));
+      }
+      return {...f, enabled: this.actived}
     });
     this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
   }
