@@ -120,8 +120,9 @@ export class BoxTimeSeriesComponent {
         }
       }
 
-    } catch(_) {
-      this.snackBar.open('INCORRECT SEARCH IN WTSS', '', {
+    } catch(err) {
+      const msg = err.error && err.error.message || 'INCORRECT SEARCH IN WTSS';
+      this.snackBar.open(msg, '', {
         duration: 3000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-error'
