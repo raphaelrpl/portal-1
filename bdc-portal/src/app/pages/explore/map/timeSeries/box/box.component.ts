@@ -135,7 +135,7 @@ export class BoxTimeSeriesComponent {
 
   changeLineTension() {
     this.lineChartData = this.lineChartData.map( bandValues => {
-      return {...bandValues, lineTension: this.lineTension ? 5 : 0};
+      return {...bandValues, lineTension: this.lineTension ? 0.4 : 0};
     });
     this.ref.detectChanges();
   }
