@@ -61,3 +61,8 @@ body {
 .mat-slider-track-fill, .mat-slider-thumb, .mat-slider-thumb-label {
     background-color: gray !important;
 }
+
+.geocoder-control-input.geocoder-control-loading{
+    background-color: #FFF;
+    background-image: url("esri-leaflet-geocoder/dist/img/loading@2x.gif");
+}

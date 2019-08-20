@@ -6,6 +6,8 @@ import { GeoJsonObject } from 'geojson';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.js';
 import 'src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.min.js';
+import 'esri-leaflet/dist/esri-leaflet.js';
+import * as LE from 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js';
 
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
@@ -269,11 +271,36 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
   }
 
+  /** set Geocoder options in the map */
+  setGeocoderControl() {
+    const searchControl = LE.geosearch().addTo(this.map);
+    const vm = this;
+
+    searchControl.on('results', function(data){
+      vm.layers$ = vm.layers$.filter( lyr => lyr['options'].className !== 'previewBbox');
+      vm.store.dispatch(setLayers(vm.layers$));
+
+      for (let i = data.results.length - 1; i >= 0; i--) {
+        const newLayers = rectangle(data.results[i].bounds, {
+          color: '#666',
+          weight: 1,
+          className: 'previewBbox',
+        });
+
+        vm.layers$.push(newLayers);
+        vm.store.dispatch(setLayers(vm.layers$));
+        vm.store.dispatch(setBbox(newLayers.getBounds()));
+        vm.store.dispatch(setPositionMap(newLayers.getBounds()));
+      }
+    });
+  }
+
   /** event used when change Map */
   onMapReady(map: MapLeaflet) {
     this.map = map;
     this.setFullscreenControl();
     this.setDrawControl();
     this.setCoordinatesControl();
+    this.setGeocoderControl();
   }
 }
