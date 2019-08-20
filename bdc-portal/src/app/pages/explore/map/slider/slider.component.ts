@@ -21,7 +21,7 @@ export class SliderComponent {
   /** all features */
   private features: Feature[] = [];
   /** status cube - actived ou disactived */
-  private actived: Boolean;
+  private actived: boolean;
   /** steps - list dates to mount slider */
   public steps: Date[] = [];
   /** position selected in slider - actual date */
@@ -33,9 +33,9 @@ export class SliderComponent {
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
-      let lastStep = this.steps;
-      let lastFeatures = this.features;
-      let lastType = lastFeatures[0] ? lastFeatures[0]['properties']['bdc:time_aggregation'] : null;
+      const lastStep = this.steps;
+      const lastFeatures = this.features;
+      const lastType = lastFeatures[0] ? lastFeatures[0]['properties']['bdc:time_aggregation'] : null;
 
       this.steps = [];
       if (res.features) {
@@ -69,10 +69,10 @@ export class SliderComponent {
           translate: (value: number, _: LabelType): string => {
             return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
           }
-        }
+        };
 
         setTimeout( _ => {
-          if ((this.steps.length !== lastStep.length) || 
+          if ((this.steps.length !== lastStep.length) ||
               (lastFeatures.length !== this.features.length) ||
               (lastType !== null && this.features[0] && (lastType !== this.features[0]['properties']['bdc:time_aggregation']))
             ) {
@@ -92,7 +92,7 @@ export class SliderComponent {
     // filter new features
     // TODO:
     const thisDate = this.value ? new Date(this.value) : startDate;
-    let startPeriod = new Date(thisDate.setMonth(thisDate.getMonth()));
+    const startPeriod = new Date(thisDate.setMonth(thisDate.getMonth()));
     const endPeriod = addMonth(thisDate);
 
     const featSelected = this.features.filter(feat => {
@@ -111,7 +111,7 @@ export class SliderComponent {
         this.layers.push(newlayer);
         this.store.dispatch(setLayers(this.layers));
       }
-      return {...f, enabled: this.actived}
+      return {...f, enabled: this.actived};
     });
     this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
   }

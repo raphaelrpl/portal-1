@@ -166,8 +166,8 @@ export class SearchComponent implements OnInit {
     };
   }
 
-  /** get cube infos by name
-   * @param {string} cube name
+  /**
+   * get cube infos by name
    */
   public async getCollection(name: string) {
     try {
@@ -180,7 +180,8 @@ export class SearchComponent implements OnInit {
         new Date(times[1])
       ];
       // set collection types
-      this.typesCollection = response.properties['bdc:time_aggregations'].filter(t => t.name !== "SCENE" && t.name !== "MERGED").map((t => t.name));
+      this.typesCollection = response.properties['bdc:time_aggregations'].filter(
+        t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => t.name));
       // set bands
       this.store.dispatch(setBands(response.properties['bdc:bands']));
 
@@ -196,8 +197,8 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  /** change menu displayed
-   * @param {number} number of the menu displayed
+  /**
+   * change menu displayed
    */
   private changeStepNav(step: number) {
     this.stepToEmit.emit(step);

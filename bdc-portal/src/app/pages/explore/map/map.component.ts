@@ -66,8 +66,8 @@ export class MapComponent implements OnInit {
               if (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') >= 0) {
                 lyr.setOpacity(opacity);
               }
-              return lyr
-            })
+              return lyr;
+            });
           }
         }
         if (res.positionMap && res.positionMap !== this.bbox) {
@@ -116,7 +116,6 @@ export class MapComponent implements OnInit {
 
   /**
    * get the layer objects from a list of BdcLayer
-   * @param {list} list of BdcLayer with the external base Layers
    */
   private getBaseLayers(listLayers: BdcLayer[]) {
     const vm = this;
@@ -128,7 +127,6 @@ export class MapComponent implements OnInit {
   /**
    * get the layer objects from a list of BdcLayerWFS
    * mount the overlayers with GeoJson's consulted from the Geoserver
-   * @param {list} list of BdcLayerWFS with the grids of the BDC project
    */
   private async mountGridsLayers(listLayersId: BdcLayerWFS[]) {
     try {
@@ -141,12 +139,11 @@ export class MapComponent implements OnInit {
         const layerGeoJson = geoJSON(
           responseGeoJson,
           {
-            onEachFeature: (feat, layer) => {
-              const lyr = (layer) as any;
+            onEachFeature: (feat, lyr) => {
               if (feat.geometry.type === 'MultiPolygon' || feat.geometry.type === 'Polygon') {
                 if (this.tilesUsed && this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
                   // apply style
-                  lyr.setStyle({
+                  (lyr as any).setStyle({
                     color: '#0033cc',
                     weight: 2,
                     fillColor: '#009999',
@@ -154,7 +151,7 @@ export class MapComponent implements OnInit {
                   });
 
                 } else {
-                  lyr.setStyle({
+                  (lyr as any).setStyle({
                     color: '#0033CC',
                     weight: 1,
                     fillOpacity: 0.2
@@ -260,11 +257,11 @@ export class MapComponent implements OnInit {
   /** set Coordinates options in the map */
   setCoordinatesControl() {
     (L.control as any).coordinates({
-      position: "bottomleft",
+      position: 'bottomleft',
       decimals: 5,
-      decimalSeperator: ".",
-      labelTemplateLat:"Lat: {y}",
-      labelTemplateLng:"| Lng: {x}",
+      decimalSeperator: '.',
+      labelTemplateLat: 'Lat: {y}',
+      labelTemplateLng: '| Lng: {x}',
       enableUserInput: false,
       useDMS: false,
       useLatLngOrder: true,
@@ -276,7 +273,7 @@ export class MapComponent implements OnInit {
     const searchControl = LE.geosearch().addTo(this.map);
     const vm = this;
 
-    searchControl.on('results', function(data){
+    searchControl.on('results', data => {
       vm.layers$ = vm.layers$.filter( lyr => lyr['options'].className !== 'previewBbox');
       vm.store.dispatch(setLayers(vm.layers$));
 

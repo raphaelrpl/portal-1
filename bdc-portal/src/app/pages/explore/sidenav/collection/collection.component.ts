@@ -14,13 +14,13 @@ import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent {
-  
+
   /** all selected features in the search form */
   public features$: Feature[] = [];
   /** features by selected period */
   public featuresPeriod$: Feature[] = [];
   /** selected period in the slider */
-  public period: Number;
+  public period: number;
   /** value of the opacity cube in the map */
   public opacity = 10;
   /** status visible opacity box */
@@ -55,10 +55,7 @@ export class CollectionComponent {
     });
   }
 
-  /** convert date to USA format 
-   * @param {string} string date 
-   * @return {string} string date (yyyy-mm-dd)
-  */
+  /** convert date to USA format */
   public getDateFormated(dateStr: string): string {
     const dates = dateStr.split('/');
     const startDate = (new Date(dates[0])).toLocaleDateString();
@@ -100,9 +97,7 @@ export class CollectionComponent {
     }
   }
 
-  /** set zoom in the feature/item of the map 
-   * @param {Feature} feature/item STAC
-  */
+  /** set zoom in the feature/item of the map */
   public setZoomByFeature(feature: any) {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
@@ -123,13 +118,11 @@ export class CollectionComponent {
 
   /** set new value to opacity Cube */
   public setOpacityCube() {
-    const newOpacity = (this.opacity/10).toString();
+    const newOpacity = (this.opacity / 10).toString();
     this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
-  /** enable or disable actions box in the feature 
-   * @param {string} feature id
-  */
+  /** enable or disable actions box in the feature */
   public enableFeatureActions(featureId: string) {
     this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
@@ -140,15 +133,13 @@ export class CollectionComponent {
     this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
   }
 
-  /** open dialog with features infos
-   * @param {Feature} feature/item  
-   */
+  /** open dialog with features infos */
   public viewFeatureDetails(feature: Feature) {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
       height: '550px',
       data: {
-        feature: feature,
+        feature,
         bands: this.bands
       }
     });

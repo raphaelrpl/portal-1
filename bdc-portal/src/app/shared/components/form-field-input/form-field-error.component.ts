@@ -10,9 +10,10 @@ import { FormControl } from '@angular/forms';
   templateUrl: './form-field-error.component.html',
   styleUrls: ['./form-field-error.component.scss']
 })
-export class FormFieldErrorComponent{
+export class FormFieldErrorComponent {
 
   /** reference of the form */
+  // tslint:disable-next-line:no-input-rename
   @Input('form-control') formControl: FormControl;
 
   /** return errors by form or null if not exits errors */

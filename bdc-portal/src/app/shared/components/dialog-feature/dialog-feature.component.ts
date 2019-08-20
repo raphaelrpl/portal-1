@@ -59,19 +59,19 @@ export class DialogFeatureComponent {
 
   /** generate file with links of the bands to download */
   async generateLinks() {
-    let links = [];
+    const links = [];
     await this.features.forEach( (feat: Feature) => {
       Object.keys(this.bands).forEach( band => {
         if (this.bands[band] === true && feat.assets[band]) {
           links.push(feat.assets[band].href);
           links.push('\n');
         }
-      })
+      });
     });
 
-    const blob = new Blob(links, {type: "text/plain;charset=utf-8"});
+    const blob = new Blob(links, {type: 'text/plain;charset=utf-8'});
     this.fileUrl = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(blob));
-    this.fileName = `${this.typeDownload == 'feature' ? this.feature['collection'] : this.features['0'].collection}.txt`;
+    this.fileName = `${this.typeDownload === 'feature' ? this.feature['collection'] : this.features['0'].collection}.txt`;
     this.file = true;
   }
 
