@@ -1,5 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 import { Store, select } from '@ngrx/store';
+import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
@@ -8,8 +11,6 @@ import {
   showLoading, closeLoading, setLayers, setPositionMap,
   setRangeTemporal, setFeatures, setBands
 } from '../../explore.action';
-import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
-import { MatSnackBar } from '@angular/material';
 
 /**
  * component to search data of the BDC project
@@ -42,11 +43,14 @@ export class SearchComponent implements OnInit {
   /** layers enabled in the map */
   private layers: Layer[];
 
-  /** get infos of store application */
+  formSearch: FormGroup;
+  
+  /** get infos of store application and set group of validators */
   constructor(
     private ss: SearchService,
     private snackBar: MatSnackBar,
-    private store: Store<ExploreState>) {
+    private store: Store<ExploreState>,
+    private fb: FormBuilder) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
           this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
@@ -61,6 +65,18 @@ export class SearchComponent implements OnInit {
           };
         }
       });
+
+      this.formSearch = this.fb.group({
+        products: ['', [Validators.required]],
+        cube: ['', [Validators.required]],
+        north: ['', [Validators.required]],
+        west: ['', [Validators.required]],
+        east: ['', [Validators.required]],
+        south: ['', [Validators.required]],
+        start_date: ['', [Validators.required]],
+        last_date: ['', [Validators.required]],
+        type: ['', [Validators.required]]
+      })
     }
 
   /** set basic values used to mount component */
@@ -190,6 +206,8 @@ export class SearchComponent implements OnInit {
 
   /** initialize search in selected resources */
   public search() {
+    // TODO: validation 
+
     const vm = this;
     this.products.forEach((product: any) => {
       const productObj = this.productsList.filter(p => p['title'] === product);

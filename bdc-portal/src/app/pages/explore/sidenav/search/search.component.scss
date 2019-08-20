@@ -65,3 +65,17 @@
         margin: 0 auto;
     }
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form > mat-form-field {
+    margin-bottom: 36px;
+}
+
+form > * {
+    width: 100%;
+}
+  

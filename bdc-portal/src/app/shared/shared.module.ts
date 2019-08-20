@@ -12,10 +12,10 @@ import {
 
 import { SelectLangComponent } from './components/select-lang/select-lang.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 import { LoadingComponent } from './components/loading/loading.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { DialogFeatureComponent } from './components/dialog-feature/dialog-feature.component';
+import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 
 /**
  * Shared Module
@@ -25,13 +25,14 @@ import { DialogFeatureComponent } from './components/dialog-feature/dialog-featu
   declarations: [
     SelectLangComponent,
     FooterComponent,
-    FormFieldErrorComponent,
     LoadingComponent,
+    FormFieldErrorComponent,
     DialogFeatureComponent
   ],
   exports: [
     SelectLangComponent,
     FooterComponent,
+    FormFieldErrorComponent,
     LoadingComponent
   ],
   imports: [
