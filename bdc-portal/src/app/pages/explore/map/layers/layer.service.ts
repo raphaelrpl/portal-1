@@ -34,8 +34,8 @@ export class LayerService {
 
     /**
      * gets GeoJson object from a layer in the Geoserver of the BDC project
-     * @params {string} datastore
-     * @params {string} layer title
+     * @param {string} datastore
+     * @param {string} layer title
      * @returns layer GeoJson
      */
     public getGeoJsonByLayer(ds: string, title: string): Promise<any> {

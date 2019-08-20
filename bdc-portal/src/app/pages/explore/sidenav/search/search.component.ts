@@ -13,7 +13,7 @@ import { MatSnackBar } from '@angular/material';
 
 /**
  * component to search data of the BDC project
- * * search => STAC and WMS
+ * search => STAC and WMS
  */
 @Component({
   selector: 'app-search',
@@ -22,20 +22,27 @@ import { MatSnackBar } from '@angular/material';
 })
 export class SearchComponent implements OnInit {
 
+  /** emit event to sidenav */
   @Output() stepToEmit = new EventEmitter();
 
+  /** Existing resources */
   public productsList: object[];
+  /** selected resources by user */
   public products: string[];
+  /** available cubes */
   public collections: string[];
-  public typeSearchRegion: string;
+  /** range with dates to search */
   public rangeTemporal: Date[];
-  public typesCollection: string[];
-  public searchObj: object;
-
-  public filterTemporal: Date[];
+  /** range with dates avalaible by selected cube */
   public rangeTemporalEnabled: Date[];
-  public layers: Layer[];
+  /** cubes type */
+  public typesCollection: string[];
+  /** infos with parameters to search Cube */
+  public searchObj: object;
+  /** layers enabled in the map */
+  private layers: Layer[];
 
+  /** get infos of store application */
   constructor(
     private ss: SearchService,
     private snackBar: MatSnackBar,
@@ -56,6 +63,7 @@ export class SearchComponent implements OnInit {
       });
     }
 
+  /** set basic values used to mount component */
   ngOnInit() {
     this.productsList = [
       {
@@ -73,10 +81,10 @@ export class SearchComponent implements OnInit {
 
     this.getCollections();
     this.resetSearch();
-    this.typeSearchRegion = 'coordinates';
     this.rangeTemporal = [];
   }
 
+  /** get available cubes */
   private async getCollections() {
     try {
       const response = await this.ss.getCollections();
@@ -90,6 +98,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  /** search feature/items in BDC-STAC */
   private async searchFeatures(vm: SearchComponent) {
     try {
       vm.store.dispatch(showLoading());
@@ -140,6 +149,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  /** clean fields in the search form */
   private resetSearch() {
     this.searchObj = {
       cube: '',
@@ -156,6 +166,9 @@ export class SearchComponent implements OnInit {
     };
   }
 
+  /** get cube infos by name
+   * @param {string} cube name
+   */
   public async getCollection(name: string) {
     try {
       const response = await this.ss.getCollectionByName(name);
@@ -174,6 +187,7 @@ export class SearchComponent implements OnInit {
     } catch (_) {}
   }
 
+  /** initialize search in selected resources */
   public search() {
     const vm = this;
     this.products.forEach((product: any) => {
@@ -182,10 +196,14 @@ export class SearchComponent implements OnInit {
     });
   }
 
-  public changeStepNav(step) {
+  /** change menu displayed
+   * @param {number} number of the menu displayed
+   */
+  private changeStepNav(step: number) {
     this.stepToEmit.emit(step);
   }
 
+  /** view bounding box in map */
   public previewBbox() {
     this.removeLayerBbox();
     const bounds: LatLngBoundsExpression = [
@@ -203,11 +221,13 @@ export class SearchComponent implements OnInit {
     this.store.dispatch(setPositionMap(newLayers.getBounds()));
   }
 
+  /** remove bounding box of the map */
   public removeLayerBbox() {
     this.layers = this.layers.filter( lyr => lyr['options'].className !== 'previewBbox');
     this.store.dispatch(setLayers(this.layers));
   }
 
+  /** return if exists all selected coordinates */
   public bboxNotEmpty(): boolean {
     return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west;
   }

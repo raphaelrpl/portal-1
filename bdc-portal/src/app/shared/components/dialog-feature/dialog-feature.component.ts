@@ -24,6 +24,7 @@ export class DialogFeatureComponent {
   public feature: Feature;
   /** bands of the cube */
   public bands: object = {};
+  /** bands name */
   public bandsList = [];
   /** file with images links to download */
   public fileUrl: SafeResourceUrl;
@@ -74,6 +75,7 @@ export class DialogFeatureComponent {
     this.file = true;
   }
 
+  /** remove file generated when switching bands */
   changeFilter() {
     this.fileUrl = null;
     this.fileName = '';

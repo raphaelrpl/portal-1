@@ -4,7 +4,7 @@ import { Layer, LatLngBounds } from 'leaflet';
 
 /**
  * set Features in store application
- * @params {Feature[]} list of features
+ * @param {Feature[]} list of features
  */
 export const setFeatures = createAction(
     '[Explore Component] Features',
@@ -13,7 +13,7 @@ export const setFeatures = createAction(
 
 /**
  * set Features od the period (slider) in store application
- * @params {Feature[]} part of a list of features
+ * @param {Feature[]} part of a list of features
  */
 export const setFeaturesPeriod = createAction(
     '[Explore Component] Features By Period',
@@ -22,7 +22,7 @@ export const setFeaturesPeriod = createAction(
 
 /**
  * set Layers enabled in the map
- * @params {Layer[]} list of layers
+ * @param {Layer[]} list of layers
  */
 export const setLayers = createAction(
     '[Map Component] Layers',
@@ -31,7 +31,7 @@ export const setLayers = createAction(
 
 /**
  * set Features in store application
- * @params {string[]}
+ * @param {string[]}
  */
 export const setBands = createAction(
     '[Map Component] Bands',
@@ -40,7 +40,7 @@ export const setBands = createAction(
 
 /**
  * set Opacity Cube in store application
- * @params {String}
+ * @param {String}
  */
 export const setOpacity = createAction(
     '[Map Component] Opacity Layer',
@@ -49,7 +49,7 @@ export const setOpacity = createAction(
 
 /**
  * set position of the map
- * @params {LatLngBounds} latitude and longitude
+ * @param {LatLngBounds} latitude and longitude
  */
 export const setPositionMap = createAction(
     '[Map Component] Position',
@@ -58,7 +58,7 @@ export const setPositionMap = createAction(
 
 /**
  * set Bounding Box selected in search form
- * @params {LatLngBounds} latitude and longitude
+ * @param {LatLngBounds} latitude and longitude
  */
 export const setBbox = createAction(
     '[Map Component] Bounding Box',
@@ -67,7 +67,7 @@ export const setBbox = createAction(
 
 /**
  * set Features in store application
- * @params {Date[]} list of dates to mount step in slider
+ * @param {Date[]} list of dates to mount step in slider
  */
 export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',

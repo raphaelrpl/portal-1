@@ -20,7 +20,7 @@ export class SearchService {
 
     /**
      * get Collection by name
-     * @params {string} collection name
+     * @param {string} collection name
      * @returns promise with collection infos
      */
     public async getCollectionByName(collection: string): Promise<any> {
@@ -31,7 +31,7 @@ export class SearchService {
 
     /**
      * get Features in STAC Search
-     * @params {string} query with params to stac search
+     * @param {string} query with params to stac search
      * @returns promise with features list
      */
     public async searchSTAC(query: string): Promise<any> {

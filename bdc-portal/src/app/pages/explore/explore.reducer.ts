@@ -13,6 +13,7 @@ import {
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
+/** initial values to Explore State */
 const initialState: ExploreState = {
   features: [],
   featuresPeriod: [],
@@ -25,6 +26,10 @@ const initialState: ExploreState = {
   opacity: '1'
 };
 
+/**
+ * reducer to manage explore state
+ * set new values in ExploreState
+ */
 export const reducer = createReducer(initialState,
   on(setFeatures, (state, payload) => {
     return { ...state, features: payload };

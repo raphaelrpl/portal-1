@@ -14,16 +14,25 @@ import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature
   styleUrls: ['./collection.component.scss']
 })
 export class CollectionComponent {
-
+  
+  /** all selected features in the search form */
   public features$: Feature[] = [];
+  /** features by selected period */
   public featuresPeriod$: Feature[] = [];
-  public layers: Layer[];
+  /** selected period in the slider */
   public period: Number;
+  /** value of the opacity cube in the map */
   public opacity = 10;
+  /** status visible opacity box */
   public opacityEnabled = false;
+  /** layers enabled inthe map */
+  private layers: Layer[];
+  /** list of bands */
   private bands: string[];
+  /** range with dates (start-end) of the selected period */
   private range: Date[];
 
+  /** get infos by store application */
   constructor(public dialog: MatDialog,
               private snackBar: MatSnackBar,
               private store: Store<ExploreState>) {
@@ -46,12 +55,17 @@ export class CollectionComponent {
     });
   }
 
-  public getDateFormated(dateStr: string) {
+  /** convert date to USA format 
+   * @param {string} string date 
+   * @return {string} string date (yyyy-mm-dd)
+  */
+  public getDateFormated(dateStr: string): string {
     const dates = dateStr.split('/');
     const startDate = (new Date(dates[0])).toLocaleDateString();
     return `${startDate}`;
   }
 
+  /** enable or disable cube in the map */
   public onChangeLayer(event) {
     if (event.checked) {
       this.featuresPeriod$ = this.featuresPeriod$.map( (f: any) => {
@@ -86,27 +100,36 @@ export class CollectionComponent {
     }
   }
 
+  /** set zoom in the feature/item of the map 
+   * @param {Feature} feature/item STAC
+  */
   public setZoomByFeature(feature: any) {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
+  /** set zoom in the Cube of the map */
   public setZoomByCube() {
     const featuresGeoJson = featureGroup(this.featuresPeriod$.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
+  /** enable or disable opacity box */
   public viewOpacityCube() {
     this.opacityEnabled = !this.opacityEnabled;
   }
 
+  /** set new value to opacity Cube */
   public setOpacityCube() {
     const newOpacity = (this.opacity/10).toString();
     this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
+  /** enable or disable actions box in the feature 
+   * @param {string} feature id
+  */
   public enableFeatureActions(featureId: string) {
     this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
@@ -117,6 +140,9 @@ export class CollectionComponent {
     this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
   }
 
+  /** open dialog with features infos
+   * @param {Feature} feature/item  
+   */
   public viewFeatureDetails(feature: Feature) {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
@@ -128,6 +154,7 @@ export class CollectionComponent {
     });
   }
 
+  /** open dialog with Cube infos */
   public viewCubeDetails() {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',

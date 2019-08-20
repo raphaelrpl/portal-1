@@ -116,7 +116,7 @@ export class MapComponent implements OnInit {
 
   /**
    * get the layer objects from a list of BdcLayer
-   * @params {list} list of BdcLayer with the external base Layers
+   * @param {list} list of BdcLayer with the external base Layers
    */
   private getBaseLayers(listLayers: BdcLayer[]) {
     const vm = this;
@@ -128,7 +128,7 @@ export class MapComponent implements OnInit {
   /**
    * get the layer objects from a list of BdcLayerWFS
    * mount the overlayers with GeoJson's consulted from the Geoserver
-   * @params {list} list of BdcLayerWFS with the grids of the BDC project
+   * @param {list} list of BdcLayerWFS with the grids of the BDC project
    */
   private async mountGridsLayers(listLayersId: BdcLayerWFS[]) {
     try {

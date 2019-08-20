@@ -1,6 +1,6 @@
 /**
  * convert date to string with USA template
- * @params {date} Date object
+ * @param {date} Date object
  * @returns date string
  */
 export function formatDateUSA(date: Date): string {
@@ -14,7 +14,7 @@ export function formatDateUSA(date: Date): string {
 
 /**
  * add on month in date
- * @params {date} Date object
+ * @param {date} Date object
  * @returns date
  */
 export function addMonth(date: Date): Date {
@@ -23,7 +23,7 @@ export function addMonth(date: Date): Date {
 
 /**
  * get last day by month
- * @params {date} Date object
+ * @param {date} Date object
  * @returns day
  */
 export function getLastDateMonth(date: Date): number {

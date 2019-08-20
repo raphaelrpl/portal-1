@@ -23,15 +23,20 @@ export class BoxTimeSeriesComponent {
 
   /** bands of the cube */
   public bands: object = {};
+  /** bands name */
   public listBands: string[];
   /** lat lng of point */
   public latLng: LatLng;
+  /** cube name selected */
   public collection: string;
+  /** type of cube selected (MEDIAN, STACK, ...) */
   public subCollection: string;
+  /** period (start-end) selected in search */
   public rangeTemporal: string[];
 
   /** visible status of the graphic */
   public graphicShow = false;
+  /** properties of graphic */
   public lineChartData: ChartDataSets[] = [];
   public lineChartLabels: Label[] = [];
   public lineChartOptions: (ChartOptions & { annotation: any }) = {} as any;
@@ -133,6 +138,7 @@ export class BoxTimeSeriesComponent {
     }
   }
 
+  /** enable or disabled line tension in the graphic */
   changeLineTension() {
     this.lineChartData = this.lineChartData.map( bandValues => {
       return {...bandValues, lineTension: this.lineTension ? 0.4 : 0};
