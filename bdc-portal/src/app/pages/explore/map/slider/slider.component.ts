@@ -34,6 +34,9 @@ export class SliderComponent {
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       let lastStep = this.steps;
+      let lastFeatures = this.features;
+      let lastType = lastFeatures[0] ? lastFeatures[0]['properties']['bdc:time_aggregation'] : null;
+
       this.steps = [];
       if (res.features) {
         this.features = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
@@ -69,7 +72,10 @@ export class SliderComponent {
         }
 
         setTimeout( _ => {
-          if (this.steps.length !== lastStep.length) {
+          if ((this.steps.length !== lastStep.length) || 
+              (lastFeatures.length !== this.features.length) ||
+              (lastType !== null && this.features[0] && (lastType !== this.features[0]['properties']['bdc:time_aggregation']))
+            ) {
             this.changeValue(new Date(res.rangeTemporal['0']));
           }
         });

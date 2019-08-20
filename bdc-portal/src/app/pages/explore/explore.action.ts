@@ -11,6 +11,10 @@ export const setFeatures = createAction(
     props<Feature[]>()
 );
 
+/**
+ * set Features od the period (slider) in store application
+ * @params {Feature[]} part of a list of features
+ */
 export const setFeaturesPeriod = createAction(
     '[Explore Component] Features By Period',
     props<Feature[]>()
