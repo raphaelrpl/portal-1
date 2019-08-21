@@ -49,7 +49,7 @@
 
         .region__btn-functions {
             display: block;
-            margin: -10px auto 5px auto;
+            margin: -20px auto 5px auto;
         }
     }
 
@@ -65,17 +65,3 @@
         margin: 0 auto;
     }
 }
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-form > mat-form-field {
-    margin-bottom: 36px;
-}
-
-form > * {
-    width: 100%;
-}
-  

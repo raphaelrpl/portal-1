@@ -44,7 +44,7 @@ export class SearchComponent implements OnInit {
   private layers: Layer[];
 
   formSearch: FormGroup;
-  
+
   /** get infos of store application and set group of validators */
   constructor(
     private ss: SearchService,
@@ -206,7 +206,8 @@ export class SearchComponent implements OnInit {
 
   /** initialize search in selected resources */
   public search() {
-    // TODO: validation 
+    // TODO: validation
+    console.log('search')
 
     const vm = this;
     this.products.forEach((product: any) => {
