@@ -58,10 +58,10 @@ export class SearchComponent implements OnInit {
         if (res.bbox) {
           const bbox = Object.values(res.bbox);
           this.searchObj['bbox'] = {
-            north: bbox[0]['lat'],
-            south: bbox[1]['lat'],
-            west: bbox[1]['lng'],
-            east: bbox[0]['lng']
+            north: bbox[1]['lat'],
+            south: bbox[0]['lat'],
+            west: bbox[0]['lng'],
+            east: bbox[1]['lng']
           };
         }
       });
@@ -126,7 +126,7 @@ export class SearchComponent implements OnInit {
       const bbox = Object.values(vm.searchObj['bbox']);
       let query = `type=${vm.searchObj['types']}`;
       query += `&collections=${vm.searchObj['cube']}`;
-      query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
+      query += `&bbox=${bbox[2]},${bbox[1]},${bbox[3]},${bbox[0]}`;
       query += `&time=${formatDateUSA(startDate)}`;
       query += `/${formatDateUSA(lastDate)}`;
       query += `&limit=10000`;
