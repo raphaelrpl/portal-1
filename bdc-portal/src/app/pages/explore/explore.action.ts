@@ -27,6 +27,14 @@ export const setLayers = createAction(
 );
 
 /**
+ * set Grid enabled in the map
+ */
+export const setGrid = createAction(
+    '[Map Component] Grid',
+    props()
+);
+
+/**
  * set Features in store application
  */
 export const setBands = createAction(

@@ -9,7 +9,7 @@ import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   showLoading, closeLoading, setLayers, setPositionMap,
-  setRangeTemporal, setFeatures, setBands
+  setRangeTemporal, setFeatures, setBands, setGrid
 } from '../../explore.action';
 
 /**
@@ -200,6 +200,9 @@ export class SearchComponent implements OnInit {
         t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => t.name));
       // set bands
       this.store.dispatch(setBands(response.properties['bdc:bands']));
+      // set wrs/grid
+      const wrs = response['properties']['bdc:wrs']
+      this.store.dispatch(setGrid({grid: wrs}));
 
     } catch (_) {}
   }

@@ -84,36 +84,38 @@ export class SliderComponent {
   }
 
   /** select the features by value selected in slider */
-  public changeValue(startDate) {
+  public changeValue(startDate: Date) {
     // remove features ploted in map
     const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
     this.store.dispatch(setLayers(newLayers));
 
     // filter new features
     // TODO:
-    const thisDate = this.value ? new Date(this.value) : startDate;
-    const startPeriod = new Date(thisDate.setMonth(thisDate.getMonth()));
-    const endPeriod = addMonth(thisDate);
+    const actualDate = this.value ? new Date(this.value) : startDate;
+    if (actualDate) {
+      const startPeriod = new Date(actualDate.setMonth(actualDate.getMonth()));
+      const endPeriod = addMonth(actualDate);
 
-    const featSelected = this.features.filter(feat => {
-      return new Date(feat.properties['datetime']) >= startPeriod && new Date(feat.properties['datetime']) < endPeriod;
-    });
+      const featSelected = this.features.filter(feat => {
+        return new Date(feat.properties['datetime']) >= startPeriod && new Date(feat.properties['datetime']) < endPeriod;
+      });
 
-    // plot new features
-    const featSelectedEdited = featSelected.map( (f: any) => {
-      const featureGeoJson = geoJSON(f);
-      const bounds = featureGeoJson.getBounds();
-      const newlayer = imageOverlay(f.assets.thumbnail.href, bounds, {
-        alt: `qls_${f.id}`
-      }).setZIndex(999);
+      // plot new features
+      const featSelectedEdited = featSelected.map( (f: any) => {
+        const featureGeoJson = geoJSON(f);
+        const bounds = featureGeoJson.getBounds();
+        const newlayer = imageOverlay(f.assets.thumbnail.href, bounds, {
+          alt: `qls_${f.id}`
+        }).setZIndex(999);
 
-      if (this.actived) {
-        this.layers.push(newlayer);
-        this.store.dispatch(setLayers(this.layers));
-      }
-      return {...f, enabled: this.actived};
-    });
-    this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+        if (this.actived) {
+          this.layers.push(newlayer);
+          this.store.dispatch(setLayers(this.layers));
+        }
+        return {...f, enabled: this.actived};
+      });
+      this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+    }
   }
 
 }

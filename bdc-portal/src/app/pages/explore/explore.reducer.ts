@@ -9,7 +9,8 @@ import {
   setFeatures,
   setBands,
   setFeaturesPeriod,
-  setOpacity
+  setOpacity,
+  setGrid
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -19,6 +20,7 @@ const initialState: ExploreState = {
   featuresPeriod: [],
   layers: [],
   bands: [],
+  grid: '',
   positionMap: null,
   loading: false,
   bbox: null,
@@ -42,6 +44,9 @@ export const reducer = createReducer(initialState,
   }),
   on(setBands, (state, payload) => {
     return { ...state, bands: payload };
+  }),
+  on(setGrid, (state, payload) => {
+    return { ...state, grid: payload['grid'].toString() };
   }),
   on(setPositionMap, (state, payload) => {
     return { ...state, positionMap: payload };

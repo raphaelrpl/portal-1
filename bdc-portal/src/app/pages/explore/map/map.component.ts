@@ -74,6 +74,9 @@ export class MapComponent implements OnInit {
           this.bbox = res.positionMap;
           this.setPosition(res.positionMap);
         }
+        if (res.grid !== '' && this.overlayers.filter(l => l.enabled === true)[0].id !== res.grid) {
+          this.setGrid(res.grid);
+        }
       });
   }
 
@@ -203,6 +206,16 @@ export class MapComponent implements OnInit {
   /** set position of the Map */
   private setPosition(bounds: LatLngBoundsExpression) {
     this.map.fitBounds(Object.values(bounds).slice(0, 2));
+  }
+
+  /** set grid of the Map */
+  private setGrid(grid) {
+    this.overlayers = this.overlayers.map( l => {
+      return {...l, enabled: l.id === grid}
+    });
+    setTimeout(() => {
+      this.applyLayersInMap();
+    }, 100);
   }
 
   /** set Draw control of the map */

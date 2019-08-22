@@ -9,6 +9,8 @@ export interface ExploreState {
     readonly featuresPeriod: Feature[];
     /** layers visible in the map */
     readonly layers: Layer[];
+    /** grid name displayed in the map */
+    readonly grid: string;
     /** bands of the selected cube */
     readonly bands: string[];
     /** bounding box of the map */
