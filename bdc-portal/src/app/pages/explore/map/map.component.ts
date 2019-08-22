@@ -6,6 +6,8 @@ import { GeoJsonObject } from 'geojson';
 import * as L from 'leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.js';
 import 'src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.min.js';
+import 'esri-leaflet/dist/esri-leaflet.js';
+import * as LE from 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js';
 
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
@@ -64,13 +66,16 @@ export class MapComponent implements OnInit {
               if (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') >= 0) {
                 lyr.setOpacity(opacity);
               }
-              return lyr
-            })
+              return lyr;
+            });
           }
         }
         if (res.positionMap && res.positionMap !== this.bbox) {
           this.bbox = res.positionMap;
           this.setPosition(res.positionMap);
+        }
+        if (res.grid !== '' && this.overlayers.filter(l => l.enabled === true)[0].id !== res.grid) {
+          this.setGrid(res.grid);
         }
       });
   }
@@ -114,7 +119,6 @@ export class MapComponent implements OnInit {
 
   /**
    * get the layer objects from a list of BdcLayer
-   * @params {list} list of BdcLayer with the external base Layers
    */
   private getBaseLayers(listLayers: BdcLayer[]) {
     const vm = this;
@@ -126,7 +130,6 @@ export class MapComponent implements OnInit {
   /**
    * get the layer objects from a list of BdcLayerWFS
    * mount the overlayers with GeoJson's consulted from the Geoserver
-   * @params {list} list of BdcLayerWFS with the grids of the BDC project
    */
   private async mountGridsLayers(listLayersId: BdcLayerWFS[]) {
     try {
@@ -139,12 +142,11 @@ export class MapComponent implements OnInit {
         const layerGeoJson = geoJSON(
           responseGeoJson,
           {
-            onEachFeature: (feat, layer) => {
-              const lyr = (layer) as any;
+            onEachFeature: (feat, lyr) => {
               if (feat.geometry.type === 'MultiPolygon' || feat.geometry.type === 'Polygon') {
                 if (this.tilesUsed && this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
                   // apply style
-                  lyr.setStyle({
+                  (lyr as any).setStyle({
                     color: '#0033cc',
                     weight: 2,
                     fillColor: '#009999',
@@ -152,7 +154,7 @@ export class MapComponent implements OnInit {
                   });
 
                 } else {
-                  lyr.setStyle({
+                  (lyr as any).setStyle({
                     color: '#0033CC',
                     weight: 1,
                     fillOpacity: 0.2
@@ -204,6 +206,16 @@ export class MapComponent implements OnInit {
   /** set position of the Map */
   private setPosition(bounds: LatLngBoundsExpression) {
     this.map.fitBounds(Object.values(bounds).slice(0, 2));
+  }
+
+  /** set grid of the Map */
+  private setGrid(grid) {
+    this.overlayers = this.overlayers.map( l => {
+      return {...l, enabled: l.id === grid}
+    });
+    setTimeout(() => {
+      this.applyLayersInMap();
+    }, 100);
   }
 
   /** set Draw control of the map */
@@ -258,15 +270,39 @@ export class MapComponent implements OnInit {
   /** set Coordinates options in the map */
   setCoordinatesControl() {
     (L.control as any).coordinates({
-      position: "bottomleft",
+      position: 'bottomleft',
       decimals: 5,
-      decimalSeperator: ".",
-      labelTemplateLat:"Lat: {y}",
-      labelTemplateLng:"| Lng: {x}",
+      decimalSeperator: '.',
+      labelTemplateLat: 'Lat: {y}',
+      labelTemplateLng: '| Lng: {x}',
       enableUserInput: false,
       useDMS: false,
       useLatLngOrder: true,
     }).addTo(this.map);
+  }
+
+  /** set Geocoder options in the map */
+  setGeocoderControl() {
+    const searchControl = LE.geosearch().addTo(this.map);
+    const vm = this;
+
+    searchControl.on('results', data => {
+      vm.layers$ = vm.layers$.filter( lyr => lyr['options'].className !== 'previewBbox');
+      vm.store.dispatch(setLayers(vm.layers$));
+
+      for (let i = data.results.length - 1; i >= 0; i--) {
+        const newLayers = rectangle(data.results[i].bounds, {
+          color: '#666',
+          weight: 1,
+          className: 'previewBbox',
+        });
+
+        vm.layers$.push(newLayers);
+        vm.store.dispatch(setLayers(vm.layers$));
+        vm.store.dispatch(setBbox(newLayers.getBounds()));
+        vm.store.dispatch(setPositionMap(newLayers.getBounds()));
+      }
+    });
   }
 
   /** event used when change Map */
@@ -275,5 +311,6 @@ export class MapComponent implements OnInit {
     this.setFullscreenControl();
     this.setDrawControl();
     this.setCoordinatesControl();
+    this.setGeocoderControl();
   }
 }

@@ -31,7 +31,7 @@ import { SidenavComponent } from './sidenav/sidenav.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { SearchComponent } from './sidenav/search/search.component';
 import { TimeSeriesComponent } from './map/timeSeries/timeSeries.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollectionComponent } from './sidenav/collection/collection.component';
 import { StoreModule } from '@ngrx/store';
 import { Ng5SliderModule } from 'ng5-slider';
@@ -73,6 +73,7 @@ import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
     MatBottomSheetModule,
     MatInputModule,
     FormsModule,
+    ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
     MatSlideToggleModule,

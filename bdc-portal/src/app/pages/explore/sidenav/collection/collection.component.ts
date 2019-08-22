@@ -15,15 +15,24 @@ import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature
 })
 export class CollectionComponent {
 
+  /** all selected features in the search form */
   public features$: Feature[] = [];
+  /** features by selected period */
   public featuresPeriod$: Feature[] = [];
-  public layers: Layer[];
-  public period: Number;
+  /** selected period in the slider */
+  public period: number;
+  /** value of the opacity cube in the map */
   public opacity = 10;
+  /** status visible opacity box */
   public opacityEnabled = false;
+  /** layers enabled inthe map */
+  private layers: Layer[];
+  /** list of bands */
   private bands: string[];
+  /** range with dates (start-end) of the selected period */
   private range: Date[];
 
+  /** get infos by store application */
   constructor(public dialog: MatDialog,
               private snackBar: MatSnackBar,
               private store: Store<ExploreState>) {
@@ -46,12 +55,14 @@ export class CollectionComponent {
     });
   }
 
-  public getDateFormated(dateStr: string) {
+  /** convert date to USA format */
+  public getDateFormated(dateStr: string): string {
     const dates = dateStr.split('/');
     const startDate = (new Date(dates[0])).toLocaleDateString();
     return `${startDate}`;
   }
 
+  /** enable or disable cube in the map */
   public onChangeLayer(event) {
     if (event.checked) {
       this.featuresPeriod$ = this.featuresPeriod$.map( (f: any) => {
@@ -86,27 +97,32 @@ export class CollectionComponent {
     }
   }
 
+  /** set zoom in the feature/item of the map */
   public setZoomByFeature(feature: any) {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
+  /** set zoom in the Cube of the map */
   public setZoomByCube() {
     const featuresGeoJson = featureGroup(this.featuresPeriod$.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
+  /** enable or disable opacity box */
   public viewOpacityCube() {
     this.opacityEnabled = !this.opacityEnabled;
   }
 
+  /** set new value to opacity Cube */
   public setOpacityCube() {
-    const newOpacity = (this.opacity/10).toString();
+    const newOpacity = (this.opacity / 10).toString();
     this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
+  /** enable or disable actions box in the feature */
   public enableFeatureActions(featureId: string) {
     this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
@@ -117,17 +133,19 @@ export class CollectionComponent {
     this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
   }
 
+  /** open dialog with features infos */
   public viewFeatureDetails(feature: Feature) {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
       height: '550px',
       data: {
-        feature: feature,
+        feature,
         bands: this.bands
       }
     });
   }
 
+  /** open dialog with Cube infos */
   public viewCubeDetails() {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',

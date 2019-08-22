@@ -58,4 +58,4 @@ export const colorsByBand = {
         borderColor: '#666633',
         backgroundColor: 'rgba(0,0,0,0)'
     }
-}
+};

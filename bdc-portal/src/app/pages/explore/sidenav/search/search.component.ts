@@ -1,19 +1,20 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material';
 import { Store, select } from '@ngrx/store';
+import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   showLoading, closeLoading, setLayers, setPositionMap,
-  setRangeTemporal, setFeatures, setBands
+  setRangeTemporal, setFeatures, setBands, setGrid
 } from '../../explore.action';
-import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
-import { MatSnackBar } from '@angular/material';
 
 /**
  * component to search data of the BDC project
- * * search => STAC and WMS
+ * search => STAC and WMS
  */
 @Component({
   selector: 'app-search',
@@ -22,24 +23,34 @@ import { MatSnackBar } from '@angular/material';
 })
 export class SearchComponent implements OnInit {
 
+  /** emit event to sidenav */
   @Output() stepToEmit = new EventEmitter();
 
+  /** Existing resources */
   public productsList: object[];
+  /** selected resources by user */
   public products: string[];
+  /** available cubes */
   public collections: string[];
-  public typeSearchRegion: string;
+  /** range with dates to search */
   public rangeTemporal: Date[];
-  public typesCollection: string[];
-  public searchObj: object;
-
-  public filterTemporal: Date[];
+  /** range with dates avalaible by selected cube */
   public rangeTemporalEnabled: Date[];
-  public layers: Layer[];
+  /** cubes type */
+  public typesCollection: string[];
+  /** infos with parameters to search Cube */
+  public searchObj: object;
+  /** layers enabled in the map */
+  private layers: Layer[];
 
+  formSearch: FormGroup;
+
+  /** get infos of store application and set group of validators */
   constructor(
     private ss: SearchService,
     private snackBar: MatSnackBar,
-    private store: Store<ExploreState>) {
+    private store: Store<ExploreState>,
+    private fb: FormBuilder) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
           this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
@@ -47,15 +58,28 @@ export class SearchComponent implements OnInit {
         if (res.bbox) {
           const bbox = Object.values(res.bbox);
           this.searchObj['bbox'] = {
-            north: bbox[0]['lat'],
-            south: bbox[1]['lat'],
-            west: bbox[1]['lng'],
-            east: bbox[0]['lng']
+            north: bbox[1]['lat'],
+            south: bbox[0]['lat'],
+            west: bbox[0]['lng'],
+            east: bbox[1]['lng']
           };
         }
       });
+
+      this.formSearch = this.fb.group({
+        products: ['', [Validators.required]],
+        cube: ['', [Validators.required]],
+        north: ['', [Validators.required]],
+        west: ['', [Validators.required]],
+        east: ['', [Validators.required]],
+        south: ['', [Validators.required]],
+        start_date: ['', [Validators.required]],
+        last_date: ['', [Validators.required]],
+        type: ['', [Validators.required]]
+      })
     }
 
+  /** set basic values used to mount component */
   ngOnInit() {
     this.productsList = [
       {
@@ -73,10 +97,10 @@ export class SearchComponent implements OnInit {
 
     this.getCollections();
     this.resetSearch();
-    this.typeSearchRegion = 'coordinates';
     this.rangeTemporal = [];
   }
 
+  /** get available cubes */
   private async getCollections() {
     try {
       const response = await this.ss.getCollections();
@@ -90,6 +114,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  /** search feature/items in BDC-STAC */
   private async searchFeatures(vm: SearchComponent) {
     try {
       vm.store.dispatch(showLoading());
@@ -101,7 +126,7 @@ export class SearchComponent implements OnInit {
       const bbox = Object.values(vm.searchObj['bbox']);
       let query = `type=${vm.searchObj['types']}`;
       query += `&collections=${vm.searchObj['cube']}`;
-      query += `&bbox=${bbox[3]},${bbox[0]},${bbox[2]},${bbox[1]}`;
+      query += `&bbox=${bbox[2]},${bbox[1]},${bbox[3]},${bbox[0]}`;
       query += `&time=${formatDateUSA(startDate)}`;
       query += `/${formatDateUSA(lastDate)}`;
       query += `&limit=10000`;
@@ -140,6 +165,7 @@ export class SearchComponent implements OnInit {
     }
   }
 
+  /** clean fields in the search form */
   private resetSearch() {
     this.searchObj = {
       cube: '',
@@ -156,6 +182,9 @@ export class SearchComponent implements OnInit {
     };
   }
 
+  /**
+   * get cube infos by name
+   */
   public async getCollection(name: string) {
     try {
       const response = await this.ss.getCollectionByName(name);
@@ -167,25 +196,44 @@ export class SearchComponent implements OnInit {
         new Date(times[1])
       ];
       // set collection types
-      this.typesCollection = response.properties['bdc:time_aggregations'].filter(t => t.name !== "SCENE" && t.name !== "MERGED").map((t => t.name));
+      this.typesCollection = response.properties['bdc:time_aggregations'].filter(
+        t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => t.name));
       // set bands
       this.store.dispatch(setBands(response.properties['bdc:bands']));
+      // set wrs/grid
+      const wrs = response['properties']['bdc:wrs']
+      this.store.dispatch(setGrid({grid: wrs}));
 
     } catch (_) {}
   }
 
+  /** initialize search in selected resources */
   public search() {
-    const vm = this;
-    this.products.forEach((product: any) => {
-      const productObj = this.productsList.filter(p => p['title'] === product);
-      productObj[0]['searchFunction'](vm);
-    });
+    if (this.formSearch.status !== 'VALID') {
+      this.changeStepNav(0);
+      this.snackBar.open('Fill in all fields correctly!', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+
+    } else {
+      const vm = this;
+      this.products.forEach((product: any) => {
+        const productObj = this.productsList.filter(p => p['title'] === product);
+        productObj[0]['searchFunction'](vm);
+      });
+    }
   }
 
-  public changeStepNav(step) {
+  /**
+   * change menu displayed
+   */
+  private changeStepNav(step: number) {
     this.stepToEmit.emit(step);
   }
 
+  /** view bounding box in map */
   public previewBbox() {
     this.removeLayerBbox();
     const bounds: LatLngBoundsExpression = [
@@ -203,11 +251,13 @@ export class SearchComponent implements OnInit {
     this.store.dispatch(setPositionMap(newLayers.getBounds()));
   }
 
+  /** remove bounding box of the map */
   public removeLayerBbox() {
     this.layers = this.layers.filter( lyr => lyr['options'].className !== 'previewBbox');
     this.store.dispatch(setLayers(this.layers));
   }
 
+  /** return if exists all selected coordinates */
   public bboxNotEmpty(): boolean {
     return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west;
   }

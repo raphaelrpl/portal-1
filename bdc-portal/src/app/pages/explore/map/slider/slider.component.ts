@@ -21,7 +21,7 @@ export class SliderComponent {
   /** all features */
   private features: Feature[] = [];
   /** status cube - actived ou disactived */
-  private actived: Boolean;
+  private actived: boolean;
   /** steps - list dates to mount slider */
   public steps: Date[] = [];
   /** position selected in slider - actual date */
@@ -33,7 +33,10 @@ export class SliderComponent {
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
-      let lastStep = this.steps;
+      const lastStep = this.steps;
+      const lastFeatures = this.features;
+      const lastType = lastFeatures[0] ? lastFeatures[0]['properties']['bdc:time_aggregation'] : null;
+
       this.steps = [];
       if (res.features) {
         this.features = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
@@ -66,10 +69,13 @@ export class SliderComponent {
           translate: (value: number, _: LabelType): string => {
             return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
           }
-        }
+        };
 
         setTimeout( _ => {
-          if (this.steps.length !== lastStep.length) {
+          if ((this.steps.length !== lastStep.length) ||
+              (lastFeatures.length !== this.features.length) ||
+              (lastType !== null && this.features[0] && (lastType !== this.features[0]['properties']['bdc:time_aggregation']))
+            ) {
             this.changeValue(new Date(res.rangeTemporal['0']));
           }
         });
@@ -78,36 +84,38 @@ export class SliderComponent {
   }
 
   /** select the features by value selected in slider */
-  public changeValue(startDate) {
+  public changeValue(startDate: Date) {
     // remove features ploted in map
     const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
     this.store.dispatch(setLayers(newLayers));
 
     // filter new features
     // TODO:
-    const thisDate = this.value ? new Date(this.value) : startDate;
-    let startPeriod = new Date(thisDate.setMonth(thisDate.getMonth()));
-    const endPeriod = addMonth(thisDate);
+    const actualDate = this.value ? new Date(this.value) : startDate;
+    if (actualDate) {
+      const startPeriod = new Date(actualDate.setMonth(actualDate.getMonth()));
+      const endPeriod = addMonth(actualDate);
 
-    const featSelected = this.features.filter(feat => {
-      return new Date(feat.properties['datetime']) >= startPeriod && new Date(feat.properties['datetime']) < endPeriod;
-    });
+      const featSelected = this.features.filter(feat => {
+        return new Date(feat.properties['datetime']) >= startPeriod && new Date(feat.properties['datetime']) < endPeriod;
+      });
 
-    // plot new features
-    const featSelectedEdited = featSelected.map( (f: any) => {
-      const featureGeoJson = geoJSON(f);
-      const bounds = featureGeoJson.getBounds();
-      const newlayer = imageOverlay(f.assets.thumbnail.href, bounds, {
-        alt: `qls_${f.id}`
-      }).setZIndex(999);
+      // plot new features
+      const featSelectedEdited = featSelected.map( (f: any) => {
+        const featureGeoJson = geoJSON(f);
+        const bounds = featureGeoJson.getBounds();
+        const newlayer = imageOverlay(f.assets.thumbnail.href, bounds, {
+          alt: `qls_${f.id}`
+        }).setZIndex(999);
 
-      if (this.actived) {
-        this.layers.push(newlayer);
-        this.store.dispatch(setLayers(this.layers));
-      }
-      return {...f, enabled: this.actived}
-    });
-    this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+        if (this.actived) {
+          this.layers.push(newlayer);
+          this.store.dispatch(setLayers(this.layers));
+        }
+        return {...f, enabled: this.actived};
+      });
+      this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+    }
   }
 
 }

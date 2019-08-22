@@ -1,43 +1,22 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { ValidationErrors } from '@angular/forms';
 
+/**
+ * Field Errors
+ * component to display errors and valid fileds in forms
+ */
 @Component({
-  selector: 'app-form-field-error',
+  selector: 'form-field-error',
   templateUrl: './form-field-error.component.html',
-  styleUrls: ['./form-field-error.component.scss']
+  styleUrls: ['./form-field-error.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FormFieldErrorComponent implements OnInit {
 
-  @Input('form-control') formControl: FormControl;
+  @Input() errorPrefix: string;
+  @Input() errors: ValidationErrors;
+  
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  public get errorMessage(): string | null {
-    if (this.mustShowErrorMessage()) {
-      return this.getErrorMessage();
-    } else {
-      return null;
-    }
-  }
-
-  private mustShowErrorMessage(): boolean {
-    return this.formControl.invalid && this.formControl.touched;
-  }
-
-  private getErrorMessage(): string | null {
-    if (this.formControl.errors.required) {
-      return 'dado obrigatório';
-    } else if (this.formControl.errors.email) {
-      return 'formato de email inválido';
-    } else if (this.formControl.errors.minlength) {
-      const requiredLength = this.formControl.errors.minlength.requiredLength;
-      return `deve ter no mínimo ${requiredLength} caracteres`;
-    } else if (this.formControl.errors.maxlength) {
-      const requiredLength = this.formControl.errors.maxlength.requiredLength;
-      return `deve ter no máximo ${requiredLength} caracteres`;
-    }
-  }
+  ngOnInit() {}
 }

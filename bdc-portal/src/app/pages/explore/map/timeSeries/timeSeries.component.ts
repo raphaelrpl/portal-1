@@ -8,7 +8,7 @@ import { Marker, Layer, LatLngBounds, LatLng } from 'leaflet';
 import { setLayers } from '../../explore.action';
 
 /**
- * Map TimeSeries component
+ * Map initial TimeSeries component
  * component to active time series of the cube
  */
 @Component({
@@ -18,13 +18,16 @@ import { setLayers } from '../../explore.action';
 })
 export class TimeSeriesComponent {
 
+  /** status of the activation function in the map */
   public actived = false;
+  /** features selected in search */
   public features$: Feature[] = [];
   /** visible layers in the map */
   private layers: Layer[];
-  /** center of map */
+  /** center (lat/lng) of map */
   private center: LatLng;
 
+  /** select data of the store application */
   constructor(
     private bottomSheet: MatBottomSheet,
     private store: Store<ExploreState>) {
@@ -42,6 +45,7 @@ export class TimeSeriesComponent {
     });
   }
 
+  /** active function in the map */
   public active() {
     if (!this.actived) {
       this.actived = true;
@@ -54,14 +58,15 @@ export class TimeSeriesComponent {
     }
   }
 
-  public showBox() {
-    this.bottomSheet.open(BoxTimeSeriesComponent);
-  }
-
+  /** disabled function in the map */
   public desactive() {
     const newLayers = this.layers.filter( lyr => lyr['options'].alt !== 'timeSeries');
     this.store.dispatch(setLayers(newLayers));
     this.actived = false;
   }
 
+  /** active box with graphic in the window */
+  public showBox() {
+    this.bottomSheet.open(BoxTimeSeriesComponent);
+  }
 }

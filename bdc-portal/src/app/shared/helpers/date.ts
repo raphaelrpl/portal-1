@@ -1,7 +1,5 @@
 /**
  * convert date to string with USA template
- * @params {date} Date object
- * @returns date string
  */
 export function formatDateUSA(date: Date): string {
     let month: string = (date.getMonth() + 1).toString();
@@ -14,17 +12,13 @@ export function formatDateUSA(date: Date): string {
 
 /**
  * add on month in date
- * @params {date} Date object
- * @returns date
  */
 export function addMonth(date: Date): Date {
-    return new Date(date.setMonth(date.getMonth() + 1))
+    return new Date(date.setMonth(date.getMonth() + 1));
 }
 
 /**
  * get last day by month
- * @params {date} Date object
- * @returns day
  */
 export function getLastDateMonth(date: Date): number {
     const nextMonth = addMonth(new Date(date.setDate(1)));
