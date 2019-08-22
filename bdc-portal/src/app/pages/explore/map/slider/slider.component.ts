@@ -5,7 +5,7 @@ import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
 import { setFeaturesPeriod, setLayers } from '../../explore.action';
 import { Layer, imageOverlay, geoJSON } from 'leaflet';
-import { addMonth } from 'src/app/shared/helpers/date';
+import { addMonth, addDays } from 'src/app/shared/helpers/date';
 
 /**
  * Map Slider component
@@ -30,11 +30,16 @@ export class SliderComponent {
   public options: Options = {};
   /** layers/features visibled in the map */
   public layers: Layer[];
+  /** temporal schema of the selected cube */
+  private tschema: string;
+  /** temporal step of the selected cube */
+  private tstep: string;
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       const lastStep = this.steps;
       const lastFeatures = this.features;
+      const lastTSchema = this.tschema;
       const lastType = lastFeatures[0] ? lastFeatures[0]['properties']['bdc:time_aggregation'] : null;
 
       this.steps = [];
@@ -49,14 +54,21 @@ export class SliderComponent {
         this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
       }
       if (Object.values(res.rangeTemporal).length) {
+        this.tschema = res.tschema
+        this.tstep = res.tstep
+
         // mount list with dates
-        let startDate = new Date(res.rangeTemporal['0']);
+        let startDate = this.tschema.toLocaleLowerCase() === 'm' ?
+          new Date(res.rangeTemporal['0']) :
+          new Date(this.features[0]['properties']['datetime']);
         const lastDate = new Date(res.rangeTemporal['1']);
         while (startDate <= lastDate) {
           this.steps.push(startDate);
-          startDate = addMonth(startDate);
+          startDate = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(startDate) : addDays(startDate, parseInt(this.tstep));
         }
-        this.steps.unshift(new Date(res.rangeTemporal['0']));
+        this.steps.unshift(this.tschema.toLocaleLowerCase() === 'm' ?
+          new Date(res.rangeTemporal['0']) :
+          new Date(this.features[0]['properties']['datetime']));
         this.steps.pop();
 
         // update infos to display
@@ -67,14 +79,19 @@ export class SliderComponent {
             return { value: date.getTime() };
           }),
           translate: (value: number, _: LabelType): string => {
-            return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
+            if (this.tschema.toLocaleLowerCase() !== 'm') {
+              return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}-${new Date(value).getDate()}`;
+            } else {
+              return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
+            }
           }
         };
 
         setTimeout( _ => {
           if ((this.steps.length !== lastStep.length) ||
               (lastFeatures.length !== this.features.length) ||
-              (lastType !== null && this.features[0] && (lastType !== this.features[0]['properties']['bdc:time_aggregation']))
+              (lastType !== null && this.features[0] && (lastType !== this.features[0]['properties']['bdc:time_aggregation'])) ||
+              (lastTSchema !== this.tschema)
             ) {
             this.changeValue(new Date(res.rangeTemporal['0']));
           }
@@ -90,12 +107,13 @@ export class SliderComponent {
     this.store.dispatch(setLayers(newLayers));
 
     // filter new features
-    // TODO:
     const actualDate = this.value ? new Date(this.value) : startDate;
     if (actualDate) {
+      // get start / date by period
       const startPeriod = new Date(actualDate.setMonth(actualDate.getMonth()));
-      const endPeriod = addMonth(actualDate);
+      const endPeriod = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(actualDate) : addDays(actualDate, parseInt(this.tstep));
 
+      // apply filter
       const featSelected = this.features.filter(feat => {
         return new Date(feat.properties['datetime']) >= startPeriod && new Date(feat.properties['datetime']) < endPeriod;
       });

@@ -21,6 +21,10 @@ export interface ExploreState {
     readonly bbox: LatLngBoundsExpression;
     /** opacity of the cube */
     readonly opacity: string;
+    /** tempral schema of the cube */
+    readonly tschema: string;
+    /** temporal step of the cube */
+    readonly tstep: number;
     /** status visible - loading component */
     readonly loading: boolean;
 }

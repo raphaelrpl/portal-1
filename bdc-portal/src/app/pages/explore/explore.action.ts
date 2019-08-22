@@ -51,6 +51,23 @@ export const setOpacity = createAction(
 );
 
 /**
+ * set temporal schema of the Cube in store application
+ */
+export const setTSchema = createAction(
+    '[Map Component] Temporal Schema',
+    props()
+);
+
+/**
+ * set temporal step of the Cube in store application
+ */
+export const setTStep = createAction(
+    '[Map Component] Temporal Step',
+    props()
+);
+
+
+/**
  * set position of the map
  */
 export const setPositionMap = createAction(
@@ -74,12 +91,16 @@ export const setRangeTemporal = createAction(
     props<Date[]>()
 );
 
-/** set loading as true */
+/**
+ * set loading as true
+ */
 export const showLoading = createAction(
     '[Loading Component] showLoading'
 );
 
-/** set loading as false */
+/**
+ * set loading as false
+ */
 export const closeLoading = createAction(
     '[Loading Component] closeLoading'
 );

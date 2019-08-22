@@ -9,7 +9,7 @@ import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   showLoading, closeLoading, setLayers, setPositionMap,
-  setRangeTemporal, setFeatures, setBands, setGrid
+  setRangeTemporal, setFeatures, setBands, setGrid, setTStep, setTSchema
 } from '../../explore.action';
 
 /**
@@ -43,9 +43,16 @@ export class SearchComponent implements OnInit {
   /** layers enabled in the map */
   private layers: Layer[];
 
-  formSearch: FormGroup;
+  private bands: string[];
+  private grid: string[];
+  private tschema: string;
+  private tstep: string;
 
-  /** get infos of store application and set group of validators */
+  public formSearch: FormGroup;
+
+  /**
+   * get infos of store application and set group of validators
+   */
   constructor(
     private ss: SearchService,
     private snackBar: MatSnackBar,
@@ -79,7 +86,9 @@ export class SearchComponent implements OnInit {
       })
     }
 
-  /** set basic values used to mount component */
+  /**
+   * set basic values used to mount component
+   */
   ngOnInit() {
     this.productsList = [
       {
@@ -100,7 +109,9 @@ export class SearchComponent implements OnInit {
     this.rangeTemporal = [];
   }
 
-  /** get available cubes */
+  /**
+   * get available cubes
+   */
   private async getCollections() {
     try {
       const response = await this.ss.getCollections();
@@ -114,7 +125,9 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  /** search feature/items in BDC-STAC */
+  /**
+   * search feature/items in BDC-STAC
+   */
   private async searchFeatures(vm: SearchComponent) {
     try {
       vm.store.dispatch(showLoading());
@@ -133,6 +146,10 @@ export class SearchComponent implements OnInit {
 
       const response = await vm.ss.searchSTAC(query);
       if (response.features.length > 0) {
+        vm.store.dispatch(setBands(vm.bands));
+        vm.store.dispatch(setTSchema({tschema: vm.tschema}));
+        vm.store.dispatch(setTStep({tstep: vm.tstep || 0}));
+        vm.store.dispatch(setGrid({grid: vm.grid}));
         vm.store.dispatch(setRangeTemporal([
           startDate,
           lastDate
@@ -165,7 +182,9 @@ export class SearchComponent implements OnInit {
     }
   }
 
-  /** clean fields in the search form */
+  /**
+   * clean fields in the search form
+   */
   private resetSearch() {
     this.searchObj = {
       cube: '',
@@ -199,15 +218,19 @@ export class SearchComponent implements OnInit {
       this.typesCollection = response.properties['bdc:time_aggregations'].filter(
         t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => t.name));
       // set bands
-      this.store.dispatch(setBands(response.properties['bdc:bands']));
+      this.bands = response.properties['bdc:bands'];
       // set wrs/grid
-      const wrs = response['properties']['bdc:wrs']
-      this.store.dispatch(setGrid({grid: wrs}));
+      this.grid = response['properties']['bdc:wrs'];
+      // set temporal schema and temporal step if monthly
+      this.tschema = response['properties']['bdc:tschema']
+      this.tstep = response['properties']['bdc:tstep']
 
     } catch (_) {}
   }
 
-  /** initialize search in selected resources */
+  /**
+   * initialize search in selected resources
+   */
   public search() {
     if (this.formSearch.status !== 'VALID') {
       this.changeStepNav(0);
@@ -233,7 +256,9 @@ export class SearchComponent implements OnInit {
     this.stepToEmit.emit(step);
   }
 
-  /** view bounding box in map */
+  /**
+   * view bounding box in map
+   */
   public previewBbox() {
     this.removeLayerBbox();
     const bounds: LatLngBoundsExpression = [
@@ -251,13 +276,17 @@ export class SearchComponent implements OnInit {
     this.store.dispatch(setPositionMap(newLayers.getBounds()));
   }
 
-  /** remove bounding box of the map */
+  /**
+   * remove bounding box of the map
+   */
   public removeLayerBbox() {
     this.layers = this.layers.filter( lyr => lyr['options'].className !== 'previewBbox');
     this.store.dispatch(setLayers(this.layers));
   }
 
-  /** return if exists all selected coordinates */
+  /**
+   * return if exists all selected coordinates
+   */
   public bboxNotEmpty(): boolean {
     return this.searchObj['bbox'].north && this.searchObj['bbox'].south && this.searchObj['bbox'].east && this.searchObj['bbox'].west;
   }

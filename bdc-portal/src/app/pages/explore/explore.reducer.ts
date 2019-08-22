@@ -10,7 +10,9 @@ import {
   setBands,
   setFeaturesPeriod,
   setOpacity,
-  setGrid
+  setGrid,
+  setTSchema,
+  setTStep
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -24,6 +26,8 @@ const initialState: ExploreState = {
   positionMap: null,
   loading: false,
   bbox: null,
+  tschema: '',
+  tstep: 0,
   rangeTemporal: [],
   opacity: '1'
 };
@@ -56,6 +60,12 @@ export const reducer = createReducer(initialState,
   }),
   on(setBbox, (state, payload) => {
     return { ...state, bbox: payload };
+  }),
+  on(setTSchema, (state, payload) => {
+    return { ...state, tschema: payload['tschema'].toString() };
+  }),
+  on(setTStep, (state, payload) => {
+    return { ...state, tstep: parseInt(payload['tstep']) };
   }),
   on(setOpacity, (state, payload) => {
     return { ...state, opacity: payload['opacity'].toString() };
