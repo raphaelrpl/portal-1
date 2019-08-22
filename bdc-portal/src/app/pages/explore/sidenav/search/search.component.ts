@@ -206,14 +206,21 @@ export class SearchComponent implements OnInit {
 
   /** initialize search in selected resources */
   public search() {
-    // TODO: validation
-    console.log('search')
+    if (this.formSearch.status !== 'VALID') {
+      this.changeStepNav(0);
+      this.snackBar.open('Fill in all fields correctly!', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
 
-    const vm = this;
-    this.products.forEach((product: any) => {
-      const productObj = this.productsList.filter(p => p['title'] === product);
-      productObj[0]['searchFunction'](vm);
-    });
+    } else {
+      const vm = this;
+      this.products.forEach((product: any) => {
+        const productObj = this.productsList.filter(p => p['title'] === product);
+        productObj[0]['searchFunction'](vm);
+      });
+    }
   }
 
   /**
