@@ -4,8 +4,11 @@ import { ExploreState } from '../../explore.state';
 import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
 import { setFeaturesPeriod, setLayers } from '../../explore.action';
-import { Layer, imageOverlay, geoJSON } from 'leaflet';
+import { Layer } from 'leaflet';
 import { addMonth, addDays } from 'src/app/shared/helpers/date';
+
+import * as L from 'leaflet';
+import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 
 /**
  * Map Slider component
@@ -120,19 +123,34 @@ export class SliderComponent {
 
       // plot new features
       const featSelectedEdited = featSelected.map( (f: any) => {
-        const featureGeoJson = geoJSON(f);
-        const bounds = featureGeoJson.getBounds();
-        const newlayer = imageOverlay(f.assets.thumbnail.href, bounds, {
-          alt: `qls_${f.id}`
-        }).setZIndex(999);
+        const coordinates = f.geometry.coordinates[0];
+        // [lat, lng] => TL, TR, BR, BL
+        const anchor = [
+          [coordinates[0][1], coordinates[0][0]],
+          [coordinates[3][1], coordinates[3][0]],
+          [coordinates[2][1], coordinates[2][0]],
+          [coordinates[1][1], coordinates[1][0]]
+        ];
+        const layerTile = (L as any).imageTransform(f.assets.thumbnail.href, anchor, {
+          alt: `qls_${f.id}`,
+          interactive: true
+        }).bindPopup(`
+          <b>ID:</b> ${f.id}<br>
+          <b>Tile:</b> ${f.properties['bdc:tile']}<br>
+          <b>Datetime:</b> ${f.properties['datetime']}<br>
+          <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
+        `);
 
         if (this.actived) {
-          this.layers.push(newlayer);
+          this.layers.push(layerTile);
           this.store.dispatch(setLayers(this.layers));
         }
         return {...f, enabled: this.actived};
       });
-      this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+
+      setTimeout( _ => {
+        this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+      });
     }
   }
 
