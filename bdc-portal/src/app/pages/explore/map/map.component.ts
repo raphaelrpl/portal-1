@@ -1,7 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet,
-  LatLngBoundsExpression, Control, Draw, rectangle } from 'leaflet';
-import { GeoJsonObject } from 'geojson';
 
 import * as L from 'leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.js';
@@ -9,6 +6,9 @@ import 'src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.min.js'
 import 'esri-leaflet/dist/esri-leaflet.js';
 import * as LE from 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js';
 
+import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet,
+  LatLngBoundsExpression, Control, Draw, rectangle } from 'leaflet';
+import { GeoJsonObject } from 'geojson';
 import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
@@ -59,16 +59,17 @@ export class MapComponent implements OnInit {
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (res.layers) {
-          this.layers$ = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-          if (res.opacity) {
-            const opacity = parseFloat(res.opacity);
-            this.layers$ = this.layers$.map( (lyr: L.ImageOverlay) => {
-              if (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') >= 0) {
+          const lyrs = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
+          this.layers$ = lyrs.map( (lyr: L.ImageOverlay) => {
+            if (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') >= 0) {
+              if (res.opacity) {
+                const opacity = parseFloat(res.opacity);
                 lyr.setOpacity(opacity);
               }
-              return lyr;
-            });
-          }
+              lyr.setZIndex(9999);
+            }
+            return lyr;
+          });
         }
         if (res.positionMap && res.positionMap !== this.bbox) {
           this.bbox = res.positionMap;

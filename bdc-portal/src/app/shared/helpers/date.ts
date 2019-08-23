@@ -18,6 +18,13 @@ export function addMonth(date: Date): Date {
 }
 
 /**
+ * sum days in date
+ */
+export function addDays(date: Date, qntDays: number): Date {
+    return new Date(date.setDate(date.getDate() + qntDays));
+}
+
+/**
  * get last day by month
  */
 export function getLastDateMonth(date: Date): number {

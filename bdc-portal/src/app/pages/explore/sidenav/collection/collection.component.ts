@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 
+import * as L from 'leaflet';
+import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
+
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
-import { imageOverlay,  Layer, geoJSON, featureGroup } from 'leaflet';
+import {  Layer, geoJSON, featureGroup } from 'leaflet';
 import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
@@ -66,12 +69,25 @@ export class CollectionComponent {
   public onChangeLayer(event) {
     if (event.checked) {
       this.featuresPeriod$ = this.featuresPeriod$.map( (f: any) => {
-        const featureGeoJson = geoJSON(f);
-        const bounds = featureGeoJson.getBounds();
-        this.layers.push(imageOverlay(f.assets.thumbnail.href, bounds, {
-          alt: `qls_${f.id}`
-        }).setZIndex(999));
+        const coordinates = f.geometry.coordinates[0];
+        // [lat, lng] => TL, TR, BR, BL
+        const anchor = [
+          [coordinates[0][1], coordinates[0][0]],
+          [coordinates[3][1], coordinates[3][0]],
+          [coordinates[2][1], coordinates[2][0]],
+          [coordinates[1][1], coordinates[1][0]]
+        ];
+        const layerTile = (L as any).imageTransform(f.assets.thumbnail.href, anchor, {
+          alt: `qls_${f.id}`,
+          interactive: true
+        }).bindPopup(`
+          <b>ID:</b> ${f.id}<br>
+          <b>Tile:</b> ${f.properties['bdc:tile']}<br>
+          <b>Datetime:</b> ${f.properties['datetime']}<br>
+          <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
+        `);
 
+        this.layers.push(layerTile);
         return {...f, enabled: true};
       });
 
@@ -80,6 +96,10 @@ export class CollectionComponent {
         duration: 2000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-success'
+      });
+
+      setTimeout( _ => {
+        this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
       });
 
     } else {
