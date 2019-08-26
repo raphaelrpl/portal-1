@@ -1,7 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
 import {
-  showLoading,
-  closeLoading,
   setLayers,
   setBbox,
   setPositionMap,
@@ -69,11 +67,5 @@ export const reducer = createReducer(initialState,
   }),
   on(setOpacity, (state, payload) => {
     return { ...state, opacity: payload['opacity'].toString() };
-  }),
-  on(showLoading, (state) => {
-    return { ...state, loading: true };
-  }),
-  on(closeLoading, (state) => {
-    return { ...state, loading: false };
   }),
 );

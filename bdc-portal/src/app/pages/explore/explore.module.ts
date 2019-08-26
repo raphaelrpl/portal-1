@@ -19,7 +19,8 @@ import {
   MatSliderModule,
   MatSnackBarModule,
   MatBottomSheetModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatMenuModule
 } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
 
@@ -33,10 +34,9 @@ import { SearchComponent } from './sidenav/search/search.component';
 import { TimeSeriesComponent } from './map/timeSeries/timeSeries.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CollectionComponent } from './sidenav/collection/collection.component';
-import { StoreModule } from '@ngrx/store';
 import { Ng5SliderModule } from 'ng5-slider';
-import * as fromExplore from './explore.reducer';
 import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
+import { AuthModule } from '../auth/auth.module';
 
 
 /**
@@ -62,6 +62,7 @@ import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
     RouterModule,
     CommonModule,
     SharedModule,
+    AuthModule,
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
@@ -75,6 +76,7 @@ import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
     FormsModule,
     ReactiveFormsModule,
     MatDatepickerModule,
+    MatMenuModule,
     MatNativeDateModule,
     MatSlideToggleModule,
     MatSliderModule,
@@ -83,10 +85,7 @@ import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
     MatCheckboxModule,
     ChartsModule,
     LeafletModule.forRoot(),
-    LeafletDrawModule.forRoot(),
-    StoreModule.forRoot({
-      explore: fromExplore.reducer
-    })
+    LeafletDrawModule.forRoot()
   ],
   entryComponents: [
     BoxTimeSeriesComponent

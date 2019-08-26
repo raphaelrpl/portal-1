@@ -1,0 +1,36 @@
+.dialog-login {
+
+    .title {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: 'Arial';
+        padding: 0;
+        margin: 10px 0 0 0;
+
+        .mat-icon {
+            margin-right: 10px;
+        }
+    }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+
+        p {
+            text-align: center;
+        }
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        
+        .btn-cancel {
+            margin-right: 10px;
+        }
+    }
+}

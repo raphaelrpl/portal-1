@@ -8,9 +8,10 @@ import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
-  showLoading, closeLoading, setLayers, setPositionMap,
-  setRangeTemporal, setFeatures, setBands, setGrid, setTStep, setTSchema
+  setLayers, setPositionMap, setBands,
+  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema
 } from '../../explore.action';
+import { showLoading, closeLoading } from 'src/app/app.action';
 
 /**
  * component to search data of the BDC project

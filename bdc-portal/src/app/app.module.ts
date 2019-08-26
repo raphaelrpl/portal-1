@@ -5,6 +5,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ExploreModule } from './pages/explore/explore.module';
+import { StoreModule } from '@ngrx/store';
+import { SharedModule } from './shared/shared.module';
+import * as fromApp from './app.reducer';
+import * as fromAuth from './pages/auth/auth.reducer';
+import * as fromExplore from './pages/explore/explore.reducer';
 
 /**
  * Initial Module of Application (SPA)
@@ -17,7 +22,13 @@ import { ExploreModule } from './pages/explore/explore.module';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    ExploreModule
+    SharedModule,
+    ExploreModule,
+    StoreModule.forRoot({
+      app: fromApp.reducer,
+      auth: fromAuth.reducer,
+      explore: fromExplore.reducer
+    })
   ],
   bootstrap: [AppComponent]
 })

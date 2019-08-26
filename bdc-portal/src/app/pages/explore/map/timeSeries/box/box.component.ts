@@ -5,10 +5,10 @@ import { Layer, LatLng } from 'leaflet';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { showLoading, closeLoading } from '../../../explore.action';
 import { MatSnackBar } from '@angular/material';
 import { TimeSeriesService } from '../timeSeries.service';
 import { colorsByBand } from 'src/app/shared/helpers/CONSTS';
+import { showLoading, closeLoading } from 'src/app/app.action';
 
 /**
  * Map TimeSeries component

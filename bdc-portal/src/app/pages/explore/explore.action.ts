@@ -90,17 +90,3 @@ export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',
     props<Date[]>()
 );
-
-/**
- * set loading as true
- */
-export const showLoading = createAction(
-    '[Loading Component] showLoading'
-);
-
-/**
- * set loading as false
- */
-export const closeLoading = createAction(
-    '[Loading Component] closeLoading'
-);

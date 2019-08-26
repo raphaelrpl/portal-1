@@ -7,9 +7,6 @@ import {
   AfterViewInit
 } from '@angular/core';
 import { MatSidenav } from '@angular/material';
-import { NgxSpinnerService } from 'ngx-spinner';
-import { Store, select } from '@ngrx/store';
-import { ExploreState } from './explore.state';
 
 /**
  * Explore Component
@@ -33,16 +30,6 @@ export class ExploreComponent implements OnInit, AfterViewInit {
   public footerHeight: number;
   /** map height in window */
   public innerHeight: number;
-
-  constructor(private store: Store<ExploreState>, private spinner: NgxSpinnerService) {
-    this.store.pipe(select('explore')).subscribe(res => {
-      if (res.loading) {
-        this.spinner.show();
-      } else {
-        this.spinner.hide();
-      }
-    });
-  }
 
   /**
    * get Height of the toolbar and footer components
