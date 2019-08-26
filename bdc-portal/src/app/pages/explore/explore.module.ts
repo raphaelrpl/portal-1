@@ -37,6 +37,7 @@ import { CollectionComponent } from './sidenav/collection/collection.component';
 import { Ng5SliderModule } from 'ng5-slider';
 import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
 import { AuthModule } from '../auth/auth.module';
+import { CatalogComponent } from './map/catalog/catalog.component';
 
 
 /**
@@ -51,6 +52,7 @@ import { AuthModule } from '../auth/auth.module';
     SidenavComponent,
     SearchComponent,
     CollectionComponent,
+    CatalogComponent,
     SliderComponent,
     TimeSeriesComponent,
     BoxTimeSeriesComponent
