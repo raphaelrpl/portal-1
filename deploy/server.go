@@ -26,10 +26,10 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	file_url := "/usr/src/app/dist/portal/env"
+	file_url := "/usr/src/app/dist/portal/"
 
 	// open and recreate file with env variables
-	data, err := ioutil.ReadFile(file_url+".txt")
+	data, err := ioutil.ReadFile(file_url+"env.txt")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func main() {
 	new_content = strings.ReplaceAll(new_content, "URL_STAC", "'"+os.Getenv("URL_STAC")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_WTSS", "'"+os.Getenv("URL_WTSS")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_OAUTH", "'"+os.Getenv("URL_OAUTH")+"'")
-	err = ioutil.WriteFile(file_url+".js", []byte(new_content), 0644)
+	err = ioutil.WriteFile(file_url+"assets/env.js", []byte(new_content), 0644)
 	if err != nil {
 		log.Fatalln(err)
 	}

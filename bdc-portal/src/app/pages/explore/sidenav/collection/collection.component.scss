@@ -6,7 +6,7 @@
         background: rgba(#000, 0.1);
 
         .collection-header {
-            width: 100%;
+            width: calc(100%-24px);
             display: flex;
             align-items: center;
             justify-content: space-between;
