@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+
+    private urlOauth = window['__env'].urlOauth
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -13,7 +14,7 @@ export class AuthService {
      */
     public async login(credentials: object): Promise<any> {
         const urlSuffix = `/auth/login`;
-        const response = await this.http.post(`${environment.urlOauth}${urlSuffix}`, credentials).toPromise();
+        const response = await this.http.post(`${this.urlOauth}${urlSuffix}`, credentials).toPromise();
         return response;
     }
 }

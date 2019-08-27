@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { BdcLayerWFS, BdcLayer } from './layer.interface';
 import { BaseLayers } from './base-layers.in-memory';
 import { Grids } from './grids.in-memory';
-import { environment } from 'src/environments/environment';
 
 /**
  * Layer Service
@@ -12,6 +11,8 @@ import { environment } from 'src/environments/environment';
  */
 @Injectable({ providedIn: 'root' })
 export class LayerService {
+
+    private urlGeoserver = window['__env'].urlGeoserver;
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -38,7 +39,7 @@ export class LayerService {
      */
     public getGeoJsonByLayer(ds: string, title: string): Promise<any> {
         const urlSuffix = `?service=WFS&version=1.0.0&request=GetFeature&typeName=${ds}:${title}&&outputFormat=application%2Fjson`;
-        return this.http.get(`${environment.urlGeoserver}/${ds}/ows${urlSuffix}`).toPromise();
+        return this.http.get(`${this.urlGeoserver}/${ds}/ows${urlSuffix}`).toPromise();
     }
 
 }

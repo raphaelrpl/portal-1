@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class SearchService {
+
+    private urlStac = window['__env'].urlStac
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -14,7 +15,7 @@ export class SearchService {
      */
     public async getCollections(): Promise<any> {
         const urlSuffix = `/collections`;
-        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${this.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
 
@@ -23,7 +24,7 @@ export class SearchService {
      */
     public async getCollectionByName(collection: string): Promise<any> {
         const urlSuffix = `/collections/${collection}`;
-        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${this.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
 
@@ -32,7 +33,7 @@ export class SearchService {
      */
     public async searchSTAC(query: string): Promise<any> {
         const urlSuffix = `/stac/search?${query}`;
-        const response = await this.http.get(`${environment.urlStac}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${this.urlStac}${urlSuffix}`).toPromise();
         return response;
     }
 }

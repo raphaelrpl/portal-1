@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -25,6 +26,25 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	file_url := "/usr/src/app/dist/portal/env"
+
+	// open and recreate file with env variables
+	data, err := ioutil.ReadFile(file_url+".txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	new_content := strings.ReplaceAll(string(data), "URL_GEOSERVER", "'"+os.Getenv("URL_GEOSERVER")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_STAC_COMPOSE", "'"+os.Getenv("URL_STAC_COMPOSE")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_STAC", "'"+os.Getenv("URL_STAC")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_WTSS", "'"+os.Getenv("URL_WTSS")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_OAUTH", "'"+os.Getenv("URL_OAUTH")+"'")
+	err = ioutil.WriteFile(file_url+".js", []byte(new_content), 0644)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// start web app
 	http.HandleFunc("/", rootHandler)
 
 	log.Println("Aplicação iniciada com sucesso")
