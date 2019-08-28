@@ -56,7 +56,7 @@ export class SliderComponent {
       if (res.layers) {
         this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
       }
-      if (Object.values(res.rangeTemporal).length) {
+      if (Object.values(res.rangeTemporal).length && this.features.length) {
         this.tschema = res.tschema
         this.tstep = res.tstep
 

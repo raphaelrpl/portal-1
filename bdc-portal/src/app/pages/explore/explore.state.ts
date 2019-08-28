@@ -7,6 +7,8 @@ export interface ExploreState {
     readonly features: Feature[];
     /** selected features/items in the period */
     readonly featuresPeriod: Feature[];
+    /** selected samples */
+    readonly samples: object[];
     /** layers visible in the map */
     readonly layers: Layer[];
     /** grid name displayed in the map */

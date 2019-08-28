@@ -66,6 +66,9 @@ export class MapComponent implements OnInit {
                 const opacity = parseFloat(res.opacity);
                 lyr.setOpacity(opacity);
               }
+              lyr.setZIndex(998);
+            }
+            if (lyr['options'].alt && lyr['options'].alt.indexOf('samples_') >= 0) {
               lyr.setZIndex(9999);
             }
             return lyr;

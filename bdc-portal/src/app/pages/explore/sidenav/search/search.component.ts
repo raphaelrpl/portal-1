@@ -2,14 +2,14 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Store, select } from '@ngrx/store';
-import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
+import { rectangle, LatLngBoundsExpression, Layer, geoJSON, circleMarker } from 'leaflet';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   setLayers, setPositionMap, setBands,
-  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema
+  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema, setSamples, setFeaturesPeriod, reset
 } from '../../explore.action';
 import { showLoading, closeLoading } from 'src/app/app.action';
 
@@ -76,14 +76,14 @@ export class SearchComponent implements OnInit {
 
       this.formSearch = this.fb.group({
         products: ['', [Validators.required]],
-        cube: ['', [Validators.required]],
+        cube: [''],
         north: ['', [Validators.required]],
         west: ['', [Validators.required]],
         east: ['', [Validators.required]],
         south: ['', [Validators.required]],
         start_date: ['', [Validators.required]],
         last_date: ['', [Validators.required]],
-        type: ['', [Validators.required]]
+        type: ['']
       })
     }
 
@@ -98,7 +98,8 @@ export class SearchComponent implements OnInit {
         searchFunction: this.searchFeatures
       }, {
         title: 'samples',
-        disabled: true
+        disabled: false,
+        searchFunction: this.searchSamples
       }, {
         title: 'classification',
         disabled: true
@@ -129,7 +130,7 @@ export class SearchComponent implements OnInit {
   /**
    * search feature/items in BDC-STAC
    */
-  private async searchFeatures(vm: SearchComponent) {
+  private async searchFeatures(vm: SearchComponent, openMenu: boolean) {
     try {
       vm.store.dispatch(showLoading());
 
@@ -156,7 +157,9 @@ export class SearchComponent implements OnInit {
           lastDate
         ]));
         vm.store.dispatch(setFeatures(response.features));
-        vm.changeStepNav(1);
+        if (openMenu) {
+          vm.changeStepNav(1);
+        }
 
       } else {
         vm.store.dispatch(setFeatures([]));
@@ -179,6 +182,53 @@ export class SearchComponent implements OnInit {
     } finally {
       const newLayers = vm.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
       vm.store.dispatch(setLayers(newLayers));
+      vm.store.dispatch(closeLoading());
+    }
+  }
+
+  /**
+   * search feature/items in BDC-STAC
+   */
+  private async searchSamples(vm: SearchComponent, openMenu: boolean) {
+    try {
+      vm.store.dispatch(showLoading());
+
+      // set FIRST DAY in start date and LAST DAY in last date
+      const startDate = new Date(vm.searchObj['start_date'].setDate(1));
+      const lastDate = new Date(vm.searchObj['last_date'].setDate(getLastDateMonth(new Date(vm.searchObj['last_date']))));
+      const bbox = Object.values(vm.searchObj['bbox']);
+
+      let query = `CQL_FILTER=BBOX(location,${bbox[2]},${bbox[1]},${bbox[3]},${bbox[0]})`;
+      query += `AND start_date AFTER ${formatDateUSA(startDate)}T00:00:00`;
+      query += `AND end_date BEFORE ${formatDateUSA(lastDate)}T23:59:00`;
+
+      const response = await vm.ss.getSamples(query);
+      if (response.features.length) {
+        vm.store.dispatch(setSamples(response.features));
+        vm.store.dispatch(setRangeTemporal([
+          startDate,
+          lastDate
+        ]));
+        if (openMenu) {
+          vm.changeStepNav(2);
+        }
+      } else {
+        vm.snackBar.open('SAMPLES NOT FOUND!', '', {
+          duration: 5000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-error'
+        });
+      }
+
+    } catch (err) {
+      vm.changeStepNav(0);
+      vm.snackBar.open('INCORRECT SEARCH - SAMPLES!', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+
+    } finally {
       vm.store.dispatch(closeLoading());
     }
   }
@@ -242,10 +292,13 @@ export class SearchComponent implements OnInit {
       });
 
     } else {
+      // this.store.dispatch(reset());
       const vm = this;
-      this.products.forEach((product: any) => {
+      let firstMenu = true;
+      vm.products.forEach((product: any) => {
         const productObj = this.productsList.filter(p => p['title'] === product);
-        productObj[0]['searchFunction'](vm);
+        productObj[0]['searchFunction'](vm, firstMenu);
+        firstMenu = false;
       });
     }
   }

@@ -1,5 +1,11 @@
-<div class="button-catalog" *ngIf="logged">
-    <div class="btn-start">
+<div class="button-catalog"
+    *ngIf="logged && !viewBox">
+    <div class="btn-start" (click)="showBox()">
         <mat-icon>folder_open</mat-icon>
     </div>
 </div>
+
+<app-box-catalog
+    (toggleToEmit)="closeBox()"
+    [visible]="viewBox">
+</app-box-catalog>

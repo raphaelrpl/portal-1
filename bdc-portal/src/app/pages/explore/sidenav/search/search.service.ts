@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 export class SearchService {
 
     private urlStac = window['__env'].urlStac
+    private urlGeoserver = window['__env'].urlGeoserver
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -35,5 +36,14 @@ export class SearchService {
         const urlSuffix = `/stac/search?${query}`;
         const response = await this.http.get(`${this.urlStac}${urlSuffix}`).toPromise();
         return response;
+    }
+
+    /**
+     * get Samples features in Geoserver by WFS
+     */
+    public getSamples(query: string): Promise<any> {
+        let urlSuffix = `?service=WFS&version=1.0.0&request=GetFeature&typeName=sample:sample&outputFormat=application/json`;
+        urlSuffix += `&${query}`;
+        return this.http.get(`${this.urlGeoserver}/sample/ows${urlSuffix}`).toPromise();
     }
 }

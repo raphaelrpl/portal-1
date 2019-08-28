@@ -1,0 +1,28 @@
+.box-catalog {
+    position: absolute;
+    z-index: 999;
+    right: 10px;
+    top: 140px;
+    bottom: 100px;
+    border: 2px solid rgba(0,0,0,0.2);
+    border-radius: 2px;
+    width: 300px;
+    overflow: auto;
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        background: #FFF;
+        font-size: 1.2em;
+        color: #333;
+        padding: 0 0 0 20px;
+
+        .mat-icon {
+            color: #999;
+        }
+    }
+
+    .content {
+        background: #FFF;
+    }
+}

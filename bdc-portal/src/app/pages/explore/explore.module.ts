@@ -38,6 +38,8 @@ import { Ng5SliderModule } from 'ng5-slider';
 import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
 import { AuthModule } from '../auth/auth.module';
 import { CatalogComponent } from './map/catalog/catalog.component';
+import { BoxCatalogComponent } from './map/catalog/box/box.component';
+import { SampleComponent } from './sidenav/sample/sample.component';
 
 
 /**
@@ -52,7 +54,9 @@ import { CatalogComponent } from './map/catalog/catalog.component';
     SidenavComponent,
     SearchComponent,
     CollectionComponent,
+    SampleComponent,
     CatalogComponent,
+    BoxCatalogComponent,
     SliderComponent,
     TimeSeriesComponent,
     BoxTimeSeriesComponent

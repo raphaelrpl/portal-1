@@ -14,6 +14,7 @@ import { AuthState } from 'src/app/pages/auth/auth.state';
 export class CatalogComponent {
 
   public logged = false;
+  public viewBox = false;
 
   /** select data of the store application */
   constructor(
@@ -21,5 +22,13 @@ export class CatalogComponent {
     this.store.pipe(select('auth')).subscribe(res => {
       this.logged = res.userId && res.token;
     });
+  }
+
+  public showBox() {
+    this.viewBox = true;
+  }
+
+  public closeBox() {
+    this.viewBox = false;
   }
 }

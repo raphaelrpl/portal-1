@@ -19,6 +19,14 @@ export const setFeaturesPeriod = createAction(
 );
 
 /**
+ * set Samples in store application
+ */
+export const setSamples = createAction(
+    '[Explore Component] Samples',
+    props<object[]>()
+);
+
+/**
  * set Layers enabled in the map
  */
 export const setLayers = createAction(
@@ -89,4 +97,11 @@ export const setBbox = createAction(
 export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',
     props<Date[]>()
+);
+
+/**
+ * Reset search items in store application
+ */
+export const reset = createAction(
+    '[Map Component] Reset'
 );
