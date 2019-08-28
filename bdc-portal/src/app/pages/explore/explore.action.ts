@@ -35,6 +35,14 @@ export const setLayers = createAction(
 );
 
 /**
+ * remove Layers enabled in the map
+ */
+export const removeLayers = createAction(
+    '[Map Component] name Layers',
+    props<string[]>()
+);
+
+/**
  * set Grid enabled in the map
  */
 export const setGrid = createAction(
@@ -97,11 +105,4 @@ export const setBbox = createAction(
 export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',
     props<Date[]>()
-);
-
-/**
- * Reset search items in store application
- */
-export const reset = createAction(
-    '[Map Component] Reset'
 );

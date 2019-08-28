@@ -53,12 +53,9 @@ export class SliderComponent {
         const features = Object.values(res.featuresPeriod).slice(0, 1) as Feature[];
         this.actived = !features.length || (features[0] && features[0]['enabled'] !== false);
       }
-      if (res.layers) {
-        this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-      }
       if (Object.values(res.rangeTemporal).length && this.features.length) {
-        this.tschema = res.tschema
-        this.tstep = res.tstep
+        this.tschema = res.tschema;
+        this.tstep = res.tstep;
 
         // mount list with dates
         let startDate = this.tschema.toLocaleLowerCase() === 'm' ?
@@ -105,9 +102,7 @@ export class SliderComponent {
 
   /** select the features by value selected in slider */
   public changeValue(startDate: Date) {
-    // remove features ploted in map
-    const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
-    this.store.dispatch(setLayers(newLayers));
+    // TODO: remove features ploted in map
 
     // filter new features
     const actualDate = this.value ? new Date(this.value) : startDate;
@@ -142,8 +137,7 @@ export class SliderComponent {
         `);
 
         if (this.actived) {
-          this.layers.push(layerTile);
-          this.store.dispatch(setLayers(this.layers));
+          this.store.dispatch(setLayers([layerTile]));
         }
         return {...f, enabled: this.actived};
       });

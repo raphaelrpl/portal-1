@@ -2,14 +2,14 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Store, select } from '@ngrx/store';
-import { rectangle, LatLngBoundsExpression, Layer, geoJSON, circleMarker } from 'leaflet';
+import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   setLayers, setPositionMap, setBands,
-  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema, setSamples, setFeaturesPeriod, reset
+  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema, setSamples
 } from '../../explore.action';
 import { showLoading, closeLoading } from 'src/app/app.action';
 
@@ -180,8 +180,6 @@ export class SearchComponent implements OnInit {
       });
 
     } finally {
-      const newLayers = vm.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0));
-      vm.store.dispatch(setLayers(newLayers));
       vm.store.dispatch(closeLoading());
     }
   }
