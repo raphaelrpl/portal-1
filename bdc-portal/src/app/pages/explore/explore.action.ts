@@ -108,9 +108,17 @@ export const setBbox = createAction(
 );
 
 /**
- * set Features in store application
+ * set Dates filtered in store application
  */
 export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',
+    props<Date[]>()
+);
+
+/**
+ * set Dates actual step filtered in store application
+ */
+export const setActualRangeTemporal = createAction(
+    '[Map Component] Range Actual Temporal',
     props<Date[]>()
 );

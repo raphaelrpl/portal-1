@@ -3,9 +3,9 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
-import { setFeaturesPeriod, setLayers, removeGroupLayer } from '../../explore.action';
+import { setFeaturesPeriod, setLayers, removeGroupLayer, setActualRangeTemporal } from '../../explore.action';
 import { Layer } from 'leaflet';
-import { addMonth, addDays } from 'src/app/shared/helpers/date';
+import { addMonth, addDays, subMonth, subDays } from 'src/app/shared/helpers/date';
 
 import * as L from 'leaflet';
 import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
@@ -148,6 +148,8 @@ export class SliderComponent {
 
       setTimeout( _ => {
         this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
+        const startDatePeriod = this.tschema.toLocaleLowerCase() === 'm' ? subMonth(actualDate) : subDays(actualDate, parseInt(this.tstep))
+        this.store.dispatch(setActualRangeTemporal([startDatePeriod, endPeriod]));
       });
     }
   }

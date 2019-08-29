@@ -8,6 +8,64 @@
     </div>
 
     <div class="content">
-        content
+        <form class="box_search" [formGroup]="formSearch" (ngSubmit)="search()">
+            <!-- PROVIDERS -->
+            <mat-form-field appearance="fill">
+                <mat-label>Select Providers</mat-label>
+                <mat-select [(value)]="providers" multiple formControlName="providers" required>
+                    <mat-option *ngFor="let provider of providersList" [value]="provider" (click)="getCollections()">{{ provider }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- COLLECTIONS -->
+            <mat-form-field appearance="fill" style="margin-top: -20px;">
+                <mat-label>Select Collections</mat-label>
+                <mat-select [(value)]="collections" multiple formControlName="collections" required>
+                    <mat-option *ngFor="let collection of collectionsList" [value]="collection">{{ collection }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <!-- RANGE DATES -->
+            <mat-form-field appearance="fill" style="margin-top: -20px; width: 49%">
+                <mat-label>Start Date</mat-label>
+                <input matInput
+                    [matDatepicker]="startDate"
+                    placeholder="Start Date"
+                    name="startDate"
+                    formControlName="startDate"
+                    [(ngModel)]="searchObj.startDate">
+                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" style="margin-top: -20px; margin-left: 2%; width: 49%">
+                <mat-label>Last Date</mat-label>
+                <input matInput
+                    [matDatepicker]="lastDate"
+                    placeholder="Last Date"
+                    name="lastDate"
+                    formControlName="lastDate"
+                    [(ngModel)]="searchObj.lastDate">
+                <mat-datepicker-toggle matSuffix [for]="lastDate"></mat-datepicker-toggle>
+                <mat-datepicker #lastDate></mat-datepicker>
+            </mat-form-field>
+
+            <!-- CLOUD COVER -->
+            <mat-form-field appearance="fill" style="margin-top: -20px;">
+                <mat-label>Cloud Cover (min)</mat-label>
+                <input type="number"
+                    min="0"
+                    max="100"
+                    matInput
+                    name="cloud"
+                    formControlName="cloudCover"
+                    [(ngModel)]="searchObj.cloudCover">
+                <span matSuffix>%</span>
+            </mat-form-field>
+
+            <button type="submit" mat-raised-button class="btn-search">
+                SEARCH
+            </button>
+        </form>
     </div>
 </div>

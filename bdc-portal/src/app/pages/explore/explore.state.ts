@@ -23,6 +23,8 @@ export interface ExploreState {
     readonly positionMap: LatLngBoundsExpression;
     /** range (start-end) with selected dates */
     readonly rangeTemporal: Date[];
+    /** range (start-end) of the slider period */
+    readonly actualRangeTemporal: Date[];
     /** selected bounding box */
     readonly bbox: LatLngBoundsExpression;
     /** opacity of the cube */
