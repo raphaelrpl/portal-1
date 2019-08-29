@@ -8,7 +8,7 @@ import * as LE from 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js';
 
 import { latLng, MapOptions, Layer, Map as MapLeaflet,
   LatLngBoundsExpression, Control, Draw, rectangle, layerGroup } from 'leaflet';
-import { BdcLayer } from './layers/layer.interface';
+import { BdcLayer, BdcGrid } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
@@ -240,25 +240,37 @@ export class MapComponent implements OnInit {
       this.layersControl.baseLayers[l.name] = l.layer;
     })
     // mount overlays
-    this.ls.getGridsLayers().forEach( (l: BdcLayer) => {
-      const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
-        layers: `grids:${l.id}`,
-        format: 'image/png',
-        styles: 'grids:tiles_used',
-        transparent: true,
-        cql_filter: `Tile IN ('${this.tilesUsed.join("','")}')`,
-        alt: `grid_${l.id}`
-      } as any);
-      const layerGridUsed = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
-        layers: `grids:${l.id}`,
-        format: 'image/png',
-        styles: 'grids:tiles',
-        transparent: true,
-        cql_filter: `Tile NOT IN ('${this.tilesUsed.join("','")}')`,
-        alt: `grid_${l.id}`
-      } as any);
+    this.ls.getGridsLayers().forEach( (l: BdcGrid) => {
+      if (l.filter) {
+        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${l.id}`,
+          format: 'image/png',
+          styles: 'grids:tiles_used',
+          transparent: true,
+          cql_filter: `Tile IN ('${this.tilesUsed.join("','")}')`,
+          alt: `grid_${l.id}`
+        } as any);
+        const layerGridUsed = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${l.id}`,
+          format: 'image/png',
+          styles: 'grids:tiles',
+          transparent: true,
+          cql_filter: `Tile NOT IN ('${this.tilesUsed.join("','")}')`,
+          alt: `grid_${l.id}`
+        } as any);
+        this.layersControl.overlays[l.id] = layerGroup([layerGrid, layerGridUsed]);
 
-      this.layersControl.overlays[l.id] = layerGroup([layerGrid, layerGridUsed]);
+      } else {
+        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${l.id}`,
+          format: 'image/png',
+          styles: 'grids:tiles',
+          transparent: true,
+          alt: `grid_${l.id}`
+        } as any);
+        this.layersControl.overlays[l.id] = layerGroup([layerGrid]);
+      }
+
       if (l.enabled) {
         this.actualGrid = l.id;
         this.map.addLayer(this.layersControl.overlays[l.id]);
