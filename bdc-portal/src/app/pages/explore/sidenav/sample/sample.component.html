@@ -14,6 +14,10 @@
         {{ class }}
 
         <div class="actions">
+            <input
+                type="color"
+                class="input-color"
+                [(ngModel)]="classesColors[class]">
             <mat-slide-toggle
                 [(ngModel)]="classesStatus[class]"
                 (change)="enableClass($event, class)">

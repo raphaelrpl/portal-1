@@ -21,6 +21,7 @@ export class SampleComponent {
   public bbox: string;
   public authorsList: string[];
   public classesStatus = {};
+  public classesColors = {};
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
@@ -64,6 +65,7 @@ export class SampleComponent {
         if (this.classesList.indexOf(className) < 0) {
           this.classesList.push(className);
           this.classesStatus[className] = false;
+          this.classesColors[className] = this.classesColors[className] || '#FF0000';
         }
       }
     })
@@ -109,6 +111,7 @@ export class SampleComponent {
         transparent: true,
         cql_filter: queryCQL,
         interactive: true,
+        env: `color:${this.classesColors[className].replace('#', '')}`,
         alt: `samples_${className}`
       } as any);
 
@@ -121,6 +124,10 @@ export class SampleComponent {
         prefix: `samples_${className}`
       }));
     }
+  }
+
+  public changeColor(event) {
+    console.log(event)
   }
 
 }
