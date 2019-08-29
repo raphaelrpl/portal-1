@@ -1,11 +1,11 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef, Inject } from '@angular/core';
 import { ExploreState } from '../../../explore.state';
 import { Store, select } from '@ngrx/store';
-import { Layer, LatLng } from 'leaflet';
+import { LatLng } from 'leaflet';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MAT_BOTTOM_SHEET_DATA } from '@angular/material';
 import { TimeSeriesService } from '../timeSeries.service';
 import { colorsByBand } from 'src/app/shared/helpers/CONSTS';
 import { showLoading, closeLoading } from 'src/app/app.action';
@@ -48,7 +48,8 @@ export class BoxTimeSeriesComponent {
     private snackBar: MatSnackBar,
     private store: Store<ExploreState>,
     private ref: ChangeDetectorRef,
-    private ts: TimeSeriesService) {
+    private ts: TimeSeriesService,
+    @Inject(MAT_BOTTOM_SHEET_DATA) public data: any) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.bands) {
         this.listBands = Object.values(res.bands).slice(0,
@@ -70,12 +71,8 @@ export class BoxTimeSeriesComponent {
           formatDateUSA(new Date(res.rangeTemporal['1']))
         ];
       }
-      if (res.layers) {
-        const layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1));
-        const layer = layers.filter( lyr => lyr['options'].alt === 'timeSeries')[0] as Layer;
-        this.latLng = layer['_latlng'];
-      }
     });
+    this.latLng = data['latLng'];
   }
 
   /** search time series in WTSS and plot result in graphic */

@@ -13,6 +13,8 @@ export interface ExploreState {
     readonly layers: Layer[];
     /** list of layers to remove in the map */
     readonly layersToDisabled: string[];
+    /** list of group layer to remove in the map */
+    readonly layerGroupToDisabled: object;
     /** grid name displayed in the map */
     readonly grid: string;
     /** bands of the selected cube */

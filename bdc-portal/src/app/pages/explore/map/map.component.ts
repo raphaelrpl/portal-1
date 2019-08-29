@@ -12,7 +12,7 @@ import { BdcLayer } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
-import { setPositionMap, setBbox, removeLayers } from '../explore.action';
+import { setPositionMap, setBbox, removeLayers, setLayers, removeGroupLayer } from '../explore.action';
 import { SearchService } from '../sidenav/search/search.service';
 
 /**
@@ -46,6 +46,8 @@ export class MapComponent implements OnInit {
   private bbox = null;
   /** grid selected and visible in the map */
   private actualGrid: string;
+  /** opacity of images disaplyed in the map */
+  private actualOpacity = 1;
 
   /** start Layer and Seatch Services */
   constructor(
@@ -53,13 +55,24 @@ export class MapComponent implements OnInit {
     private ss: SearchService,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
-        if (res.layers) {
+        // add layers
+        if (Object.values(res.layers).length > 1) {
           const lyrs = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
           lyrs.forEach( l => {
+            if (l['options'].alt) {
+              if (res.opacity && l['options'].alt.indexOf(`qls_`) >= 0) {
+                (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity)).setZIndex(9999);
+              }
+              if (l['options'].alt.indexOf(`samples_`) >= 0) {
+                (l as L.TileLayer).setZIndex(999);
+              }
+            }
             this.map.addLayer(l);
           });
+          this.store.dispatch(setLayers([]));
         }
-        if (Object.values(res.layersToDisabled).length) {
+        // remove layers by title
+        if (Object.values(res.layersToDisabled).length > 1) {
           const lyrs = Object.values(res.layersToDisabled).slice(0, (Object.values(res.layersToDisabled).length - 1)) as Layer[];
           this.map.eachLayer( l => {
             if (l['options'].alt && lyrs.indexOf(l['options'].alt) >= 0) {
@@ -68,12 +81,34 @@ export class MapComponent implements OnInit {
           });
           this.store.dispatch(removeLayers([]));
         }
+        // remove layers by prefix
+        if (res.layerGroupToDisabled['key'] && res.layerGroupToDisabled['prefix']) {
+          const key = res.layerGroupToDisabled['key'];
+          const prefix = res.layerGroupToDisabled['prefix'];
+          this.map.eachLayer( l => {
+            if (l['options'][key] && l['options'][key].indexOf(prefix) >= 0) {
+              this.map.removeLayer(l);
+            }
+          });
+          this.store.dispatch(removeGroupLayer({}));
+        }
+        // set position map
         if (res.positionMap && res.positionMap !== this.bbox) {
           this.bbox = res.positionMap;
           this.setPosition(res.positionMap);
         }
+        // display other grid
         if (res.grid !== '' && res.grid !== this.actualGrid) {
           this.setGrid(res.grid);
+        }
+        // display other grid
+        if (res.opacity >= 0 && res.opacity != this.actualOpacity) {
+          this.map.eachLayer( l => {
+            if (l['options'].alt && l['options'].alt.indexOf(`qls_`) >= 0) {
+              (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity));
+            }
+          });
+          this.actualOpacity = res.opacity;
         }
       });
   }
@@ -179,9 +214,11 @@ export class MapComponent implements OnInit {
       const newLayer = rectangle(layer.getBounds(), {
         color: '#666',
         weight: 1,
-        className: 'previewBbox',
-      }).addTo(this.map);
+        interactive: false,
+        className: 'previewBbox'
+      });
 
+      this.map.addLayer(newLayer);
       this.store.dispatch(setBbox(newLayer.getBounds()));
       this.store.dispatch(setPositionMap(newLayer.getBounds()));
     });
@@ -263,9 +300,11 @@ export class MapComponent implements OnInit {
         const newLayer = rectangle(data.results[i].bounds, {
           color: '#666',
           weight: 1,
-          className: 'previewBbox',
-        }).addTo(vm.map);
+          interactive: false,
+          className: 'previewBbox'
+        });
 
+        vm.map.addLayer(newLayer);
         vm.store.dispatch(setBbox(newLayer.getBounds()));
         vm.store.dispatch(setPositionMap(newLayer.getBounds()));
       }

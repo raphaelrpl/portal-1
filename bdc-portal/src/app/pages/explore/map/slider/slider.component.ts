@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
-import { setFeaturesPeriod, setLayers } from '../../explore.action';
+import { setFeaturesPeriod, setLayers, removeGroupLayer } from '../../explore.action';
 import { Layer } from 'leaflet';
 import { addMonth, addDays } from 'src/app/shared/helpers/date';
 
@@ -102,7 +102,11 @@ export class SliderComponent {
 
   /** select the features by value selected in slider */
   public changeValue(startDate: Date) {
-    // TODO: remove features ploted in map
+    // remove images displayed
+    this.store.dispatch(removeGroupLayer({
+      key: 'alt',
+      prefix: 'qls_'
+    }));
 
     // filter new features
     const actualDate = this.value ? new Date(this.value) : startDate;

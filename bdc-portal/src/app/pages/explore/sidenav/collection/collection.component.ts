@@ -46,9 +46,6 @@ export class CollectionComponent {
       if (res.featuresPeriod) {
         this.featuresPeriod$ = Object.values(res.featuresPeriod).slice(0, (Object.values(res.featuresPeriod).length - 1)) as Feature[];
       }
-      if (res.layers) {
-        this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-      }
       if (res.bands) {
         this.bands = Object.values(res.bands).slice(0, (Object.values(res.bands).length - 1)) as string[];
       }
@@ -65,7 +62,9 @@ export class CollectionComponent {
     return `${startDate}`;
   }
 
-  /** enable or disable cube in the map */
+  /**
+   * enable or disable cube in the map
+   */
   public onChangeLayer(event) {
     if (event.checked) {
       const lyrGroup = [];
@@ -108,7 +107,7 @@ export class CollectionComponent {
         return {...f, enabled: false};
       });
 
-      const nameLayers = this.featuresPeriod$.map( (f: any) => `qls_${f.id}` )
+      const nameLayers = this.featuresPeriod$.map( (f: any) => `qls_${f.id}` );
       this.store.dispatch(removeLayers(nameLayers));
       this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
@@ -118,32 +117,42 @@ export class CollectionComponent {
     }
   }
 
-  /** set zoom in the feature/item of the map */
+  /**
+   * set zoom in the feature/item of the map
+   */
   public setZoomByFeature(feature: any) {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  /** set zoom in the Cube of the map */
+  /**
+   * set zoom in the Cube of the map
+   */
   public setZoomByCube() {
     const featuresGeoJson = featureGroup(this.featuresPeriod$.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  /** enable or disable opacity box */
+  /**
+   * enable or disable opacity box
+   */
   public viewOpacityCube() {
     this.opacityEnabled = !this.opacityEnabled;
   }
 
-  /** set new value to opacity Cube */
+  /**
+   * set new value to opacity Cube
+   */
   public setOpacityCube() {
     const newOpacity = (this.opacity / 10).toString();
     this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
-  /** enable or disable actions box in the feature */
+  /**
+   * enable or disable actions box in the feature
+   */
   public enableFeatureActions(featureId: string) {
     this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
@@ -154,7 +163,9 @@ export class CollectionComponent {
     this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
   }
 
-  /** open dialog with features infos */
+  /**
+   * open dialog with features infos
+   */
   public viewFeatureDetails(feature: Feature) {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
@@ -166,7 +177,9 @@ export class CollectionComponent {
     });
   }
 
-  /** open dialog with Cube infos */
+  /**
+   * open dialog with Cube infos
+   */
   public viewCubeDetails() {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',

@@ -9,7 +9,7 @@ import { ExploreState } from '../../explore.state';
 import { formatDateUSA, getLastDateMonth } from 'src/app/shared/helpers/date';
 import {
   setLayers, setPositionMap, setBands,
-  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema, setSamples
+  setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema, setSamples, removeGroupLayer, setBbox
 } from '../../explore.action';
 import { showLoading, closeLoading } from 'src/app/app.action';
 
@@ -41,8 +41,6 @@ export class SearchComponent implements OnInit {
   public typesCollection: string[];
   /** infos with parameters to search Cube */
   public searchObj: object;
-  /** layers enabled in the map */
-  private layers: Layer[];
 
   private bands: string[];
   private grid: string[];
@@ -60,9 +58,6 @@ export class SearchComponent implements OnInit {
     private store: Store<ExploreState>,
     private fb: FormBuilder) {
       this.store.pipe(select('explore')).subscribe(res => {
-        if (res.layers) {
-          this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-        }
         if (res.bbox) {
           const bbox = Object.values(res.bbox);
           this.searchObj['bbox'] = {
@@ -263,6 +258,8 @@ export class SearchComponent implements OnInit {
         new Date(times[0]),
         new Date(times[1])
       ];
+      this.searchObj['start_date'] = new Date(times[0]);
+      this.searchObj['last_date'] = new Date(times[1]);
       // set collection types
       this.typesCollection = response.properties['bdc:time_aggregations'].filter(
         t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => t.name));
@@ -271,8 +268,8 @@ export class SearchComponent implements OnInit {
       // set wrs/grid
       this.grid = response['properties']['bdc:wrs'];
       // set temporal schema and temporal step if monthly
-      this.tschema = response['properties']['bdc:tschema']
-      this.tstep = response['properties']['bdc:tstep']
+      this.tschema = response['properties']['bdc:tschema'];
+      this.tstep = response['properties']['bdc:tstep'];
 
     } catch (_) {}
   }
@@ -311,20 +308,21 @@ export class SearchComponent implements OnInit {
   /**
    * view bounding box in map
    */
-  public previewBbox() {
+  public previewBbox(bbox) {
     this.removeLayerBbox();
     const bounds: LatLngBoundsExpression = [
-      [this.searchObj['bbox'].north, this.searchObj['bbox'].east],
-      [this.searchObj['bbox'].south, this.searchObj['bbox'].west]
+      [bbox.north, bbox.east],
+      [bbox.south, bbox.west]
     ];
     const newLayers = rectangle(bounds, {
       color: '#666',
       weight: 1,
+      interactive: false,
       className: 'previewBbox'
-    }).bringToFront();
+    });
 
-    this.layers.push(newLayers);
-    this.store.dispatch(setLayers(this.layers));
+    this.store.dispatch(setLayers([newLayers]));
+    this.store.dispatch(setBbox(newLayers.getBounds()));
     this.store.dispatch(setPositionMap(newLayers.getBounds()));
   }
 
@@ -332,8 +330,10 @@ export class SearchComponent implements OnInit {
    * remove bounding box of the map
    */
   public removeLayerBbox() {
-    this.layers = this.layers.filter( lyr => lyr['options'].className !== 'previewBbox');
-    this.store.dispatch(setLayers(this.layers));
+    this.store.dispatch(removeGroupLayer({
+      key: 'className',
+      prefix: 'previewBbox'
+    }));
   }
 
   /**

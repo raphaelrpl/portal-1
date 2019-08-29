@@ -12,7 +12,8 @@ import {
   setTSchema,
   setTStep,
   setSamples,
-  removeLayers
+  removeLayers,
+  removeGroupLayer
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -23,6 +24,7 @@ const initialState: ExploreState = {
   samples: [],
   layers: [],
   layersToDisabled: [],
+  layerGroupToDisabled: [],
   bands: [],
   grid: '',
   positionMap: null,
@@ -53,6 +55,9 @@ export const reducer = createReducer(initialState,
   }),
   on(removeLayers, (state, payload) => {
     return { ...state, layersToDisabled: payload };
+  }),
+  on(removeGroupLayer, (state, payload) => {
+    return { ...state, layerGroupToDisabled: payload };
   }),
   on(setBands, (state, payload) => {
     return { ...state, bands: payload };

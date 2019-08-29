@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Feature } from 'geojson';
 import { Layer, tileLayer } from 'leaflet';
-import { setLayers } from '../../explore.action';
+import { setLayers, removeLayers, removeGroupLayer } from '../../explore.action';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 
 @Component({
@@ -14,7 +14,6 @@ import { formatDateUSA } from 'src/app/shared/helpers/date';
 export class SampleComponent {
 
   public samples: Feature[];
-  public layers: Layer[];
   public rangeTemporal: string[];
   public classes: string[] = [];
   public authors: string[] = [];
@@ -41,10 +40,6 @@ export class SampleComponent {
           }
           this.filtered();
         });
-
-        if (res.layers) {
-          this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-        }
 
         if (Object.values(res.rangeTemporal).length) {
           this.rangeTemporal = [
@@ -75,9 +70,11 @@ export class SampleComponent {
   }
 
   private removeSamplesSearch() {
-    // remove layers
-    const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('samples_') < 0));
-    this.store.dispatch(setLayers(newLayers));
+    // remove sample layers
+    this.store.dispatch(removeGroupLayer({
+      key: 'alt',
+      prefix: 'samples_'
+    }));
     // disable toggle
     Object.keys(this.classesStatus).forEach( key => {
       this.classesStatus[key] = false
@@ -116,13 +113,13 @@ export class SampleComponent {
       } as any);
 
       // display layer
-      const newLayers = this.layers;
-      newLayers.push(layer);
-      this.store.dispatch(setLayers(newLayers));
+      this.store.dispatch(setLayers([layer]));
 
     } else {
-      const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt !== `samples_${className}`));
-      this.store.dispatch(setLayers(newLayers));
+      this.store.dispatch(removeGroupLayer({
+        key: 'alt',
+        prefix: `samples_${className}`
+      }));
     }
   }
 

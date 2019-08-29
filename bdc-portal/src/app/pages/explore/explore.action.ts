@@ -43,6 +43,14 @@ export const removeLayers = createAction(
 );
 
 /**
+ * remove Layers group enabled in the map
+ */
+export const removeGroupLayer = createAction(
+    '[Map Component] name group layer',
+    props<object>()
+);
+
+/**
  * set Grid enabled in the map
  */
 export const setGrid = createAction(
