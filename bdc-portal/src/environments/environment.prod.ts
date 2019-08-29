@@ -3,8 +3,5 @@
  */
 export const environment = {
   /** environment */
-  production: true,
-  urlGeoserver: '',
-  urlStac: '',
-  urlStacCompose: ''
+  production: true
 };

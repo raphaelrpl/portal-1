@@ -7,7 +7,7 @@ import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import {  Layer, geoJSON, featureGroup } from 'leaflet';
-import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity } from '../../explore.action';
+import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity, removeLayers } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
@@ -46,9 +46,6 @@ export class CollectionComponent {
       if (res.featuresPeriod) {
         this.featuresPeriod$ = Object.values(res.featuresPeriod).slice(0, (Object.values(res.featuresPeriod).length - 1)) as Feature[];
       }
-      if (res.layers) {
-        this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-      }
       if (res.bands) {
         this.bands = Object.values(res.bands).slice(0, (Object.values(res.bands).length - 1)) as string[];
       }
@@ -65,9 +62,12 @@ export class CollectionComponent {
     return `${startDate}`;
   }
 
-  /** enable or disable cube in the map */
+  /**
+   * enable or disable cube in the map
+   */
   public onChangeLayer(event) {
     if (event.checked) {
+      const lyrGroup = [];
       this.featuresPeriod$ = this.featuresPeriod$.map( (f: any) => {
         const coordinates = f.geometry.coordinates[0];
         // [lat, lng] => TL, TR, BR, BL
@@ -85,13 +85,13 @@ export class CollectionComponent {
           <b>Tile:</b> ${f.properties['bdc:tile']}<br>
           <b>Datetime:</b> ${f.properties['datetime']}<br>
           <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
-        `);
+        `)
 
-        this.layers.push(layerTile);
+        lyrGroup.push(layerTile);
         return {...f, enabled: true};
       });
 
-      this.store.dispatch(setLayers(this.layers));
+      this.store.dispatch(setLayers([L.layerGroup(lyrGroup)]));
       this.snackBar.open('LAYERS ENABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
@@ -107,8 +107,8 @@ export class CollectionComponent {
         return {...f, enabled: false};
       });
 
-      const newLayers = this.layers.filter( lyr => !lyr['options'].alt || (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') < 0) );
-      this.store.dispatch(setLayers(newLayers));
+      const nameLayers = this.featuresPeriod$.map( (f: any) => `qls_${f.id}` );
+      this.store.dispatch(removeLayers(nameLayers));
       this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
@@ -117,32 +117,42 @@ export class CollectionComponent {
     }
   }
 
-  /** set zoom in the feature/item of the map */
+  /**
+   * set zoom in the feature/item of the map
+   */
   public setZoomByFeature(feature: any) {
     const featureGeoJson = geoJSON(feature);
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  /** set zoom in the Cube of the map */
+  /**
+   * set zoom in the Cube of the map
+   */
   public setZoomByCube() {
     const featuresGeoJson = featureGroup(this.featuresPeriod$.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
 
-  /** enable or disable opacity box */
+  /**
+   * enable or disable opacity box
+   */
   public viewOpacityCube() {
     this.opacityEnabled = !this.opacityEnabled;
   }
 
-  /** set new value to opacity Cube */
+  /**
+   * set new value to opacity Cube
+   */
   public setOpacityCube() {
     const newOpacity = (this.opacity / 10).toString();
     this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
-  /** enable or disable actions box in the feature */
+  /**
+   * enable or disable actions box in the feature
+   */
   public enableFeatureActions(featureId: string) {
     this.featuresPeriod$ = this.featuresPeriod$.map( f => {
       if (f.id === featureId) {
@@ -153,7 +163,9 @@ export class CollectionComponent {
     this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
   }
 
-  /** open dialog with features infos */
+  /**
+   * open dialog with features infos
+   */
   public viewFeatureDetails(feature: Feature) {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
@@ -165,7 +177,9 @@ export class CollectionComponent {
     });
   }
 
-  /** open dialog with Cube infos */
+  /**
+   * open dialog with Cube infos
+   */
   public viewCubeDetails() {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',

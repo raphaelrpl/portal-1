@@ -1,0 +1,27 @@
+<div class="form-select">
+    <mat-form-field appearance="fill">
+        <mat-label>Select Authors</mat-label>
+        <mat-select [(value)]="authors" multiple>
+            <mat-option *ngFor="let author of authorsList" [value]="author">{{ author }}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button (click)="filtered()">Apply Filter</button>
+</div>
+
+<div class="box-classes">
+    <div class="class" *ngFor="let class of classesList">
+        {{ class }}
+
+        <div class="actions">
+            <input
+                type="color"
+                class="input-color"
+                [(ngModel)]="classesColors[class]">
+            <mat-slide-toggle
+                [(ngModel)]="classesStatus[class]"
+                (change)="enableClass($event, class)">
+            </mat-slide-toggle>
+        </div>
+    </div>
+</div>

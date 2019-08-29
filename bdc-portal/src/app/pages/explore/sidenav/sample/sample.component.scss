@@ -1,0 +1,44 @@
+.form-select {
+    padding: 20px 0;
+    border-bottom: 1px dashed #999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    button {
+        display: block;
+        margin: -15px auto 0 auto;
+        width: 120px;
+    }
+}
+
+.box-classes {
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+
+    .class {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 5px 0;
+        padding: 10px;
+        background: rgba(0,0,0,0.1);
+        border-top: 1px solid #999;
+        border-bottom: 1px solid #999;
+
+        .input-color {
+            background: rgba(0,0,0,0.1);
+            border-radius: 5px;
+            padding: 0 2px;
+            width: 25px;
+            margin-right: 10px;
+            height: 25px;
+        }
+
+        .actions {
+            display: flex;
+            align-items: center;
+        }
+    }
+}

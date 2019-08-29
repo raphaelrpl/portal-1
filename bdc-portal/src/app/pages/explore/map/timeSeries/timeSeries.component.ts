@@ -4,8 +4,8 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { BoxTimeSeriesComponent } from './box/box.component';
 import { MatBottomSheet } from '@angular/material';
-import { Marker, Layer, LatLngBounds, LatLng } from 'leaflet';
-import { setLayers } from '../../explore.action';
+import { Marker, LatLngBounds, LatLng } from 'leaflet';
+import { setLayers, removeGroupLayer } from '../../explore.action';
 
 /**
  * Map initial TimeSeries component
@@ -22,19 +22,16 @@ export class TimeSeriesComponent {
   public actived = false;
   /** features selected in search */
   public features$: Feature[] = [];
-  /** visible layers in the map */
-  private layers: Layer[];
   /** center (lat/lng) of map */
   private center: LatLng;
+  /** layer maker */
+  private layerMaker: Marker;
 
   /** select data of the store application */
   constructor(
     private bottomSheet: MatBottomSheet,
     private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
-      if (res.layers) {
-        this.layers = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-      }
       if (res.features) {
         this.features$ = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
       }
@@ -49,24 +46,29 @@ export class TimeSeriesComponent {
   public active() {
     if (!this.actived) {
       this.actived = true;
-      const layerMaker = new Marker(this.center, {
+      this.layerMaker = new Marker(this.center, {
         draggable: true,
         alt: 'timeSeries'
       });
-      this.layers.push(layerMaker);
-      this.store.dispatch(setLayers(this.layers));
+      this.store.dispatch(setLayers([this.layerMaker]));
     }
   }
 
   /** disabled function in the map */
   public desactive() {
-    const newLayers = this.layers.filter( lyr => lyr['options'].alt !== 'timeSeries');
-    this.store.dispatch(setLayers(newLayers));
+    this.store.dispatch(removeGroupLayer({
+      key: 'alt',
+      prefix: 'timeSeries'
+    }));
     this.actived = false;
   }
 
   /** active box with graphic in the window */
   public showBox() {
-    this.bottomSheet.open(BoxTimeSeriesComponent);
+    this.bottomSheet.open(BoxTimeSeriesComponent, {
+      data: {
+        latLng: this.layerMaker.getLatLng()
+      }
+    });
   }
 }

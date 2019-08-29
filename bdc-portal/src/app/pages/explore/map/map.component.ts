@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 
 import * as L from 'leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.js';
@@ -6,14 +6,13 @@ import 'src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.min.js'
 import 'esri-leaflet/dist/esri-leaflet.js';
 import * as LE from 'esri-leaflet-geocoder/dist/esri-leaflet-geocoder.js';
 
-import { latLng, MapOptions, Layer, geoJSON, Map as MapLeaflet,
-  LatLngBoundsExpression, Control, Draw, rectangle } from 'leaflet';
-import { GeoJsonObject } from 'geojson';
-import { BdcLayer, BdcLayerWFS } from './layers/layer.interface';
+import { latLng, MapOptions, Layer, Map as MapLeaflet,
+  LatLngBoundsExpression, Control, Draw, rectangle, layerGroup } from 'leaflet';
+import { BdcLayer, BdcGrid } from './layers/layer.interface';
 import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
-import { setLayers, setPositionMap, setBbox } from '../explore.action';
+import { setPositionMap, setBbox, removeLayers, setLayers, removeGroupLayer } from '../explore.action';
 import { SearchService } from '../sidenav/search/search.service';
 
 /**
@@ -32,25 +31,23 @@ export class MapComponent implements OnInit {
   /** props with height of the map */
   @Input() height: number;
 
+  private urlGeoserver = window['__env'].urlGeoserver;
+
   /** pointer to reference map */
   public map: MapLeaflet;
   /** object with map settings */
   public options: MapOptions;
   /** layers displayed on the Leaflet control component */
   public layersControl: any;
-  /** visible layers in the map */
-  public layers$: Layer[];
 
-  /** all overlay layers read and mounted */
-  private overlayers: BdcLayer[];
   /** tiles used with data in the BDC project */
   private tilesUsed: number[];
-  /** all available base layers for viewing (layer object only) */
-  private baseLayers = {};
-  /** all overlay layers available for viewing (layer object only) */
-  private overlays = {};
   /** bounding box of Map */
   private bbox = null;
+  /** grid selected and visible in the map */
+  private actualGrid: string;
+  /** opacity of images disaplyed in the map */
+  private actualOpacity = 1;
 
   /** start Layer and Seatch Services */
   constructor(
@@ -58,30 +55,67 @@ export class MapComponent implements OnInit {
     private ss: SearchService,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
-        if (res.layers) {
+        // add layers
+        if (Object.values(res.layers).length > 1) {
           const lyrs = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
-          this.layers$ = lyrs.map( (lyr: L.ImageOverlay) => {
-            if (lyr['options'].alt && lyr['options'].alt.indexOf('qls_') >= 0) {
-              if (res.opacity) {
-                const opacity = parseFloat(res.opacity);
-                lyr.setOpacity(opacity);
+          lyrs.forEach( l => {
+            if (l['options'].alt) {
+              if (res.opacity && l['options'].alt.indexOf(`qls_`) >= 0) {
+                (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity)).setZIndex(9999);
               }
-              lyr.setZIndex(9999);
+              if (l['options'].alt.indexOf(`samples_`) >= 0) {
+                (l as L.TileLayer).setZIndex(999);
+              }
             }
-            return lyr;
+            this.map.addLayer(l);
           });
+          this.store.dispatch(setLayers([]));
         }
+        // remove layers by title
+        if (Object.values(res.layersToDisabled).length > 1) {
+          const lyrs = Object.values(res.layersToDisabled).slice(0, (Object.values(res.layersToDisabled).length - 1)) as Layer[];
+          this.map.eachLayer( l => {
+            if (l['options'].alt && lyrs.indexOf(l['options'].alt) >= 0) {
+              this.map.removeLayer(l);
+            }
+          });
+          this.store.dispatch(removeLayers([]));
+        }
+        // remove layers by prefix
+        if (res.layerGroupToDisabled['key'] && res.layerGroupToDisabled['prefix']) {
+          const key = res.layerGroupToDisabled['key'];
+          const prefix = res.layerGroupToDisabled['prefix'];
+          this.map.eachLayer( l => {
+            if (l['options'][key] && l['options'][key].indexOf(prefix) >= 0) {
+              this.map.removeLayer(l);
+            }
+          });
+          this.store.dispatch(removeGroupLayer({}));
+        }
+        // set position map
         if (res.positionMap && res.positionMap !== this.bbox) {
           this.bbox = res.positionMap;
           this.setPosition(res.positionMap);
         }
-        if (res.grid !== '' && this.overlayers.filter(l => l.enabled === true)[0].id !== res.grid) {
+        // display other grid
+        if (res.grid !== '' && res.grid !== this.actualGrid) {
           this.setGrid(res.grid);
+        }
+        // display other grid
+        if (res.opacity >= 0 && res.opacity != this.actualOpacity) {
+          this.map.eachLayer( l => {
+            if (l['options'].alt && l['options'].alt.indexOf(`qls_`) >= 0) {
+              (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity));
+            }
+          });
+          this.actualOpacity = res.opacity;
         }
       });
   }
 
-  /** set layers and initial configuration of the map */
+  /**
+   * set layers and initial configuration of the map
+   */
   ngOnInit() {
     this.options = {
       zoom: 5,
@@ -89,13 +123,14 @@ export class MapComponent implements OnInit {
     };
 
     this.getTilesUsed();
-    this.getBaseLayers(this.ls.getBaseLayers());
     setTimeout(() => {
-      this.mountGridsLayers(this.ls.getGridsLayers());
+      this.setControlLayers();
     }, 1000);
   }
 
-  /** get Tiles with data in grids */
+  /**
+   * get Tiles with data in grids
+   */
   private async getTilesUsed() {
     try {
       const collections = await this.ss.getCollections();
@@ -106,120 +141,47 @@ export class MapComponent implements OnInit {
           this.tilesUsed = [...this.tilesUsed, ...collection.properties['bdc:tiles']];
         }
       });
-
     } catch (err) {}
   }
 
-  /** set the visible layers in the layer component of the map */
-  private setControlLayers(): void {
-    this.layersControl = {
-      baseLayers: this.baseLayers,
-      overlays: this.overlays
-    };
-  }
-
   /**
-   * get the layer objects from a list of BdcLayer
+   * set position of the Map
    */
-  private getBaseLayers(listLayers: BdcLayer[]) {
-    const vm = this;
-    listLayers.forEach( (l: BdcLayer) => {
-      vm.baseLayers[l.name] = l.layer;
-    });
-  }
-
-  /**
-   * get the layer objects from a list of BdcLayerWFS
-   * mount the overlayers with GeoJson's consulted from the Geoserver
-   */
-  private async mountGridsLayers(listLayersId: BdcLayerWFS[]) {
-    try {
-      const vm = this;
-      this.overlayers = [];
-
-      await listLayersId.forEach( async (l: BdcLayerWFS) => {
-        const responseGeoJson: GeoJsonObject = await this.ls.getGeoJsonByLayer(l.ds, l.title);
-
-        const layerGeoJson = geoJSON(
-          responseGeoJson,
-          {
-            onEachFeature: (feat, lyr) => {
-              if (feat.geometry.type === 'MultiPolygon' || feat.geometry.type === 'Polygon') {
-                if (this.tilesUsed && this.tilesUsed.indexOf(feat.properties.Tile) >= 0) {
-                  // apply style
-                  (lyr as any).setStyle({
-                    color: '#0033cc',
-                    weight: 2,
-                    fillColor: '#009999',
-                    fillOpacity: 0.4
-                  });
-
-                } else {
-                  (lyr as any).setStyle({
-                    color: '#0033CC',
-                    weight: 1,
-                    fillOpacity: 0.2
-                  });
-                }
-              }
-            }
-          });
-        vm.overlays[l.name] = layerGeoJson;
-
-        const layer: BdcLayer = {
-          id: l.title,
-          name: l.name,
-          enabled: l.enabled,
-          layer: layerGeoJson
-        };
-        vm.overlayers.push(layer);
-      });
-
-    } catch (err) {
-    } finally {
-      this.setControlLayers();
-
-      setTimeout(() => {
-        this.applyLayersInMap();
-      }, 100);
-    }
-  }
-
-  /** apply the layers that are visible on the map */
-  applyLayersInMap(): void {
-    const baseLayer = this.ls.getBaseLayers().filter((l: BdcLayer) => l.id === 'osm');
-
-    if (this.overlayers[0] && this.overlayers[0].layer) {
-      const newLayers: Layer[] = this.overlayers
-            .filter((l: BdcLayer) => l.enabled)
-            .map((l: BdcLayer) => l && l.layer);
-
-      // set base layer with firsty
-      newLayers.unshift(baseLayer[0].layer);
-      this.store.dispatch(setLayers(newLayers));
-
-    } else {
-      const newLayers = [baseLayer[0].layer];
-      this.store.dispatch(setLayers(newLayers));
-    }
-  }
-
-  /** set position of the Map */
   private setPosition(bounds: LatLngBoundsExpression) {
     this.map.fitBounds(Object.values(bounds).slice(0, 2));
   }
 
-  /** set grid of the Map */
-  private setGrid(grid) {
-    this.overlayers = this.overlayers.map( l => {
-      return {...l, enabled: l.id === grid}
+  /**
+   * set grid of the Map and remove others with different name
+   */
+  private setGrid(grid: string) {
+    Object.keys(this.layersControl.overlays).forEach( (key: string) => {
+      const layer = this.layersControl.overlays[key];
+      if (key === grid) {
+        this.map.addLayer(layer);
+      } else {
+        this.actualGrid = grid;
+        this.map.removeLayer(layer);
+      }
     });
-    setTimeout(() => {
-      this.applyLayersInMap();
-    }, 100);
   }
 
-  /** set Draw control of the map */
+  /**
+   * set FullScreen option in the map
+   */
+  private setFullscreenControl() {
+    (L.control as any).fullscreen({
+      position: 'topleft',
+      title: 'Show Map Fullscreen',
+      titleCancel: 'Exit Fullscreen',
+      content: null,
+      forceSeparateButton: true
+    }).addTo(this.map);
+  }
+
+  /**
+   * set Draw control of the map
+   */
   private setDrawControl() {
     const drawControl = new Control.Draw({
       draw: {
@@ -237,39 +199,89 @@ export class MapComponent implements OnInit {
     });
     this.map.addControl(drawControl);
 
+    // remove last bbox
     this.map.on(Draw.Event.DRAWSTART, _ => {
-      this.layers$ = this.layers$.filter( lyr => lyr['options'].className !== 'previewBbox');
-      this.store.dispatch(setLayers(this.layers$));
+      this.map.eachLayer( l => {
+        if (l['options'].className === 'previewBbox') {
+          this.map.removeLayer(l);
+        }
+      })
     });
 
+    // add bbox in the map
     this.map.on(Draw.Event.CREATED, e => {
       const layer: any = e['layer'];
-      const newLayers = rectangle(layer.getBounds(), {
+      const newLayer = rectangle(layer.getBounds(), {
         color: '#666',
         weight: 1,
-        className: 'previewBbox',
+        interactive: false,
+        className: 'previewBbox'
       });
 
-      this.layers$.push(newLayers);
-      this.store.dispatch(setLayers(this.layers$));
-      this.store.dispatch(setBbox(newLayers.getBounds()));
-      this.store.dispatch(setPositionMap(newLayers.getBounds()));
+      this.map.addLayer(newLayer);
+      this.store.dispatch(setBbox(newLayer.getBounds()));
+      this.store.dispatch(setPositionMap(newLayer.getBounds()));
     });
   }
 
-  /** set FullScreen option in the map */
-  setFullscreenControl() {
-    (L.control as any).fullscreen({
-      position: 'topleft',
-      title: 'Show Map Fullscreen',
-      titleCancel: 'Exit Fullscreen',
-      content: null,
-      forceSeparateButton: true
-    }).addTo(this.map);
+  /**
+   * set the visible layers in the layer component of the map
+   */
+  private setControlLayers() {
+    this.layersControl = {
+      baseLayers: {},
+      overlays: {}
+    }
+    // mount base layers
+    this.ls.getBaseLayers().forEach( (l: BdcLayer) => {
+      if (l.id == 'osm') {
+        l.layer.addTo(this.map);
+      }
+      this.layersControl.baseLayers[l.name] = l.layer;
+    })
+    // mount overlays
+    this.ls.getGridsLayers().forEach( (l: BdcGrid) => {
+      if (l.filter) {
+        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${l.id}`,
+          format: 'image/png',
+          styles: 'grids:tiles_used',
+          transparent: true,
+          cql_filter: `Tile IN ('${this.tilesUsed.join("','")}')`,
+          alt: `grid_${l.id}`
+        } as any);
+        const layerGridUsed = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${l.id}`,
+          format: 'image/png',
+          styles: 'grids:tiles',
+          transparent: true,
+          cql_filter: `Tile NOT IN ('${this.tilesUsed.join("','")}')`,
+          alt: `grid_${l.id}`
+        } as any);
+        this.layersControl.overlays[l.id] = layerGroup([layerGrid, layerGridUsed]);
+
+      } else {
+        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${l.id}`,
+          format: 'image/png',
+          styles: 'grids:tiles',
+          transparent: true,
+          alt: `grid_${l.id}`
+        } as any);
+        this.layersControl.overlays[l.id] = layerGroup([layerGrid]);
+      }
+
+      if (l.enabled) {
+        this.actualGrid = l.id;
+        this.map.addLayer(this.layersControl.overlays[l.id]);
+      }
+    })
   }
 
-  /** set Coordinates options in the map */
-  setCoordinatesControl() {
+  /**
+   * set Coordinates options in the map
+   */
+  private setCoordinatesControl() {
     (L.control as any).coordinates({
       position: 'bottomleft',
       decimals: 5,
@@ -282,31 +294,38 @@ export class MapComponent implements OnInit {
     }).addTo(this.map);
   }
 
-  /** set Geocoder options in the map */
-  setGeocoderControl() {
+  /**
+   * set Geocoder options in the map
+   */
+  private setGeocoderControl() {
     const searchControl = LE.geosearch().addTo(this.map);
     const vm = this;
 
     searchControl.on('results', data => {
-      vm.layers$ = vm.layers$.filter( lyr => lyr['options'].className !== 'previewBbox');
-      vm.store.dispatch(setLayers(vm.layers$));
+      vm.map.eachLayer( l => {
+        if (l['options'].className === 'previewBbox') {
+          vm.map.removeLayer(l);
+        }
+      })
 
       for (let i = data.results.length - 1; i >= 0; i--) {
-        const newLayers = rectangle(data.results[i].bounds, {
+        const newLayer = rectangle(data.results[i].bounds, {
           color: '#666',
           weight: 1,
-          className: 'previewBbox',
+          interactive: false,
+          className: 'previewBbox'
         });
 
-        vm.layers$.push(newLayers);
-        vm.store.dispatch(setLayers(vm.layers$));
-        vm.store.dispatch(setBbox(newLayers.getBounds()));
-        vm.store.dispatch(setPositionMap(newLayers.getBounds()));
+        vm.map.addLayer(newLayer);
+        vm.store.dispatch(setBbox(newLayer.getBounds()));
+        vm.store.dispatch(setPositionMap(newLayer.getBounds()));
       }
     });
   }
 
-  /** event used when change Map */
+  /**
+   * event used when change Map
+   */
   onMapReady(map: MapLeaflet) {
     this.map = map;
     this.setFullscreenControl();

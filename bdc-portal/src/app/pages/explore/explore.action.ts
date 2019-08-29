@@ -19,11 +19,35 @@ export const setFeaturesPeriod = createAction(
 );
 
 /**
+ * set Samples in store application
+ */
+export const setSamples = createAction(
+    '[Explore Component] Samples',
+    props<object[]>()
+);
+
+/**
  * set Layers enabled in the map
  */
 export const setLayers = createAction(
     '[Map Component] Layers',
     props<Layer[]>()
+);
+
+/**
+ * remove Layers enabled in the map
+ */
+export const removeLayers = createAction(
+    '[Map Component] name Layers',
+    props<string[]>()
+);
+
+/**
+ * remove Layers group enabled in the map
+ */
+export const removeGroupLayer = createAction(
+    '[Map Component] name group layer',
+    props<object>()
 );
 
 /**
@@ -89,18 +113,4 @@ export const setBbox = createAction(
 export const setRangeTemporal = createAction(
     '[Map Component] Range Temporal',
     props<Date[]>()
-);
-
-/**
- * set loading as true
- */
-export const showLoading = createAction(
-    '[Loading Component] showLoading'
-);
-
-/**
- * set loading as false
- */
-export const closeLoading = createAction(
-    '[Loading Component] closeLoading'
 );

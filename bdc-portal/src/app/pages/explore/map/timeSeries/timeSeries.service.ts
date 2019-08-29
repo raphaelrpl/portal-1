@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
 
 /**
  * Time Series Service
@@ -8,6 +7,8 @@ import { environment } from 'src/environments/environment';
  */
 @Injectable({ providedIn: 'root' })
 export class TimeSeriesService {
+
+    private urlWTSS = window['__env'].urlWTSS;
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -18,7 +19,7 @@ export class TimeSeriesService {
      */
     public async getTimeSeriesWTSS(query): Promise<any> {
         const urlSuffix = `/time_series${query}`;
-        const response = await this.http.get(`${environment.urlWTSS}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${this.urlWTSS}${urlSuffix}`).toPromise();
         return response;
     }
 }

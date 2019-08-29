@@ -22,11 +22,22 @@
             <mat-expansion-panel *ngIf="features$.length" [expanded]="step == 1" (click)="changeStep(1)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <mat-icon>list</mat-icon> Tiles
+                  <mat-icon>list</mat-icon> Cube
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
               <app-collection></app-collection>
+            </mat-expansion-panel>
+
+            <!-- SAMPLE BOX -->
+            <mat-expansion-panel *ngIf="samples$.length" [expanded]="step == 2" (click)="changeStep(2)">
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <mat-icon>scatter_plot</mat-icon> Samples
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <app-sample></app-sample>
             </mat-expansion-panel>
 
           </mat-accordion>

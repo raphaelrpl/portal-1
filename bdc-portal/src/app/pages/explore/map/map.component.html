@@ -1,10 +1,10 @@
 <div [ngStyle]="{'width.px': width, 'height.px': height}"
      leaflet
      [leafletOptions]="options"
-     [leafletLayers]="layers$"
      [leafletLayersControl]="layersControl"
      (leafletMapReady)="onMapReady($event)">
 </div>
 
 <app-map-slider></app-map-slider>
 <app-map-timeseries></app-map-timeseries>
+<app-map-catalog></app-map-catalog>

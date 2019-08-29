@@ -13,7 +13,7 @@
 
         <mat-form-field appearance="fill" *ngIf="products && products.indexOf('cubes') >= 0">
             <mat-label>Select Cube</mat-label>
-            <mat-select [(value)]="searchObj.cube" formControlName="cube" required>
+            <mat-select [(value)]="searchObj.cube" formControlName="cube" [required]="products && products.indexOf('cubes') >= 0">
                 <mat-option
                     *ngFor="let collection of collections"
                     [value]="collection"
@@ -27,57 +27,55 @@
         <hr />
 
         <div class="search__region-box">
-            <div class="box-content">
-                <div class="box-coordinates">
-                    <mat-form-field appearance="outline"
-                        style="margin-bottom: -15px !important"
-                        class="field-top-bottom">
-                        <mat-label>North</mat-label>
+            <div class="box-coordinates">
+                <mat-form-field appearance="outline"
+                    style="margin-bottom: -15px !important"
+                    class="field-top-bottom">
+                    <mat-label>North</mat-label>
+                    <input matInput
+                        type="number"
+                        name="north"
+                        placeholder="N"
+                        [(ngModel)]="searchObj.bbox.north"
+                        formControlName="north"
+                        required />
+                </mat-form-field>
+
+                <div style="display: flex; width: 95%">
+                    <mat-form-field appearance="outline">
+                        <mat-label>West</mat-label>
                         <input matInput
                             type="number"
-                            name="north"
-                            placeholder="N"
-                            [(ngModel)]="searchObj.bbox.north"
-                            formControlName="north"
+                            name="west"
+                            placeholder="W"
+                            [(ngModel)]="searchObj.bbox.west"
+                            formControlName="west"
                             required />
                     </mat-form-field>
-
-                    <div>
-                        <mat-form-field appearance="outline">
-                            <mat-label>West</mat-label>
-                            <input matInput
-                                type="number"
-                                name="west"
-                                placeholder="W"
-                                [(ngModel)]="searchObj.bbox.west"
-                                formControlName="west"
-                                required />
-                        </mat-form-field>
-                        <mat-form-field appearance="outline">
-                            <mat-label>East</mat-label>
-                            <input matInput
-                                type="number"
-                                name="east"
-                                placeholder="E"
-                                [(ngModel)]="searchObj.bbox.east"
-                                formControlName="east"
-                                required />
-                        </mat-form-field>
-                    </div>
-
-                    <mat-form-field appearance="outline"
-                        style="margin-top: -25px !important"
-                        class="field-top-bottom">
-                        <mat-label>South</mat-label>
+                    <mat-form-field appearance="outline">
+                        <mat-label>East</mat-label>
                         <input matInput
                             type="number"
-                            name="south"
-                            placeholder="S"
-                            [(ngModel)]="searchObj.bbox.south"
-                            formControlName="south"
+                            name="east"
+                            placeholder="E"
+                            [(ngModel)]="searchObj.bbox.east"
+                            formControlName="east"
                             required />
                     </mat-form-field>
                 </div>
+
+                <mat-form-field appearance="outline"
+                    style="margin-top: -25px !important"
+                    class="field-top-bottom">
+                    <mat-label>South</mat-label>
+                    <input matInput
+                        type="number"
+                        name="south"
+                        placeholder="S"
+                        [(ngModel)]="searchObj.bbox.south"
+                        formControlName="south"
+                        required />
+                </mat-form-field>
             </div>
 
             <div class="region__btn-functions">
@@ -85,7 +83,7 @@
                     mat-stroked-button
                     class="preview_box"
                     *ngIf="bboxNotEmpty()">
-                    <mat-icon (click)="previewBbox()" class="preview">visibility</mat-icon>
+                    <mat-icon (click)="previewBbox(searchObj.bbox)" class="preview">visibility</mat-icon>
                     |
                     <mat-icon (click)="removeLayerBbox()">clear</mat-icon>
                 </button>
@@ -94,8 +92,8 @@
 
         <hr  style="margin-top: 15px" />
 
-        <div>
-            <mat-form-field appearance="fill" style="width: 50%">
+        <div style="display: flex;">
+            <mat-form-field appearance="fill" style="width: 48%">
                 <mat-label>Start Date</mat-label>
                 <input matInput
                     [matDatepicker]="start_date"
@@ -110,7 +108,7 @@
                 <mat-datepicker #start_date></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" style="width: 50%">
+            <mat-form-field appearance="fill" style="width: 48%; margin-left: 4%;">
                 <mat-label>Last Date</mat-label>
                 <input matInput
                     [matDatepicker]="last_date"
@@ -129,7 +127,7 @@
         <div *ngIf="searchObj.cube">
             <mat-form-field appearance="fill">
                 <mat-label>Type</mat-label>
-                <mat-select [(value)]="searchObj.types" formControlName="type" required>
+                <mat-select [(value)]="searchObj.types" formControlName="type" [required]="searchObj.cube">
                     <mat-option *ngFor="let type of typesCollection" [value]="type">{{ type }}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="formSearch.get('type').status === 'INVALID'">
