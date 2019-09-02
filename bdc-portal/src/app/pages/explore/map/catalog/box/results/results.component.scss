@@ -1,0 +1,89 @@
+.alert-warning {
+    background: rgba(255,255,0,0.5);
+    padding: 3px 10px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.features {
+
+    .results-label {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        background: rgba(#000, 0.05);
+        padding: 0px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(#000, 0.1);
+    }
+
+    .results-pagination {
+        display: flex;
+        justify-content: center;
+        margin-left: -40px;
+
+        ul {
+            padding-inline-start: 0px !important;
+        }
+    }
+
+    .feature {
+        background: rgba(#000, 0.1);
+        border-top: 1px solid rgba(#000, 0.2);
+        border-bottom: 1px solid rgba(#000, 0.2);
+        display: flex;
+        margin-top: 5px;
+        width: 100%;
+        align-items: center;
+        cursor: pointer;
+
+        &:hover {
+            background: rgba(#000, 0.15);
+        }
+        &.actived {
+            background: rgba(0, 255, 0, 0.3);
+        }
+
+        .feature_ql {
+            width: 25%;
+            padding: 5px 5px 0 5px;
+            border-right: 1px solid rgba(#000, 0.1);
+
+            img {
+                width: 100%;
+                border-radius: 5px;
+            }
+        }
+
+        .feature_desc {
+            width: 100%;
+            padding: 5px 10px;
+            p {
+                margin: 0;
+            }
+        }
+
+    }
+
+    .feature-actions {
+        padding: 5px 10px;
+        background: rgba(#000, 0.15);
+        border-bottom: 1px solid rgba(#000, 0.2);
+        border-radius: 0px 0px 0px 15px;
+        display: flex;
+        justify-content: flex-end;
+        margin-left: 210px;
+
+        .btns {
+            margin-left: 10px;
+            cursor: pointer;
+            border-radius: 5px;
+
+            &:hover {
+                background: rgba(#000, 0.1);
+            }
+        }
+    }
+}

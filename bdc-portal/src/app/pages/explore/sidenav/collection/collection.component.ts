@@ -6,7 +6,7 @@ import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
-import {  Layer, geoJSON, featureGroup } from 'leaflet';
+import { geoJSON, featureGroup } from 'leaflet';
 import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity, removeLayers } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
@@ -28,8 +28,6 @@ export class CollectionComponent {
   public opacity = 10;
   /** status visible opacity box */
   public opacityEnabled = false;
-  /** layers enabled inthe map */
-  private layers: Layer[];
   /** list of bands */
   private bands: string[];
   /** range with dates (start-end) of the selected period */

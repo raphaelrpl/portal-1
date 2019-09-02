@@ -26,4 +26,13 @@ export class CatalogService {
         const response = await this.http.get(`${this.urlStacCompose}${urlSuffix}`).toPromise();
         return response;
     }
+
+    /**
+     * get Items by collections
+     */
+    public async getItems(query: string): Promise<any> {
+        const urlSuffix = `/collections/items?${query}`;
+        const response = await this.http.get(`${this.urlStacCompose}${urlSuffix}`).toPromise();
+        return response;
+    }
 }
