@@ -15,7 +15,7 @@ export class FormFieldErrorComponent implements OnInit {
 
   @Input() errorPrefix: string;
   @Input() errors: ValidationErrors;
-  
+
   constructor() {}
 
   ngOnInit() {}

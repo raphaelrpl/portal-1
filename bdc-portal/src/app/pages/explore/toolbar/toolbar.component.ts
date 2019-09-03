@@ -30,7 +30,7 @@ export class ToolbarComponent {
   /** pointer to issue event to explore component */
   @Output() toggleToEmit = new EventEmitter();
 
-  /** 
+  /**
    * emit event to explore when click in menu icon
    */
   toggleDrawer() {
@@ -44,7 +44,7 @@ export class ToolbarComponent {
     this.dialog.open(LoginComponent, {
       width: '400px',
       restoreFocus: false,
-      disableClose: true 
+      disableClose: true
     });
   }
 

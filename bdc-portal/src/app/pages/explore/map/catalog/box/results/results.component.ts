@@ -18,10 +18,10 @@ export class CatalogResultsComponent {
 
   @Input('features') public features;
 
-  perPage: number = 10;
-  page: number = 1;
+  public perPage = 10;
+  public page = 1;
 
-  constructor(private store: Store<ExploreState>){}
+  constructor(private store: Store<ExploreState>) {}
 
   /** convert date to USA format */
   public getDateFormated(dateStr: string): string {

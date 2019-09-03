@@ -205,7 +205,7 @@ export class MapComponent implements OnInit {
         if (l['options'].className === 'previewBbox') {
           this.map.removeLayer(l);
         }
-      })
+      });
     });
 
     // add bbox in the map
@@ -231,14 +231,14 @@ export class MapComponent implements OnInit {
     this.layersControl = {
       baseLayers: {},
       overlays: {}
-    }
+    };
     // mount base layers
     this.ls.getBaseLayers().forEach( (l: BdcLayer) => {
-      if (l.id == 'osm') {
+      if (l.id === 'osm') {
         l.layer.addTo(this.map);
       }
       this.layersControl.baseLayers[l.name] = l.layer;
-    })
+    });
     // mount overlays
     this.ls.getGridsLayers().forEach( (l: BdcGrid) => {
       if (l.filter) {
@@ -275,7 +275,7 @@ export class MapComponent implements OnInit {
         this.actualGrid = l.id;
         this.map.addLayer(this.layersControl.overlays[l.id]);
       }
-    })
+    });
   }
 
   /**
@@ -306,7 +306,7 @@ export class MapComponent implements OnInit {
         if (l['options'].className === 'previewBbox') {
           vm.map.removeLayer(l);
         }
-      })
+      });
 
       for (let i = data.results.length - 1; i >= 0; i--) {
         const newLayer = rectangle(data.results[i].bounds, {

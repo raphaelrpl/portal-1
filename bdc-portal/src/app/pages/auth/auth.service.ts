@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
-    private urlOauth = window['__env'].urlOauth
+    private urlOauth = window['__env'].urlOauth;
 
     /** start http service client */
     constructor(private http: HttpClient) { }

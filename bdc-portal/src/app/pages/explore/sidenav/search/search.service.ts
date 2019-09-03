@@ -4,8 +4,8 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class SearchService {
 
-    private urlStac = window['__env'].urlStac
-    private urlGeoserver = window['__env'].urlGeoserver
+    private urlStac = window['__env'].urlStac;
+    private urlGeoserver = window['__env'].urlGeoserver;
 
     /** start http service client */
     constructor(private http: HttpClient) { }
