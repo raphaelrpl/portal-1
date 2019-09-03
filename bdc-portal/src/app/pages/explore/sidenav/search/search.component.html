@@ -11,18 +11,20 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="fill" *ngIf="products && products.indexOf('cubes') >= 0">
-            <mat-label>Select Cube</mat-label>
-            <mat-select [(value)]="searchObj.cube" formControlName="cube" [required]="products && products.indexOf('cubes') >= 0">
-                <mat-option
-                    *ngFor="let collection of collections"
-                    [value]="collection"
-                    (click)="getCollection(collection)">{{ collection }}</mat-option>
-            </mat-select>
-            <mat-error *ngIf="formSearch.get('cube').status === 'INVALID'">
-                <form-field-error [errors]="formSearch.get('cube').errors"></form-field-error>
-            </mat-error>
-        </mat-form-field>
+        <span [hidden]="!(products && products.indexOf('cubes') >= 0)">
+            <mat-form-field appearance="fill">
+                <mat-label>Select Cube</mat-label>
+                <mat-select [(value)]="searchObj.cube" formControlName="cube" [required]="products && products.indexOf('cubes') >= 0">
+                    <mat-option
+                        *ngFor="let collection of collections"
+                        [value]="collection"
+                        (click)="getCollection(collection)">{{ collection }}</mat-option>
+                </mat-select>
+                <mat-error *ngIf="formSearch.get('cube').status === 'INVALID'">
+                    <form-field-error [errors]="formSearch.get('cube').errors"></form-field-error>
+                </mat-error>
+            </mat-form-field>
+        </span>
 
         <hr />
 
@@ -124,10 +126,10 @@
             </mat-form-field>
         </div>
 
-        <div *ngIf="searchObj.cube">
+        <div [hidden]="!(searchObj.cube && products && products.indexOf('cubes') >= 0)">
             <mat-form-field appearance="fill">
                 <mat-label>Type</mat-label>
-                <mat-select [(value)]="searchObj.types" formControlName="type" [required]="searchObj.cube">
+                <mat-select [(value)]="searchObj.types" formControlName="type" [required]="products && products.indexOf('cubes') >= 0">
                     <mat-option *ngFor="let type of typesCollection" [value]="type">{{ type }}</mat-option>
                 </mat-select>
                 <mat-error *ngIf="formSearch.get('type').status === 'INVALID'">

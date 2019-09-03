@@ -42,8 +42,8 @@ export class SearchService {
      * get Samples features in Geoserver by WFS
      */
     public getSamples(query: string): Promise<any> {
-        let urlSuffix = `?service=WFS&version=1.0.0&request=GetFeature&typeName=sample:sample&outputFormat=application/json`;
+        let urlSuffix = `?service=WFS&version=1.0.0&request=GetFeature&typeName=samples:sample&outputFormat=application/json`;
         urlSuffix += `&${query}`;
-        return this.http.get(`${this.urlGeoserver}/sample/ows${urlSuffix}`).toPromise();
+        return this.http.get(`${this.urlGeoserver}/samples/ows${urlSuffix}`).toPromise();
     }
 }

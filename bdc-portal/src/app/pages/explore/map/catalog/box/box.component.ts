@@ -93,6 +93,8 @@ export class BoxCatalogComponent implements OnInit{
   }
 
   public closeBox() {
+    this.searchObj.startDate = null
+    this.searchObj.lastDate = null
     this.toggleToEmit.emit();
   }
 

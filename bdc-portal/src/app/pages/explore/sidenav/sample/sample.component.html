@@ -14,14 +14,18 @@
         {{ class }}
 
         <div class="actions">
-            <input
-                type="color"
-                class="input-color"
-                [(ngModel)]="classesColors[class]">
             <mat-slide-toggle
                 [(ngModel)]="classesStatus[class]"
                 (change)="enableClass($event, class)">
             </mat-slide-toggle>
+            <input
+                type="color"
+                class="input-color"
+                [(ngModel)]="classesColors[class]">
+            <mat-icon
+                (click)="DownloadSamplesByClass(class)">
+                cloud_download
+            </mat-icon>
         </div>
     </div>
 </div>
