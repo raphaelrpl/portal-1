@@ -2,7 +2,7 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material';
 import { Store, select } from '@ngrx/store';
-import { rectangle, LatLngBoundsExpression, Layer } from 'leaflet';
+import { rectangle, LatLngBoundsExpression } from 'leaflet';
 
 import { SearchService } from './search.service';
 import { ExploreState } from '../../explore.state';
@@ -278,6 +278,7 @@ export class SearchComponent implements OnInit {
    * initialize search in selected resources
    */
   public search() {
+    console.log(this.formSearch)
     if (this.formSearch.status !== 'VALID') {
       this.changeStepNav(0);
       this.snackBar.open('Fill in all fields correctly!', '', {

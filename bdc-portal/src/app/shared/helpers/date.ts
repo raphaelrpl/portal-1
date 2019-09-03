@@ -25,6 +25,20 @@ export function addDays(date: Date, qntDays: number): Date {
 }
 
 /**
+ * subtract on month in date
+ */
+export function subMonth(date: Date): Date {
+    return new Date(date.setMonth(date.getMonth() - 1));
+}
+
+/**
+ * subtract days in date
+ */
+export function subDays(date: Date, qntDays: number): Date {
+    return new Date(date.setDate(date.getDate() - qntDays));
+}
+
+/**
  * get last day by month
  */
 export function getLastDateMonth(date: Date): number {

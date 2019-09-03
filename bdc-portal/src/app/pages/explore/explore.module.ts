@@ -23,6 +23,7 @@ import {
   MatMenuModule
 } from '@angular/material';
 import { ChartsModule } from 'ng2-charts';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { ExploreComponent } from './explore.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
@@ -39,6 +40,7 @@ import { BoxTimeSeriesComponent } from './map/timeSeries/box/box.component';
 import { AuthModule } from '../auth/auth.module';
 import { CatalogComponent } from './map/catalog/catalog.component';
 import { BoxCatalogComponent } from './map/catalog/box/box.component';
+import { CatalogResultsComponent } from './map/catalog/box/results/results.component';
 import { SampleComponent } from './sidenav/sample/sample.component';
 
 
@@ -57,6 +59,7 @@ import { SampleComponent } from './sidenav/sample/sample.component';
     SampleComponent,
     CatalogComponent,
     BoxCatalogComponent,
+    CatalogResultsComponent,
     SliderComponent,
     TimeSeriesComponent,
     BoxTimeSeriesComponent
@@ -89,6 +92,7 @@ import { SampleComponent } from './sidenav/sample/sample.component';
     MatSnackBarModule,
     Ng5SliderModule,
     MatCheckboxModule,
+    NgxPaginationModule,
     ChartsModule,
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot()

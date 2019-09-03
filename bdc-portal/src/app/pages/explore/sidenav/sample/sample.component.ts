@@ -104,10 +104,10 @@ export class SampleComponent {
       queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`
       // filter bbox
       queryCQL += ` AND BBOX(location,${this.bbox})`;
-      const layer = tileLayer.wms("http://brazildatacube.dpi.inpe.br/geoserver/sample/wms", {
-        layers: 'sample:sample',
+      const layer = tileLayer.wms("http://brazildatacube.dpi.inpe.br/geoserver/samples/wms", {
+        layers: 'samples:sample',
         format: 'image/png',
-        styles: 'sample:samples',
+        styles: 'samples:samples',
         transparent: true,
         cql_filter: queryCQL,
         interactive: true,
@@ -126,8 +126,34 @@ export class SampleComponent {
     }
   }
 
-  public changeColor(event) {
-    console.log(event)
+  public DownloadSamplesByClass(className) {
+    let queryCQL = ''
+    // filter author
+    if (this.authors.length == 1) {
+      queryCQL += `system_name = '${this.authors[0]}'`
+    } else {
+      queryCQL += '(';
+      this.authors.forEach( author => {
+        queryCQL += `system_name = '${author}' OR `
+      })
+      queryCQL = queryCQL.substring(0, queryCQL.length-4) + ')';
+    }
+    // filter class
+    queryCQL += ` AND class_name = '${className}'`;
+    // filter date
+    queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`
+    // filter bbox
+    queryCQL += ` AND BBOX(location,${this.bbox})`;
+
+    // download file
+    const url = `http://brazildatacube.dpi.inpe.br/geoserver/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}&request=GetFeature&typeName=samples:sample&outputFormat=SHAPE-ZIP`
+    const element = document.createElement('a');
+    element.setAttribute('href', url);
+    element.setAttribute('download', `samples_${className}`);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
   }
 
 }

@@ -125,7 +125,7 @@ export class MapComponent implements OnInit {
     this.getTilesUsed();
     setTimeout(() => {
       this.setControlLayers();
-    }, 1000);
+    }, 2000);
   }
 
   /**

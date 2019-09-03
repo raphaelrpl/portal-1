@@ -13,7 +13,8 @@ import {
   setTStep,
   setSamples,
   removeLayers,
-  removeGroupLayer
+  removeGroupLayer,
+  setActualRangeTemporal
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -33,6 +34,7 @@ const initialState: ExploreState = {
   tschema: '',
   tstep: 0,
   rangeTemporal: [],
+  actualRangeTemporal: [],
   opacity: '1'
 };
 
@@ -70,6 +72,9 @@ export const reducer = createReducer(initialState,
   }),
   on(setRangeTemporal, (state, payload) => {
     return { ...state, rangeTemporal: payload };
+  }),
+  on(setActualRangeTemporal, (state, payload) => {
+    return { ...state, actualRangeTemporal: payload };
   }),
   on(setBbox, (state, payload) => {
     return { ...state, bbox: payload };
