@@ -16,8 +16,10 @@ import { Logout } from '../../auth/auth.action';
 })
 export class ToolbarComponent {
 
+  /** if is logged */
   public logged = false;
 
+  /** subscribe in store */
   constructor(
     private snackBar: MatSnackBar,
     public dialog: MatDialog,

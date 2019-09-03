@@ -20,25 +20,34 @@ import { removeGroupLayer } from '../../../explore.action';
 })
 export class BoxCatalogComponent implements OnInit {
 
+  /** if visible box in the component */
   @Input('visible') visibleBox: boolean;
-
+  /** pointer to emit event to Catalog compoenent */
   @Output() toggleToEmit = new EventEmitter();
 
   public formSearch: FormGroup;
+  /** list of providers */
   public providersObjects = {};
+  /** list with title of the providers */
   public providersList = [];
+  /** list collections */
   public collectionsList = [];
+  /** list of providers selected */
   public providers = [];
+  /** list of collections selected */
   public collections = [];
+  /** items/features selected */
   public items: object[];
+  /** bounding box used to search */
   public bbox = '';
+  /** object with search information */
   public searchObj = {
     cloudCover: 50,
     startDate: null,
     lastDate: null
   };
 
-  /** select data of the store application */
+  /** select data of the store application and set form validators */
   constructor(
     private cs: CatalogService,
     private snackBar: MatSnackBar,
@@ -63,10 +72,12 @@ export class BoxCatalogComponent implements OnInit {
       });
   }
 
+  /** send request to mount component */
   ngOnInit() {
     this.getProviders();
   }
 
+  /** get providers available */
   private async getProviders() {
     try {
       const response = await this.cs.getProviders();
@@ -75,6 +86,7 @@ export class BoxCatalogComponent implements OnInit {
     } catch (err) {}
   }
 
+  /** get collections by providers */
   public async getCollections() {
     try {
       this.collectionsList = [];
@@ -92,12 +104,14 @@ export class BoxCatalogComponent implements OnInit {
     } catch (err) {}
   }
 
+  /** disabled box/component */
   public closeBox() {
     this.searchObj.startDate = null;
     this.searchObj.lastDate = null;
     this.toggleToEmit.emit();
   }
 
+  /** search features in stac_compose */
   public async search() {
     try {
       this.storeApp.dispatch(showLoading());

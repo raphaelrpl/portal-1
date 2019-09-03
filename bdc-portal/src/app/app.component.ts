@@ -12,6 +12,8 @@ import { NgxSpinnerService } from 'ngx-spinner';
   templateUrl: './app.component.html'
 })
 export class AppComponent {
+
+  /** subscribe in store app */
   constructor(private store: Store<AppState>, private spinner: NgxSpinnerService) {
     this.store.pipe(select('app')).subscribe(res => {
       if (res.loading) {

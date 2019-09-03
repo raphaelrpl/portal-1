@@ -31,6 +31,7 @@ export class MapComponent implements OnInit {
   /** props with height of the map */
   @Input() height: number;
 
+  /** base url of geoserver */
   private urlGeoserver = window['__env'].urlGeoserver;
 
   /** pointer to reference map */

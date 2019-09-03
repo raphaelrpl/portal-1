@@ -13,7 +13,9 @@ import { AuthState } from 'src/app/pages/auth/auth.state';
 })
 export class CatalogComponent {
 
+  /** if user logged */
   public logged = false;
+  /** if display box to search */
   public viewBox = false;
 
   /** select data of the store application */
@@ -24,10 +26,12 @@ export class CatalogComponent {
     });
   }
 
+  /** display box to search */
   public showBox() {
     this.viewBox = true;
   }
 
+  /** close/diable box of the page */
   public closeBox() {
     this.viewBox = false;
   }

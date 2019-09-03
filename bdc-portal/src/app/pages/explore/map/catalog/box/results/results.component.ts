@@ -6,7 +6,7 @@ import { setLayers, removeGroupLayer, setPositionMap } from 'src/app/pages/explo
 import { ExploreState } from 'src/app/pages/explore/explore.state';
 import { Store } from '@ngrx/store';
 
-/** Map ResultS Catalog component
+/** Map Results Catalog component
  * component to display images of the catalog
  */
 @Component({
@@ -16,11 +16,15 @@ import { Store } from '@ngrx/store';
 })
 export class CatalogResultsComponent {
 
+  /** features seleted */
   @Input('features') public features;
 
+  /** count of result per page */
   public perPage = 10;
+  /** page selected */
   public page = 1;
 
+  /** import store explore */
   constructor(private store: Store<ExploreState>) {}
 
   /** convert date to USA format */
@@ -42,6 +46,9 @@ export class CatalogResultsComponent {
     });
   }
 
+  /**
+   * enable and disabled feature of the map
+   */
   public onChangeLayer(event, feature: any) {
     if (event.checked) {
       this.features = this.features.map( f => {

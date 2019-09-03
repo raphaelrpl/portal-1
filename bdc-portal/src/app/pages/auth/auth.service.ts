@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+/**
+ * Service to authentication
+ */
 @Injectable({ providedIn: 'root' })
 export class AuthService {
 
+    /** base url of Oauth */
     private urlOauth = window['__env'].urlOauth;
 
     /** start http service client */
