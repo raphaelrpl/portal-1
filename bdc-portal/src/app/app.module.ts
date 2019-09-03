@@ -16,7 +16,7 @@ import * as fromExplore from './pages/explore/explore.reducer';
  */
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

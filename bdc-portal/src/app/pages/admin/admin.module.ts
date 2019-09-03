@@ -1,19 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { CubesComponent } from './cubes/cubes.component';
 import { AdminRoutingModule } from './admin-routing.module';
+import { AdminComponent } from './admin.component';
+import { CubesModule } from './cubes/cubes.module';
 
-/**
- * Admin Module
- * Module for managing components and service of administrator dashboard pages
- */
+
 @NgModule({
   declarations: [
-    CubesComponent
+    AdminComponent
   ],
   imports: [
     CommonModule,
+    CubesModule,
     AdminRoutingModule
   ]
 })
