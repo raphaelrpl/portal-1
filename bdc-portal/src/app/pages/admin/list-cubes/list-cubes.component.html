@@ -1,0 +1,62 @@
+<section class="container-page__admin">
+    <!-- TITLE -->
+    <div class="admin-title">
+        <div class="title">
+            <span class="title-group">cubes /</span>
+            <span class="title-sub-group">List</span>
+        </div>
+        <button
+            mat-raised-button
+            [routerLink]="'/admin/cubes/create'">
+            <mat-icon>add</mat-icon> New Cube
+        </button>
+    </div>
+
+    <!-- LIST -->
+    <div class="cube-list">
+        <table mat-table
+            [dataSource]="dataSource"
+            class="mat-elevation-z1 cube_list-table"
+            matSort
+            matSortActive="date"
+            matSortDisableClear
+            matSortDirection="desc">
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> ID </th>
+                <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> NAME </th>
+                <td mat-cell *matCellDef="let element"> {{ element.datacube }} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="author">
+                <th mat-header-cell *matHeaderCellDef> AUTOR </th>
+                <td mat-cell *matCellDef="let element"> - </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> DATE </th>
+                <td mat-cell *matCellDef="let element"> - </td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center"> ACTIONS </th>
+                <td mat-cell *matCellDef="let element">
+                    <button
+                        (click)="openDetails(element)"
+                        mat-button
+                        class="list_btn-plus_details">
+                        + DETAILS
+                    </button>
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+    </div>
+
+</section>

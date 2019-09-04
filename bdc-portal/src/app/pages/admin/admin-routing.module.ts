@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AdminComponent } from './admin.component';
+import { ListCubesComponent } from './list-cubes/list-cubes.component';
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/cubes', pathMatch: 'full' },
-  { path: 'cubes', component: AdminComponent, loadChildren: './cubes/cubes.module#CubesModule' },
+  { path: '', redirectTo: '/admin/cubes', pathMatch: 'full' },
+  { path: 'cubes', component: ListCubesComponent }
 ];
 
 

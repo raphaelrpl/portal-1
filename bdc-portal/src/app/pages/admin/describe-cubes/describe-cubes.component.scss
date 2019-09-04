@@ -1,0 +1,22 @@
+.container-describe_cubes {
+    .cube-description {
+        padding: 0 15px;
+    }
+
+    .cube-status_process {
+        width: calc(100% - 55px);
+        border-radius: 7.5px;
+        display: block;
+        margin: -5px auto 15px 15px;
+        padding: 0 20px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .status_value {
+            width: 100%;
+            font-size: 1.1em;
+            padding: 5px 0;
+        }
+
+    }
+}

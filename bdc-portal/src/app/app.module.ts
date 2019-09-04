@@ -10,6 +10,7 @@ import { SharedModule } from './shared/shared.module';
 import * as fromApp from './app.reducer';
 import * as fromAuth from './pages/auth/auth.reducer';
 import * as fromExplore from './pages/explore/explore.reducer';
+import { AdminModule } from './pages/admin/admin.module';
 
 /**
  * Initial Module of Application (SPA)
@@ -24,6 +25,7 @@ import * as fromExplore from './pages/explore/explore.reducer';
     AppRoutingModule,
     SharedModule,
     ExploreModule,
+    AdminModule,
     StoreModule.forRoot({
       app: fromApp.reducer,
       auth: fromAuth.reducer,

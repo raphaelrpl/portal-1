@@ -1,0 +1,43 @@
+.container-page__admin {
+    padding: 40px 60px;
+
+    .admin-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            color: var(--mainColor);
+            font-family: "Roboto", "Helvetica Neue", sans-serif;
+
+            .title-group {
+                font-size: 1.5em;
+                font-weight: 600;
+                margin-right: 7.5px;
+            }
+
+            .title-sub-group {
+                font-size: 2em;
+            }
+        }
+
+        .mat-raised-button {
+            color: green !important;
+        }
+    }
+
+    .cube-list {
+        display: flex;
+        width: 100%;
+        margin-top: 25px;
+
+        .cube_list-table {
+            width: 100%;
+
+            .list_btn-plus_details {
+                display: flex;
+                margin: 0 auto;
+            }
+        }
+    }
+}

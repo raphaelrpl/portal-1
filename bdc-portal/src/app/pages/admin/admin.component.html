@@ -1,6 +1,25 @@
-sidenav
-toolbar
+<section class="admin">
+    <mat-drawer-container style="height: 100vh">
+        <!-- NAVIGATION -->
+        <mat-drawer
+            #sidenav
+            style="background: #2F3543"
+            class="sidenav"
+            mode="side"
+            [opened]="true"
+        >
+            <app-sidenav></app-sidenav>
+        </mat-drawer>
 
-<router-outlet></router-outlet>
+        <!-- CONTENT -->
+        <section>
+            <div>
+                <app-toolbar
+                    (toggleToEmit)="toggleDrawer()"
+                ></app-toolbar>
+            </div>
 
-footer
+            <router-outlet></router-outlet>
+        </section>
+    </mat-drawer-container>
+</section>
