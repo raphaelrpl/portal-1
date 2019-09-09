@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 import { CubesService } from '../list-cubes/cubes.service';
+import { CubeMetadata } from '../list-cubes/cube.interface';
 
 @Component({
   templateUrl: './describe-cubes.component.html',
@@ -9,14 +10,14 @@ import { CubesService } from '../list-cubes/cubes.service';
 })
 export class DescribeCubesComponent {
 
-  public cube: object;
+  public cube: CubeMetadata;
   public status = {};
   public statusList = [];
 
   constructor(
     private cs: CubesService,
     public dialogRef: MatDialogRef<DescribeCubesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Inject(MAT_DIALOG_DATA) public data: CubeMetadata) {
       if (data) {
         this.cube = {
           ...data,
@@ -28,7 +29,7 @@ export class DescribeCubesComponent {
       }
   }
 
-  private async getStatus(cubeName) {
+  private async getStatus(cubeName: string) {
     try {
       const response = await this.cs.getProcessByCube(cubeName);
       if (response) {

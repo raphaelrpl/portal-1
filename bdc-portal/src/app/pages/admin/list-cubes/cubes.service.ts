@@ -9,6 +9,7 @@ export class CubesService {
 
     /** url base of stac compose */
     private urlSoloist = window['__env'].urlSoloist;
+    private urlDataSearchINPE = window['__env'].urlDataSearchINPE;
 
     /** start http service client */
     constructor(private http: HttpClient) { }
@@ -27,6 +28,25 @@ export class CubesService {
      */
     public async getProcessByCube(cubeName: string): Promise<any> {
         const urlSuffix = `/cubestatus?cubename=${cubeName}`;
+        const response = await this.http.get(`${this.urlSoloist}${urlSuffix}`).toPromise();
+        return response;
+    }
+
+    /**
+     * get datasets available to create cubes
+     * (satellite / sensor)
+     */
+    public async getDatasets() {
+        const response = await this.http.get(`${this.urlDataSearchINPE}`, {responseType: 'text'}).toPromise();
+        return response;
+    }
+
+    /**
+     * get grids available to create cubes
+     * (GRS)
+     */
+    public async getGrids() {
+        const urlSuffix = `/wrsinfo`;
         const response = await this.http.get(`${this.urlSoloist}${urlSuffix}`).toPromise();
         return response;
     }

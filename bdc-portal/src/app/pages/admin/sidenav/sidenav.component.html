@@ -7,14 +7,11 @@
         </header>
 
         <section class="links">
-          <div class="link" [routerLink]="'/admin/cubes'">
-            <mat-icon>filter_none</mat-icon> <strong>Cubes</strong>
-          </div>
-
-          <div class="link" [routerLink]="'/explore'">
-            <mat-icon>arrow_back</mat-icon> <strong>Go to Map</strong>
+          <div *ngFor="let link of links"
+            [ngClass]="pathActive === link.group ? 'link active': 'link'"
+            [routerLink]="link.path">
+            <mat-icon>{{ link.icon }}</mat-icon> <strong>{{ link.title }}</strong>
           </div>
         </section>
-
     </div>
 </aside>

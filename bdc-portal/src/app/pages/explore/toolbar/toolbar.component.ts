@@ -51,7 +51,7 @@ export class ToolbarComponent {
   }
 
   /**
-   * Open Login Dialog
+   * Logout in application
    */
   logout() {
     this.logged = false;

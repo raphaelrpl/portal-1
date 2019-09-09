@@ -1,12 +1,14 @@
-// "bands": "blue,green,red,nir,evi,ndvi,quality",
-//     "datacube": "C64m",
-//     "end": "Fri, 31 May 2019 00:00:00 GMT",
-//     "id": 1,
-//     "quicklook": "red,nir,green",
-//     "resx": 64.0,
-//     "resy": 64.0,
-//     "satsen": "CB4_AWFI",
-//     "start": "Thu, 01 Sep 2016 00:00:00 GMT",
-//     "step": 16,
-//     "tschema": "M",
-//     "wrs": "aea_500k"
+export interface CubeMetadata {
+    bands: string;
+    datacube: string;
+    end: string;
+    start: string;
+    id: number;
+    quicklook: string;
+    resx: number;
+    resy: number;
+    satsen: string;
+    step: number;
+    tschema: string;
+    wrs: string;
+}

@@ -30,7 +30,7 @@
             </div>
 
             <div class="feature_desc">
-                <p><b>{{ feature.id }}</b></p>
+                <p><b>{{ getStringMax(feature.id, 20) }}</b></p>
                 <p><b>{{ feature.properties.collection }}</b></p>
                 <p>{{ getDateFormated(feature.properties.datetime) }}</p>
             </div>

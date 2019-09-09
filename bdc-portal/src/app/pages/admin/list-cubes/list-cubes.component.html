@@ -1,4 +1,8 @@
-<section class="container-page__admin">
+<section class="conatiner_page-not_authorized" *ngIf="authorized === false">
+    You are not allowed to access this resource!
+</section>
+
+<section class="container-page__admin" *ngIf="authorized === true">
     <!-- TITLE -->
     <div class="admin-title">
         <div class="title">

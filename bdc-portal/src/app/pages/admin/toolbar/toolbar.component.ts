@@ -4,6 +4,7 @@ import { MatDialog, MatSnackBar } from '@angular/material';
 import { AuthState } from '../../auth/auth.state';
 import { Store, select } from '@ngrx/store';
 import { Logout } from '../../auth/auth.action';
+import { Router } from '@angular/router';
 
 /**
  * Toolbar component
@@ -16,18 +17,11 @@ import { Logout } from '../../auth/auth.action';
 })
 export class ToolbarComponent {
 
-  /** if is logged */
-  public logged = false;
-
   /** subscribe in store */
   constructor(
     private snackBar: MatSnackBar,
-    public dialog: MatDialog,
-    private store: Store<AuthState>) {
-    this.store.pipe(select('auth')).subscribe(res => {
-      this.logged = res.userId && res.token;
-    });
-  }
+    public router: Router,
+    private store: Store<AuthState>) {}
 
   /** pointer to issue event to explore component */
   @Output() toggleToEmit = new EventEmitter();
@@ -40,22 +34,11 @@ export class ToolbarComponent {
   }
 
   /**
-   * Open Login Dialog
-   */
-  openLogin() {
-    this.dialog.open(LoginComponent, {
-      width: '400px',
-      restoreFocus: false,
-      disableClose: true
-    });
-  }
-
-  /**
-   * Open Login Dialog
+   * Logout in application and redirect to explore page
    */
   logout() {
-    this.logged = false;
     this.store.dispatch(Logout());
+    this.router.navigate(['/explore']);
     this.snackBar.open('Logout Successfully!', '', {
       duration: 2000,
       verticalPosition: 'top',

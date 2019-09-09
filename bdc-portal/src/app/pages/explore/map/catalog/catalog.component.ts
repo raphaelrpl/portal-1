@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from 'src/app/pages/auth/auth.state';
+import { AuthService } from 'src/app/pages/auth/auth.service';
 
 /**
  * Map initial Catalog component
@@ -20,9 +21,14 @@ export class CatalogComponent {
 
   /** select data of the store application */
   constructor(
+    private as: AuthService,
     private store: Store<AuthState>) {
     this.store.pipe(select('auth')).subscribe(res => {
-      this.logged = res.userId && res.token;
+      if (res.userId && res.token) {
+        this.checkAuthorization();
+      } else {
+        this.logged = false;
+      }
     });
   }
 
@@ -34,5 +40,14 @@ export class CatalogComponent {
   /** close/diable box of the page */
   public closeBox() {
     this.viewBox = false;
+  }
+
+  public async checkAuthorization() {
+    try {
+      const response = await this.as.token('bdc_portal:catalog:read');
+      if (response) {
+        this.logged = true;
+      }
+    } catch(err) {}
   }
 }

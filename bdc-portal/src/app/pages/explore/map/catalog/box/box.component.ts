@@ -161,6 +161,8 @@ export class BoxCatalogComponent implements OnInit {
       }
 
     } catch (err) {
+      this.items = [];
+
     } finally {
       this.storeApp.dispatch(closeLoading());
     }

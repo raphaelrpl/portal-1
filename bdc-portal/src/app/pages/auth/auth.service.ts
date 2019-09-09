@@ -21,4 +21,18 @@ export class AuthService {
         const response = await this.http.post(`${this.urlOauth}${urlSuffix}`, credentials).toPromise();
         return response;
     }
+
+    /**
+     * get Token in DPI Oauth
+     */
+    public async token(scope: string): Promise<any> {
+        const urlSuffix = `/auth/token?service=bdc_portal&scope=${scope}`;
+        const authenticationToken = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))['token'] : '';
+        const response = await this.http.get(`${this.urlOauth}${urlSuffix}`, {
+            headers: {
+                Authorization: `Bearer ${authenticationToken}`
+            }
+        }).toPromise();
+        return response;
+    }
 }
