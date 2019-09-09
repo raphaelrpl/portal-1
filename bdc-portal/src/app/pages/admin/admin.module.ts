@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { AdminComponent } from './admin.component';
-import { ListCubesComponent } from './list-cubes/list-cubes.component';
+import { ListCubesComponent } from './cubes/list-cubes/list-cubes.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { MatButtonModule,
   MatToolbarModule,
@@ -24,8 +24,9 @@ import { AuthModule } from '../auth/auth.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
-import { DescribeCubesComponent } from './describe-cubes/describe-cubes.component';
-import { CreateCubeComponent } from './create-cube/create-cube.component';
+import { LogsCubesComponent } from './cubes/logs-cubes/logs-cubes.component';
+import { DescribeCubesComponent } from './cubes/describe-cubes/describe-cubes.component';
+import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { CreateCubeComponent } from './create-cube/create-cube.component';
     AdminComponent,
     ListCubesComponent,
     DescribeCubesComponent,
+    LogsCubesComponent,
     CreateCubeComponent,
     SidenavComponent,
     ToolbarComponent
@@ -60,7 +62,8 @@ import { CreateCubeComponent } from './create-cube/create-cube.component';
     MatMenuModule
   ],
   entryComponents: [
-    DescribeCubesComponent
+    DescribeCubesComponent,
+    LogsCubesComponent
   ]
 })
 export class AdminModule { }

@@ -9,8 +9,14 @@
         width: 100%;
 
         .list_btn-plus_details {
+            width: 300px !important;
             display: flex;
-            margin: 0 auto;
+            margin: 5px auto;
+            justify-content: center;
+
+            button {
+                margin: 0 5px;
+            }
         }
     }
 }

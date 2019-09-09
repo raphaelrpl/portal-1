@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CubesService } from '../list-cubes/cubes.service';
+import { CubesService } from '../cubes.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { bandsBySatSen } from 'src/app/shared/helpers/CONSTS';
-import { AuthService } from '../../auth/auth.service';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   templateUrl: './create-cube.component.html',

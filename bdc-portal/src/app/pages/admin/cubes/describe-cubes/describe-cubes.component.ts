@@ -1,8 +1,8 @@
 import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { CubesService } from '../list-cubes/cubes.service';
-import { CubeMetadata } from '../list-cubes/cube.interface';
+import { CubesService } from '../cubes.service';
+import { CubeMetadata } from '../cube.interface';
 
 @Component({
   templateUrl: './describe-cubes.component.html',

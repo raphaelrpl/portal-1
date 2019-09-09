@@ -49,12 +49,24 @@
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef style="text-align: center"> ACTIONS </th>
                 <td mat-cell *matCellDef="let element">
-                    <button
-                        (click)="openDetails(element)"
-                        mat-button
-                        class="list_btn-plus_details">
-                        + DETAILS
-                    </button>
+                    <div class="list_btn-plus_details">
+                        <button
+                            (click)="openDetails(element)"
+                            mat-stroked-button>
+                            + DETAILS
+                        </button>
+                        <button
+                            (click)="openLogs(element)"
+                            mat-stroked-button>
+                            LOGS
+                        </button>
+                        <button
+                            [routerLink]="'/admin/cubes/create/'+element.datacube"
+                            color="primary"
+                            mat-raised-button>
+                            EDIT
+                        </button>
+                    </div>
                 </td>
             </ng-container>
 

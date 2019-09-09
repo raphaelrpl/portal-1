@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ListCubesComponent } from './list-cubes/list-cubes.component';
-import { CreateCubeComponent } from './create-cube/create-cube.component';
+import { ListCubesComponent } from './cubes/list-cubes/list-cubes.component';
+import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
 
 
 const routes: Routes = [

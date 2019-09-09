@@ -74,7 +74,7 @@
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" [hidden]="cube.temporalSchema == 'MENSAL'">
                 <mat-label>Step</mat-label>
                 <input type="number"
                     min="1"

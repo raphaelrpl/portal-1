@@ -1,9 +1,10 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { MatSort, MatDialog } from '@angular/material';
-import { CubesService } from './cubes.service';
+import { CubesService } from '../cubes.service';
 import { DescribeCubesComponent } from '../describe-cubes/describe-cubes.component';
-import { CubeMetadata } from './cube.interface';
-import { AuthService } from '../../auth/auth.service';
+import { LogsCubesComponent } from '../logs-cubes/logs-cubes.component';
+import { CubeMetadata } from '../cube.interface';
+import { AuthService } from '../../../auth/auth.service';
 
 @Component({
   templateUrl: './list-cubes.component.html',
@@ -45,6 +46,14 @@ export class ListCubesComponent implements OnInit {
       width: '600px',
       height: '600px',
       data: cubeInfos
+    });
+  }
+
+  public openLogs(cubeInfos: CubeMetadata) {
+    this.dialog.open(LogsCubesComponent, {
+      width: '600px',
+      height: '500px',
+      data: cubeInfos.id
     });
   }
 
