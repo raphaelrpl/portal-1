@@ -28,30 +28,30 @@
             <mat-form-field appearance="fill">
                 <mat-label>Start Date</mat-label>
                 <input matInput
-                    [matDatepicker]="start_date"
+                    [matDatepicker]="startDate"
                     [min]="rangeTemporal[0]"
                     [max]="rangeTemporal[1]"
                     placeholder="Start Date"
-                    name="start_date"
-                    formControlName="start_date"
+                    name="startDate"
+                    formControlName="startDate"
                     required
-                    [(ngModel)]="cube.start_date">
-                <mat-datepicker-toggle matSuffix [for]="start_date"></mat-datepicker-toggle>
-                <mat-datepicker #start_date></mat-datepicker>
+                    [(ngModel)]="cube.startDate">
+                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                <mat-datepicker #startDate></mat-datepicker>
             </mat-form-field>
 
             <mat-form-field appearance="fill">
                 <mat-label>Last Date</mat-label>
                 <input matInput
-                    [matDatepicker]="last_date"
+                    [matDatepicker]="lastDate"
                     [min]="rangeTemporal[0]"
                     [max]="rangeTemporal[1]"
                     placeholder="Last Date"
-                    name="last_date"
-                    formControlName="last_date"
+                    name="lastDate"
+                    formControlName="lastDate"
                     required
-                    [(ngModel)]="cube.last_date">
-                <mat-datepicker-toggle matSuffix [for]="last_date"></mat-datepicker-toggle>
+                    [(ngModel)]="cube.lastDate">
+                <mat-datepicker-toggle matSuffix [for]="lastDate"></mat-datepicker-toggle>
                 <mat-datepicker #last_date></mat-datepicker>
             </mat-form-field>
         </div>

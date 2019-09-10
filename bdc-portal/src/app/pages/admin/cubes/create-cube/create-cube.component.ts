@@ -3,6 +3,12 @@ import { CubesService } from '../cubes.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { bandsBySatSen } from 'src/app/shared/helpers/CONSTS';
 import { AuthService } from '../../../auth/auth.service';
+import { showLoading, closeLoading } from 'src/app/app.action';
+import { AppState } from 'src/app/app.state';
+import { Store } from '@ngrx/store';
+import { formatDateUSA } from 'src/app/shared/helpers/date';
+import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   templateUrl: './create-cube.component.html',
@@ -24,11 +30,14 @@ export class CreateCubeComponent implements OnInit {
   constructor(
     private cs: CubesService,
     private as: AuthService,
+    public router: Router,
+    private snackBar: MatSnackBar,
+    private store: Store<AppState>,
     private fb: FormBuilder) {
       this.formCreateCube = this.fb.group({
         name: ['', [Validators.required]],
-        start_date: ['', [Validators.required]],
-        last_date: ['', [Validators.required]],
+        startDate: ['', [Validators.required]],
+        lastDate: ['', [Validators.required]],
         datasets: ['', [Validators.required]],
         temporalSchema: ['', [Validators.required]],
         step: [{ disabled: true }, []],
@@ -64,8 +73,8 @@ export class CreateCubeComponent implements OnInit {
   private resetForm() {
     this.cube = {
       name: '',
-      start_date: '',
-      last_date: '',
+      startDate: '',
+      lastDate: '',
       datasets: [],
       temporalSchema: '',
       step: '',
@@ -121,12 +130,64 @@ export class CreateCubeComponent implements OnInit {
 
   public async create() {
     try {
+      this.store.dispatch(showLoading());
       if (this.formCreateCube.status === 'VALID') {
-        console.log('create');
-        console.log(this.cube);
+        let query = `datacube=${this.cube['name']}&wrs=${this.cube['grs']}&satsen=${this.cube['datasets'].join(',')}`;
+        query += `&tschema=${this.cube['temporalSchema']}&step=${this.cube['step']}&bands=${this.cube['bands'].join(',')}`;
+        query += `&start=${formatDateUSA(new Date(this.cube['startDate']))}&end=${formatDateUSA(new Date(this.cube['lastDate']))}`;
+        query += `&resx=${this.cube['resx']}&resy=${this.cube['resy']}`;
+        query += `&quicklook=${this.cube['qlRed']},${this.cube['qlGreen']},${this.cube['qlBlue']}`;
+
+        const response = await this.cs.create(query);
+        if (response) {
+          if (this.dispatch) {
+            this.snackBar.open('Successfully created cube!', '', {
+              duration: 4000,
+              verticalPosition: 'top',
+              panelClass: 'app_snack-bar-success'
+            });
+            this.start(this.cube['name'], this.tiles);
+
+          } else {
+            this.router.navigate(['/admin/cubes']);
+            this.store.dispatch(closeLoading());
+          }
+        } else throw '';
       }
 
-    } catch(err) {}
+    } catch(err) {
+      this.snackBar.open('Error creating cube!', '', {
+        duration: 4000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+      this.store.dispatch(closeLoading());
+    }
+  }
+
+  private async start(cubename: string, tiles: string) {
+    try {
+      const query = `datacube=${cubename}&pr=${tiles}`;
+      const response = await this.cs.start(query);
+      if (response) {
+        this.snackBar.open('Successfully started cube!', '', {
+          duration: 4000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-success'
+        });
+        this.router.navigate(['/admin/cubes']);
+      } else throw '';
+
+    } catch(err) {
+      this.snackBar.open('Error starting cube!', '', {
+        duration: 4000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+
+    } finally {
+      this.store.dispatch(closeLoading());
+    }
   }
 
   private async checkAuthorization() {

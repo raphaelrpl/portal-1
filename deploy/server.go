@@ -40,6 +40,7 @@ func main() {
 	new_content = strings.ReplaceAll(new_content, "URL_WTSS", "'"+os.Getenv("URL_WTSS")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_OAUTH", "'"+os.Getenv("URL_OAUTH")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_SOLOIST", "'"+os.Getenv("URL_SOLOIST")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_MAESTRO", "'"+os.Getenv("URL_MAESTRO")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_DATASEARCH_INPE", "'"+os.Getenv("URL_DATASEARCH_INPE")+"'")
 	err = ioutil.WriteFile(file_url+"assets/env.js", []byte(new_content), 0644)
 	if err != nil {

@@ -9,6 +9,7 @@ export class CubesService {
 
     /** url base of stac compose */
     private urlSoloist = window['__env'].urlSoloist;
+    private urlMaestro = window['__env'].urlMaestro;
     private urlDataSearchINPE = window['__env'].urlDataSearchINPE;
 
     /** start http service client */
@@ -48,6 +49,24 @@ export class CubesService {
     public async getGrids() {
         const urlSuffix = `/wrsinfo`;
         const response = await this.http.get(`${this.urlSoloist}${urlSuffix}`).toPromise();
+        return response;
+    }
+
+    /**
+     * create Cube (set metadata of cube)
+     */
+    public async create(query: string) {
+        const urlSuffix = `/create?${query}`;
+        const response = await this.http.get(`${this.urlSoloist}${urlSuffix}`).toPromise();
+        return response;
+    }
+
+    /**
+     * start process to creating cube
+     */
+    public async start(query: string) {
+        const urlSuffix = `/process?${query}`;
+        const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`).toPromise();
         return response;
     }
 }
