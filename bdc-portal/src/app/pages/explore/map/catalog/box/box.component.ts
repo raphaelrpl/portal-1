@@ -18,27 +18,36 @@ import { removeGroupLayer } from '../../../explore.action';
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.scss']
 })
-export class BoxCatalogComponent implements OnInit{
+export class BoxCatalogComponent implements OnInit {
 
-  @Input('visible') visible: boolean;
-
+  /** if visible box in the component */
+  @Input('visible') visibleBox: boolean;
+  /** pointer to emit event to Catalog compoenent */
   @Output() toggleToEmit = new EventEmitter();
 
   public formSearch: FormGroup;
+  /** list of providers */
   public providersObjects = {};
+  /** list with title of the providers */
   public providersList = [];
+  /** list collections */
   public collectionsList = [];
+  /** list of providers selected */
   public providers = [];
+  /** list of collections selected */
   public collections = [];
+  /** items/features selected */
   public items: object[];
+  /** bounding box used to search */
   public bbox = '';
+  /** object with search information */
   public searchObj = {
     cloudCover: 50,
     startDate: null,
     lastDate: null
-  }
+  };
 
-  /** select data of the store application */
+  /** select data of the store application and set form validators */
   constructor(
     private cs: CatalogService,
     private snackBar: MatSnackBar,
@@ -53,51 +62,56 @@ export class BoxCatalogComponent implements OnInit{
         if (res.bbox) {
           this.bbox = `${res.bbox['_southWest']['lng']},${res.bbox['_southWest']['lat']},${res.bbox['_northEast']['lng']},${res.bbox['_northEast']['lat']}`;
         }
-    });
-    this.formSearch = this.fb.group({
-      providers: ['', [Validators.required]],
-      collections: ['', [Validators.required]],
-      startDate: ['', [Validators.required]],
-      lastDate: ['', [Validators.required]],
-      cloudCover: ['']
-    });
+      });
+      this.formSearch = this.fb.group({
+        providers: ['', [Validators.required]],
+        collections: ['', [Validators.required]],
+        startDate: ['', [Validators.required]],
+        lastDate: ['', [Validators.required]],
+        cloudCover: ['']
+      });
   }
 
+  /** send request to mount component */
   ngOnInit() {
     this.getProviders();
   }
 
+  /** get providers available */
   private async getProviders() {
     try {
-      let response = await this.cs.getProviders();
+      const response = await this.cs.getProviders();
       this.providersObjects = response.providers;
       this.providersList = Object.keys(response.providers);
-    } catch(err) {}
+    } catch (err) {}
   }
 
+  /** get collections by providers */
   public async getCollections() {
     try {
       this.collectionsList = [];
       this.collections = [];
       if (this.providers.length) {
-        let response = await this.cs.getCollections(this.providers.join(','));
+        const response = await this.cs.getCollections(this.providers.join(','));
         Object.keys(response).forEach( provider => {
           Object.values(response[provider]).forEach( collection => {
             if (this.collectionsList.indexOf(`${provider}:${collection}`) < 0) {
               this.collectionsList.push(`${provider}:${collection}`);
             }
-          })
-        })
+          });
+        });
       }
-    } catch(err) {}
+    } catch (err) {}
   }
 
+  /** disabled box/component */
   public closeBox() {
-    this.searchObj.startDate = null
-    this.searchObj.lastDate = null
+    this.searchObj.startDate = null;
+    this.searchObj.lastDate = null;
     this.toggleToEmit.emit();
   }
 
+  /** search features in stac_compose */
   public async search() {
     try {
       this.storeApp.dispatch(showLoading());
@@ -146,7 +160,9 @@ export class BoxCatalogComponent implements OnInit{
         }
       }
 
-    } catch(err) {
+    } catch (err) {
+      this.items = [];
+
     } finally {
       this.storeApp.dispatch(closeLoading());
     }

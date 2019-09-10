@@ -28,46 +28,46 @@ export class LoginComponent {
     private snackBar: MatSnackBar,
     public dialogRef: MatDialogRef<LoginComponent>,
     private fb: FormBuilder) {
-      
+
     this.formLogin = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', [Validators.required]]
-    })
+    });
   }
 
   public async login() {
     if (this.formLogin.status !== 'VALID') {
       this.error = {
-        "type": "error",
-        "message": "Fill in all fields!"
-      }
+        type: 'error',
+        message: 'Fill in all fields!'
+      };
     } else {
       try {
         this.store.dispatch(showLoading());
-        
+
         const credentials = {
-          "username": this.username,
-          "password": this.password
-        }
+          username: this.username,
+          password: this.password
+        };
         const response = await this.as.login(credentials);
         this.store.dispatch(Login({
-          "userId": response.user_id,
-          "token": response.access_token
+          userId  : response.user_id,
+          token : response.access_token
         }));
 
         this.snackBar.open('Login Successfully!', '', {
           duration: 2000,
           verticalPosition: 'top',
           panelClass: 'app_snack-bar-success'
-        });        
+        });
         this.dialogRef.close();
 
       } catch (err) {
-        const message = err.error.message ? err.error.message : 'Authentication Error!'  
+        const message = err.error.message ? err.error.message : 'Authentication Error!';
         this.error = {
-          "type": "error",
+          type: 'error',
           message
-        }
+        };
 
       } finally {
         this.store.dispatch(closeLoading());

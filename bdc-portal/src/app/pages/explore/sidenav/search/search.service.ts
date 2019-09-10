@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
+/** Service to search samples and cubes */
 @Injectable({ providedIn: 'root' })
 export class SearchService {
 
-    private urlStac = window['__env'].urlStac
-    private urlGeoserver = window['__env'].urlGeoserver
+    /** base url of BDC-STAC */
+    private urlStac = window['__env'].urlStac;
+    /** base url of Geoserver */
+    private urlGeoserver = window['__env'].urlGeoserver;
 
     /** start http service client */
     constructor(private http: HttpClient) { }

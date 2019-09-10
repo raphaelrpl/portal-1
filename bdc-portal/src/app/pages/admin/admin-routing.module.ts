@@ -1,17 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CubesComponent } from './cubes/cubes.component';
+import { ListCubesComponent } from './cubes/list-cubes/list-cubes.component';
+import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/admin/cubes', pathMatch: 'full' },
-  { path: 'cubes', component: CubesComponent }
+  { path: 'cubes', component: ListCubesComponent },
+  { path: 'cubes/create', component: CreateCubeComponent }
 ];
 
-/**
- * Admin Route Module
- * redirects to administrator dashboard components with 'admin' before URL
- */
+
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]

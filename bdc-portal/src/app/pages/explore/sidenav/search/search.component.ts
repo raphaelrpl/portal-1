@@ -79,7 +79,7 @@ export class SearchComponent implements OnInit {
         start_date: ['', [Validators.required]],
         last_date: ['', [Validators.required]],
         type: ['']
-      })
+      });
     }
 
   /**
@@ -278,7 +278,6 @@ export class SearchComponent implements OnInit {
    * initialize search in selected resources
    */
   public search() {
-    console.log(this.formSearch)
     if (this.formSearch.status !== 'VALID') {
       this.changeStepNav(0);
       this.snackBar.open('Fill in all fields correctly!', '', {

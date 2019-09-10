@@ -1,0 +1,167 @@
+<section class="conatiner_page-not_authorized" *ngIf="authorized === false">
+    You are not allowed to access this resource!
+</section>
+
+<section class="container-page__admin" *ngIf="authorized === true">
+    <!-- TITLE -->
+    <div class="admin-title">
+        <div class="title">
+            <span class="title-group">cubes /</span>
+            <span class="title-sub-group">Create</span>
+        </div>
+    </div>
+
+    <form [formGroup]="formCreateCube"
+        (ngSubmit)="create()"
+        class="create-cube">
+
+        <!-- BASIC INFOS -->
+        <div class="inline-block">
+            <mat-form-field appearance="fill">
+                <mat-label>Name</mat-label>
+                <input matInput
+                    name="name"
+                    formControlName="name"
+                    [(ngModel)]="cube.name">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Start Date</mat-label>
+                <input matInput
+                    [matDatepicker]="startDate"
+                    [min]="rangeTemporal[0]"
+                    [max]="rangeTemporal[1]"
+                    placeholder="Start Date"
+                    name="startDate"
+                    formControlName="startDate"
+                    required
+                    [(ngModel)]="cube.startDate">
+                <mat-datepicker-toggle matSuffix [for]="startDate"></mat-datepicker-toggle>
+                <mat-datepicker #startDate></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Last Date</mat-label>
+                <input matInput
+                    [matDatepicker]="lastDate"
+                    [min]="rangeTemporal[0]"
+                    [max]="rangeTemporal[1]"
+                    placeholder="Last Date"
+                    name="lastDate"
+                    formControlName="lastDate"
+                    required
+                    [(ngModel)]="cube.lastDate">
+                <mat-datepicker-toggle matSuffix [for]="lastDate"></mat-datepicker-toggle>
+                <mat-datepicker #last_date></mat-datepicker>
+            </mat-form-field>
+        </div>
+
+        <hr />
+
+        <!-- INFOS TO COMPOSITE CUBE -->
+        <div class="inline-block">
+            <mat-form-field appearance="fill">
+                <mat-label>Dataset</mat-label>
+                <mat-select [(value)]="cube.datasets" multiple formControlName="datasets" required>
+                    <mat-option *ngFor="let dataset of datasets" [value]="dataset" (click)="getBands()">{{ dataset }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Temporal Schema</mat-label>
+                <mat-select [(value)]="cube.temporalSchema" formControlName="temporalSchema" required>
+                    <mat-option *ngFor="let schema of temporalSchema" [value]="schema">{{ schema }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill" [hidden]="cube.temporalSchema == 'MENSAL'">
+                <mat-label>Step</mat-label>
+                <input type="number"
+                    min="1"
+                    matInput
+                    name="step"
+                    formControlName="step"
+                    [(ngModel)]="cube.step">
+            </mat-form-field>
+        </div>
+        <div class="inline-block">
+            <mat-form-field appearance="fill">
+                <mat-label>GRS</mat-label>
+                <mat-select [(value)]="cube.grs" formControlName="grs" required>
+                    <mat-option *ngFor="let grs of grids" [value]="grs">{{ grs }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Resolution X</mat-label>
+                <input type="number"
+                    min="1"
+                    matInput
+                    name="resx"
+                    required
+                    formControlName="resx"
+                    [(ngModel)]="cube.resx">
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Resolution Y</mat-label>
+                <input type="number"
+                    min="1"
+                    matInput
+                    name="resy"
+                    required
+                    formControlName="resy"
+                    [(ngModel)]="cube.resy">
+            </mat-form-field>
+        </div>
+        <div class="inline-block">
+            <mat-form-field appearance="fill">
+                <mat-label>Bands</mat-label>
+                <mat-select [(value)]="cube.bands" multiple formControlName="bands" required>
+                    <mat-option *ngFor="let band of bands" [value]="band">{{ band }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <div class="inline-block">
+                <mat-form-field appearance="fill">
+                    <mat-label>RED</mat-label>
+                    <mat-select [(value)]="cube.qlRed" formControlName="qlRed" required>
+                        <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>GREEN</mat-label>
+                    <mat-select [(value)]="cube.qlGreen" formControlName="qlGreen" required>
+                        <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field appearance="fill">
+                    <mat-label>BLUE</mat-label>
+                    <mat-select [(value)]="cube.qlBlue" formControlName="qlBlue" required>
+                        <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="inline-block" style="margin-bottom: 15px;">
+            <mat-checkbox [(ngModel)]="dispatch" formControlName="process">Dispatch Process</mat-checkbox>
+        </div>
+        <div [hidden]="!dispatch" class="inline-block">
+            <mat-form-field appearance="fill">
+                <mat-label>Tiles</mat-label>
+                <input matInput
+                    name="tiles"
+                    [required]="dispatch"
+                    formControlName="tiles"
+                    [(ngModel)]="tiles">
+            </mat-form-field>
+        </div>
+
+        <button type="submit" mat-raised-button color="primary">
+            CREATE {{ dispatch ? ' AND START ' : '' }} CUBE
+        </button>
+    </form>
+</section>

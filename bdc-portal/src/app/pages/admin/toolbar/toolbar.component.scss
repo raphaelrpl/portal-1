@@ -1,0 +1,10 @@
+@import 'src/assets/styles/toolbar-base.scss';
+
+.logout-btn {
+    margin-left: 10px;
+
+    &:hover {
+        background: rgba(0,0,0,0.1);
+        border-radius: 5px;
+    }
+}

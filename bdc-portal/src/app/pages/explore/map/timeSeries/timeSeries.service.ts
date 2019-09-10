@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class TimeSeriesService {
 
+    /** url base of Geoserver */
     private urlWTSS = window['__env'].urlWTSS;
 
     /** start http service client */

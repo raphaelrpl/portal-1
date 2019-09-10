@@ -68,7 +68,7 @@ export class SampleComponent {
           this.classesColors[className] = this.classesColors[className] || '#FF0000';
         }
       }
-    })
+    });
   }
 
   private removeSamplesSearch() {
@@ -79,24 +79,24 @@ export class SampleComponent {
     }));
     // disable toggle
     Object.keys(this.classesStatus).forEach( key => {
-      this.classesStatus[key] = false
-    })
+      this.classesStatus[key] = false;
+    });
     // remove author
     this.authors = [];
   }
 
   public enableClass(event, className: string) {
     if (event.checked) {
-      let queryCQL = ''
+      let queryCQL = '';
       // filter author
-      if (this.authors.length == 1) {
-        queryCQL += `system_name = '${this.authors[0]}'`
+      if (this.authors.length === 1) {
+        queryCQL += `system_name = '${this.authors[0]}'`;
       } else {
         queryCQL += '(';
         this.authors.forEach( author => {
-          queryCQL += `system_name = '${author}' OR `
-        })
-        queryCQL = queryCQL.substring(0, queryCQL.length-4) + ')';
+          queryCQL += `system_name = '${author}' OR `;
+        });
+        queryCQL = queryCQL.substring(0, queryCQL.length - 4) + ')';
       }
       // filter class
       queryCQL += ` AND class_name = '${className}'`;
@@ -130,23 +130,23 @@ export class SampleComponent {
     let queryCQL = ''
     // filter author
     if (this.authors.length == 1) {
-      queryCQL += `system_name = '${this.authors[0]}'`
+      queryCQL += `system_name = '${this.authors[0]}'`;
     } else {
       queryCQL += '(';
       this.authors.forEach( author => {
-        queryCQL += `system_name = '${author}' OR `
-      })
-      queryCQL = queryCQL.substring(0, queryCQL.length-4) + ')';
+        queryCQL += `system_name = '${author}' OR `;
+      });
+      queryCQL = queryCQL.substring(0, queryCQL.length - 4) + ')';
     }
     // filter class
     queryCQL += ` AND class_name = '${className}'`;
     // filter date
-    queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`
+    queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`;
     // filter bbox
     queryCQL += ` AND BBOX(location,${this.bbox})`;
 
     // download file
-    const url = `http://brazildatacube.dpi.inpe.br/geoserver/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}&request=GetFeature&typeName=samples:sample&outputFormat=SHAPE-ZIP`
+    const url = `http://brazildatacube.dpi.inpe.br/geoserver/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}&request=GetFeature&typeName=samples:sample&outputFormat=SHAPE-ZIP`;
     const element = document.createElement('a');
     element.setAttribute('href', url);
     element.setAttribute('download', `samples_${className}`);

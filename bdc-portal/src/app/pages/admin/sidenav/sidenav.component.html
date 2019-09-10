@@ -1,0 +1,17 @@
+<aside class="sidenav">
+    <div class="container-sidenav">
+        <header>
+          <div class="sidenav_logo">
+            <img src="/assets/images/logo_dark.jpg">
+          </div>
+        </header>
+
+        <section class="links">
+          <div *ngFor="let link of links"
+            [ngClass]="pathActive === link.group ? 'link active': 'link'"
+            [routerLink]="link.path">
+            <mat-icon>{{ link.icon }}</mat-icon> <strong>{{ link.title }}</strong>
+          </div>
+        </section>
+    </div>
+</aside>

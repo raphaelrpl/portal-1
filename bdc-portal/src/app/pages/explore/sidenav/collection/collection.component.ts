@@ -83,7 +83,7 @@ export class CollectionComponent {
           <b>Tile:</b> ${f.properties['bdc:tile']}<br>
           <b>Datetime:</b> ${f.properties['datetime']}<br>
           <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
-        `)
+        `);
 
         lyrGroup.push(layerTile);
         return {...f, enabled: true};

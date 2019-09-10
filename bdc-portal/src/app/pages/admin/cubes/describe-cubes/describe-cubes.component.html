@@ -1,0 +1,22 @@
+<div class="container-describe_cubes" *ngIf="cube">
+    <h1>{{ cube.datacube.toUpperCase() }}</h1>
+    <hr />
+
+    <div class="cube-description">
+        <p><b>BANDS:</b> {{ cube.bands }}</p>
+        <p><b>TEMPORAL RANGE:</b> {{ cube.start }} <=> {{ cube.end }}</p>
+        <p><b>BANDS QUICKLOOK:</b> {{ cube.quicklook }}</p>
+        <p><b>SPATIAL_RESOLUTION:</b> {{ cube.resx }} / {{ cube.resy }}</p>
+        <p><b>SATELLITE / SENSOR:</b> {{ cube.satsen }}</p>
+        <p><b>TEMPORAL SCHEMA:</b> {{ cube.tschema }}</p>
+        <p><b>STEP:</b> {{ cube.step }}</p>
+        <p><b>GRS:</b> {{ cube.wrs }}</p>
+        <p><b>PROCESS:</b></p>
+    </div>
+
+    <div class="cube-status_process" *ngIf="statusList.length">
+        <div class="status_value" *ngFor="let sts of statusList">
+            - <b>{{ sts }}</b> = {{ status[sts] }}
+        </div>
+    </div>
+</div>

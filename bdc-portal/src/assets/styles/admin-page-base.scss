@@ -1,0 +1,40 @@
+.container-page__admin {
+    padding: 40px 60px;
+
+    .admin-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .title {
+            color: var(--mainColor);
+            font-family: "Roboto", "Helvetica Neue", sans-serif;
+
+            .title-group {
+                font-size: 1.5em;
+                font-weight: 600;
+                margin-right: 7.5px;
+            }
+
+            .title-sub-group {
+                font-size: 2em;
+            }
+        }
+
+        .mat-raised-button {
+            color: green !important;
+        }
+    }
+
+}
+
+.conatiner_page-not_authorized {
+    padding: 40px 60px;
+    font-size: 1.5em;
+    color: red;
+    text-align: center;
+}
+
+[hidden] {
+    display: none !important;
+}

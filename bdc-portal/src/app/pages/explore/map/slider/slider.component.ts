@@ -148,7 +148,7 @@ export class SliderComponent {
 
       setTimeout( _ => {
         this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
-        const startDatePeriod = this.tschema.toLocaleLowerCase() === 'm' ? subMonth(actualDate) : subDays(actualDate, parseInt(this.tstep))
+        const startDatePeriod = this.tschema.toLocaleLowerCase() === 'm' ? subMonth(actualDate) : subDays(actualDate, parseInt(this.tstep));
         this.store.dispatch(setActualRangeTemporal([startDatePeriod, endPeriod]));
       });
     }

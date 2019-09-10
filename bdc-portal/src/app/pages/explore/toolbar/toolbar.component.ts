@@ -16,8 +16,10 @@ import { Logout } from '../../auth/auth.action';
 })
 export class ToolbarComponent {
 
+  /** if is logged */
   public logged = false;
 
+  /** subscribe in store */
   constructor(
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
@@ -30,7 +32,7 @@ export class ToolbarComponent {
   /** pointer to issue event to explore component */
   @Output() toggleToEmit = new EventEmitter();
 
-  /** 
+  /**
    * emit event to explore when click in menu icon
    */
   toggleDrawer() {
@@ -44,12 +46,12 @@ export class ToolbarComponent {
     this.dialog.open(LoginComponent, {
       width: '400px',
       restoreFocus: false,
-      disableClose: true 
+      disableClose: true
     });
   }
 
   /**
-   * Open Login Dialog
+   * Logout in application
    */
   logout() {
     this.logged = false;

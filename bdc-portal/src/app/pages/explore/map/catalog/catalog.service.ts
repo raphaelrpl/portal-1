@@ -1,10 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+/**
+ * Service to get infos and features of catalog
+ */
 @Injectable({ providedIn: 'root' })
 export class CatalogService {
 
-    private urlStacCompose = window['__env'].urlStacCompose
+    /** url base of stac compose */
+    private urlStacCompose = window['__env'].urlStacCompose;
 
     /** start http service client */
     constructor(private http: HttpClient) { }

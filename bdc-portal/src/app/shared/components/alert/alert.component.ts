@@ -15,7 +15,7 @@ export class AlertComponent {
   @Input('message') message: string;
 
   public getIcon(type: string): string {
-    switch(type) {
+    switch (type) {
       case 'error':
         return 'error_outline';
       case 'warning':

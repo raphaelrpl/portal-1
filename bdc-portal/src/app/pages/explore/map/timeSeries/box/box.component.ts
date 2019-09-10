@@ -36,11 +36,15 @@ export class BoxTimeSeriesComponent {
 
   /** visible status of the graphic */
   public graphicShow = false;
-  /** properties of graphic */
+  /** data of graphic */
   public lineChartData: ChartDataSets[] = [];
+  /** labels of graphic */
   public lineChartLabels: Label[] = [];
+  /** options of graphic */
   public lineChartOptions: (ChartOptions & { annotation: any }) = {} as any;
+  /** colors of graphic */
   public lineChartColors: Color[] = [];
+  /** if apply tension in line graphic */
   public lineTension = false;
 
   /** get infos in store to display in the component */

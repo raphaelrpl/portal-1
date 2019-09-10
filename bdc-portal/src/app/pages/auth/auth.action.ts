@@ -5,7 +5,7 @@ import { createAction, props } from '@ngrx/store';
  */
 export const Login = createAction(
     '[Explore Component] Login',
-    props<Object>()
+    props<object>()
 );
 
 /**
