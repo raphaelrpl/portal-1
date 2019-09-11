@@ -17,5 +17,7 @@
     window.__env.urlMaestro = 'http://cbers1.dpi.inpe.br:5020';
     // API url DataSearch - INPE
     window.__env.urlDataSearchINPE = 'http://www.dpi.inpe.br/datasearch/';
+    // URL APM SERVE
+    window.__env.urlAPMServer = 'http://127.0.0.1:8200/';
 
 }(this));
