@@ -12,14 +12,38 @@ body {
 @include mat-core();
 @include angular-material-theme($bdc_theme);
 
+.app_snack-bar-success {
+    background: rgba(#339966, 0.9);
+    color: #ffffff;
+}
+.app_snack-bar-error {
+    background: rgba(#ff4d4d, 0.9);
+    color: #ffffff;
+}
+
+// LEAFLET PLUGINS
+.leaflet-control-container .leaflet-control-coordinates .uiHidden {
+    display: none !important;
+}
+.leaflet-control-container .leaflet-control-coordinates .label {
+    border-radius: 5px;
+    background: rgba(#FFF, 0.5);
+    margin: 0px;
+
+    .labelFirst {
+        padding: 20px 7.5px;
+    }
+}
+.geocoder-control-input.geocoder-control-loading{
+    background-color: #FFF;
+    background-image: url("esri-leaflet-geocoder/dist/img/loading@2x.gif");
+}
+
+
+// MATERIAL DESIGN
 .mat-drawer-side {
     border-right: none;
     box-shadow: 3px 0px 6px rgba(#000, 0.2);
-}
-
-.mat-form-field {
-    width: 100%;
-    padding: 0 5px;
 }
 
 .mat-radio-button.mat-accent.mat-radio-checked {
@@ -34,40 +58,42 @@ body {
     }
 }
 
-.app_snack-bar-success {
-    background: rgba(#339966, 0.9);
-    color: #ffffff;
-}
-
-.app_snack-bar-error {
-    background: rgba(#ff4d4d, 0.9);
-    color: #ffffff;
-}
-
-.leaflet-control-container .leaflet-control-coordinates .uiHidden {
-    display: none !important;
-}
-
-.leaflet-control-container .leaflet-control-coordinates .label {
-    border-radius: 5px;
-    background: rgba(#FFF, 0.5);
-    margin: 0px;
-
-    .labelFirst {
-        padding: 20px 7.5px;
-    }
-}
-
 .mat-slider-track-fill, .mat-slider-thumb, .mat-slider-thumb-label {
     background-color: gray !important;
 }
 
-.geocoder-control-input.geocoder-control-loading{
-    background-color: #FFF;
-    background-image: url("esri-leaflet-geocoder/dist/img/loading@2x.gif");
+.mat-form-field {
+    margin-bottom: 10px !important;
+    padding: 0 !important;
+    width: 100%;
 }
 
-.mat-form-field {
-  margin-bottom: 10px !important;
-  padding: 0 !important;
+.mat-form-field-appearance-fill .mat-form-field-flex { 
+    background-color: #f9f9f9 !important; 
+    border-bottom: 2px solid #1da9f4 !important;
+}
+
+.mat-expansion-panel-header-description, .mat-expansion-indicator::after {
+    color: #fff !important;
+}
+
+.mat-accordion .mat-expansion-panel:first-of-type { 
+    border-top-right-radius: 0px !important; 
+    border-top-left-radius: 0px !important; 
+}
+
+.mat-expansion-panel-header:hover {
+    background-color: rgba(#1da9f4, 0.8) !important; 
+}
+
+button.mat-primary {
+    color: #FFF !important;
+    font-weight: 600 !important;
+    background: #4ddf7c !important;
+
+    &:disabled {
+        background: #CCC !important;
+        box-shadow: none;
+        cursor: not-allowed;
+    }
 }

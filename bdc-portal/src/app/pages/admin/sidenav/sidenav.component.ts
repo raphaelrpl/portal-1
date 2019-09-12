@@ -24,12 +24,6 @@ export class SidenavComponent {
         icon: 'filter_none',
         title: 'Cubes',
         group: 'cubes'
-      },
-      {
-        path: '/explore',
-        icon: 'arrow_back',
-        title: 'Go to Map',
-        group: 'none'
       }
     ]
   }

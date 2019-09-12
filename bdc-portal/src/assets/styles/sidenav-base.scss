@@ -1,7 +1,7 @@
 .sidenav {
     display: flex;
     height: 100%;
-    background: var(--mainBgDark);
+    background: #FFF;
     overflow: auto;
 
     .container-sidenav {
@@ -12,7 +12,8 @@
 
         header {
             .sidenav_logo {
-                padding: 15px 0;
+                background-color: var(--mainBgPrimary);
+                padding: 30px 0px 30px 0px !important;
                 display: flex;
                 justify-content: center;
             }
@@ -25,7 +26,7 @@
     }
     /* Track */
     &::-webkit-scrollbar-track {
-        background: var(--mainBgDark);
+        background: var(--mainBgPrimary);
     }
     /* Handle */
     &::-webkit-scrollbar-thumb {
