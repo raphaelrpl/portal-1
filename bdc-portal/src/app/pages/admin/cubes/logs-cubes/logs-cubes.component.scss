@@ -1,0 +1,22 @@
+.container-logs_cubes {
+
+    .inline-block {
+        display: flex;
+        align-items: center;
+
+        button {
+            margin-top: -35px;
+            margin-left: 5px;
+            height: 45px;
+        }
+    }
+
+    .result {
+        background: rgba(#000,0.05);
+        padding: 10px;
+
+        .mat-table {
+            width: 100%;
+        }
+    }
+}

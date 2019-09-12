@@ -2,9 +2,10 @@
     padding: 20px 0px;
 
     .search__region-box {
-        background: rgba(#000, 0.05);
+        background: #f9f9f9;
+        padding: 15px !important;
         border-radius: 5px 5px 0 0;
-        border-bottom: 1px solid #000;
+        border-bottom: 1px solid #1da9f4;
         display: flex;
         justify-content: center;
         flex-direction: column;
@@ -44,8 +45,9 @@
     }
 
     .btn-filter {
-        background: var(--mainBgPrimary);
         display: block;
         margin: 0 auto;
+        width: 250px;
+        font-size: 18px;
     }
 }

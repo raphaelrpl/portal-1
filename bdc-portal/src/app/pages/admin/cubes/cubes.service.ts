@@ -69,4 +69,15 @@ export class CubesService {
         const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`).toPromise();
         return response;
     }
+
+    /**
+     * get activities of the cube by status process
+     */
+    public async getActivities(cube: string, status: string) {
+        const urlSuffix = `/inspect?status=${status}&cubename=${cube}`;
+        const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`, {
+            responseType: "text"
+        }).toPromise();
+        return response;
+    }
 }

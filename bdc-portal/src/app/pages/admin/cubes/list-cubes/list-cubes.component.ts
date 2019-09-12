@@ -46,16 +46,16 @@ export class ListCubesComponent implements OnInit {
   public openDetails(cubeInfos: CubeMetadata) {
     this.dialog.open(DescribeCubesComponent, {
       width: '600px',
-      height: '600px',
+      maxHeight: '650px',
       data: cubeInfos
     });
   }
 
   public openLogs(cubeInfos: CubeMetadata) {
     this.dialog.open(LogsCubesComponent, {
-      width: '600px',
-      height: '500px',
-      data: cubeInfos.datacube
+      width: '830px',
+      maxHeight: '650px',
+      data: cubeInfos
     });
   }
 

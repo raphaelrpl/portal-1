@@ -11,32 +11,25 @@
             </div>
 
             <div class="tol_cont-buttons">
-                <button
+                <span
                     *ngIf="!logged"
-                    mat-flat-button
                     (click)="openLogin()">
-                    LOGIN
-                </button>
-
-                <div *ngIf="logged">
-                    <button
-                        mat-raised-button
-                        [matMenuTriggerFor]="menu">
-                        Dashboard
-                    </button>
-                    <mat-menu #menu="matMenu">
-                        <button mat-menu-item [routerLink]="'/admin'">
-                            <mat-icon style="font-size: 20px; margin-right: 5px;">build</mat-icon>
-                            <span>Dashboard</span>
-                        </button>
-                        <button mat-menu-item (click)="logout()">
-                            <mat-icon style="font-size: 24px; margin-right: 5px;">exit_to_app</mat-icon>
-                            <span>Logout</span>
-                        </button>
-                    </mat-menu>
-                </div>
+                    Login
+                </span>
+                <span
+                    *ngIf="logged"
+                    [routerLink]="'/admin'">
+                    Dashboard
+                </span>
 
                 <app-select-lang></app-select-lang>
+
+                <button
+                    mat-icon-button
+                    (click)="logout()"
+                    class="logout-btn">
+                    <mat-icon>exit_to_app</mat-icon>
+                </button>
             </div>
         </mat-toolbar-row>
     </mat-toolbar>

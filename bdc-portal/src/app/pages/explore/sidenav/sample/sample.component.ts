@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Feature } from 'geojson';
-import { Layer, tileLayer } from 'leaflet';
-import { setLayers, removeLayers, removeGroupLayer } from '../../explore.action';
+import { tileLayer } from 'leaflet';
+import { setLayers, removeGroupLayer } from '../../explore.action';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 
 @Component({

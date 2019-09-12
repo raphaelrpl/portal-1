@@ -117,11 +117,13 @@ export class CreateCubeComponent implements OnInit {
 
   public getBands() {
     this.bands = [];
+    this.cube['bands'] = [];
     this.cube['datasets'].forEach((satSen: string) => {
       if (Object.keys(bandsBySatSen).indexOf(satSen) >= 0) {
         bandsBySatSen[satSen].forEach( band => {
           if (this.bands.indexOf(band) < 0) {
             this.bands.push(band);
+            this.cube['bands'].push(band);
           }
         })
       }
@@ -130,8 +132,8 @@ export class CreateCubeComponent implements OnInit {
 
   public async create() {
     try {
-      this.store.dispatch(showLoading());
       if (this.formCreateCube.status === 'VALID') {
+        this.store.dispatch(showLoading());
         let query = `datacube=${this.cube['name']}&wrs=${this.cube['grs']}&satsen=${this.cube['datasets'].join(',')}`;
         query += `&tschema=${this.cube['temporalSchema']}&step=${this.cube['step']}&bands=${this.cube['bands'].join(',')}`;
         query += `&start=${formatDateUSA(new Date(this.cube['startDate']))}&end=${formatDateUSA(new Date(this.cube['lastDate']))}`;

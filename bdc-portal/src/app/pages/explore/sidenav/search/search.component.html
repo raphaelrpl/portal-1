@@ -99,8 +99,8 @@
                 <mat-label>Start Date</mat-label>
                 <input matInput
                     [matDatepicker]="start_date"
-                    [min]="rangeTemporal[0]"
-                    [max]="rangeTemporal[1]"
+                    [min]="(searchObj.cube && products && products.indexOf('cubes') >= 0) ? rangeTemporal[0] : null"
+                    [max]="(searchObj.cube && products && products.indexOf('cubes') >= 0) ? rangeTemporal[1] : null"
                     placeholder="Start Date"
                     name="start_date"
                     formControlName="start_date"
@@ -114,8 +114,8 @@
                 <mat-label>Last Date</mat-label>
                 <input matInput
                     [matDatepicker]="last_date"
-                    [min]="rangeTemporal[0]"
-                    [max]="rangeTemporal[1]"
+                    [min]="(searchObj.cube && products && products.indexOf('cubes') >= 0) ? rangeTemporal[0] : null"
+                    [max]="(searchObj.cube && products && products.indexOf('cubes') >= 0) ? rangeTemporal[1] : null"
                     placeholder="Last Date"
                     name="last_date"
                     formControlName="last_date"
