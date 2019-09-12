@@ -18,7 +18,14 @@
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter activities">
         </mat-form-field>
             
-        <table mat-table [dataSource]="dataSource" matSort matSortStart="desc">
+        <table 
+            mat-table 
+            [dataSource]="dataSource" 
+            matSort
+            matSortActive="action"
+            matSortDirection="asc"
+            matSortStart="asc">
+
             <!-- Action Column -->
             <ng-container matColumnDef="action">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> ACTION </th>

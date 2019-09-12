@@ -5,6 +5,7 @@ import { closeLoading, showLoading } from 'src/app/app.action';
 import { AppState } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
 import { CubesService } from '../cubes.service';
+import { Activity } from './activity.interface';
 
 @Component({
   templateUrl: './logs-cubes.component.html',
@@ -12,14 +13,16 @@ import { CubesService } from '../cubes.service';
 })
 export class LogsCubesComponent implements AfterViewInit {
 
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
-  @ViewChild(MatSort, {static: true}) sort: MatSort;
-  
   public cube: CubeMetadata;
-  public dataSource: MatTableDataSource<object>;
+  
   public displayedColumns = ['action', 'cube', 'tileid', 'period'];
+  public dataSource = new MatTableDataSource([{} as Activity]);
+  
   public statusList = ['DONE', 'DOING', 'NOTDONE', 'ERROR', 'SUSPEND', 'CHECK'];
   public status = 'DOING';
+  
+  @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  @ViewChild(MatSort, {static: false}) sort: MatSort;
 
   constructor(
     public cs: CubesService,
@@ -30,7 +33,6 @@ export class LogsCubesComponent implements AfterViewInit {
       if (data) {
         this.cube = data;
       }
-      this.dataSource = new MatTableDataSource([]);
   }
 
   ngAfterViewInit() {

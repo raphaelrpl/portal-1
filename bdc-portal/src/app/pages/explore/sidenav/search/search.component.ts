@@ -287,7 +287,7 @@ export class SearchComponent implements OnInit {
       });
 
     } else {
-      // this.store.dispatch(reset());
+      this.reset();
       const vm = this;
       let firstMenu = true;
       vm.products.forEach((product: any) => {
@@ -296,6 +296,21 @@ export class SearchComponent implements OnInit {
         firstMenu = false;
       });
     }
+  }
+
+  private reset() {
+    // remove sample layers
+    this.store.dispatch(removeGroupLayer({
+      key: 'alt',
+      prefix: 'samples_'
+    }));
+    // remove sample layers
+    this.store.dispatch(removeGroupLayer({
+      key: 'alt',
+      prefix: 'qls_'
+    }));
+    this.store.dispatch(setFeatures([]));
+    this.store.dispatch(setSamples([]));
   }
 
   /**

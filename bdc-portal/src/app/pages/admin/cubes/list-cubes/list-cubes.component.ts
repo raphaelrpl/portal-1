@@ -46,7 +46,7 @@ export class ListCubesComponent implements OnInit {
   public openDetails(cubeInfos: CubeMetadata) {
     this.dialog.open(DescribeCubesComponent, {
       width: '600px',
-      height: '600px',
+      maxHeight: '650px',
       data: cubeInfos
     });
   }
@@ -54,7 +54,7 @@ export class ListCubesComponent implements OnInit {
   public openLogs(cubeInfos: CubeMetadata) {
     this.dialog.open(LogsCubesComponent, {
       width: '830px',
-      height: '700px',
+      maxHeight: '650px',
       data: cubeInfos
     });
   }

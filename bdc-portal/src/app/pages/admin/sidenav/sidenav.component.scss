@@ -10,8 +10,9 @@
         align-items: center;
         width: calc(100% - 40px);
         padding: 15px 20px;
-        background: rgba(#FFF, 0.8);
+        background: rgba(#1da9f4, 0.9);
         font-size: 1.2em;
+        color: #FFF;
         cursor: pointer;
         font-family: "Roboto", "Helvetica Neue", sans-serif;
 
@@ -20,11 +21,15 @@
         }
 
         &:hover {
-            background: rgba(#FFF, 0.4);
+            background: rgba(#1da9f4, 0.8);
         }
 
         &.active {
-            background: rgba(#FFF, 0.6);
+            background: rgba(#1da9f4, 1);
+
+            &:hover {
+                background: rgba(#1da9f4, 0.8);
+            }
         }
     }
 }

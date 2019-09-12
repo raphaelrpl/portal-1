@@ -23,7 +23,6 @@
             class="mat-elevation-z1 cube_list-table"
             matSort
             matSortActive="date"
-            matSortDisableClear
             matSortDirection="desc">
 
             <ng-container matColumnDef="id">
@@ -42,7 +41,7 @@
             </ng-container>
 
             <ng-container matColumnDef="date">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear> DATE </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> DATE </th>
                 <td mat-cell *matCellDef="let element"> - </td>
             </ng-container>
 

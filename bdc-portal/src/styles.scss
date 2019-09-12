@@ -41,6 +41,10 @@ body {
 
 
 // MATERIAL DESIGN
+.mat-drawer-content {
+    background: #EEE;
+}
+
 .mat-drawer-side {
     border-right: none;
     box-shadow: 3px 0px 6px rgba(#000, 0.2);
@@ -69,7 +73,7 @@ body {
 }
 
 .mat-expansion-panel {
-    background: #FFF !important
+    background: #FFF !important;
 }
 
 .mat-form-field-appearance-fill .mat-form-field-flex { 
