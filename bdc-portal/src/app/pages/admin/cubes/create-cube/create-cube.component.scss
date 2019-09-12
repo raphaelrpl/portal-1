@@ -23,4 +23,29 @@
             }
         }
     }
+
+    .quicklook {
+        .title-rgb {
+            background: #FFF;
+            padding: 0 7px;
+            margin: -5px 0 0 10px;
+        }
+    
+        .box-rgb {
+            margin-top: -17px;
+            padding-top: 10px;
+            border-width: 3px;
+            border-style: solid;
+            border-image:
+                linear-gradient(
+                    to right,
+                    red 0%,
+                    red 33%,
+                    green 33%,
+                    green 66%,
+                    blue 66%,
+                    blue 100%
+                ) 100% 0 0 0;
+        }
+    }
 }

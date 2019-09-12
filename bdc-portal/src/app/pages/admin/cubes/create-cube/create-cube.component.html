@@ -122,25 +122,28 @@
                 </mat-select>
             </mat-form-field>
 
-            <div class="inline-block">
-                <mat-form-field appearance="fill">
-                    <mat-label>RED</mat-label>
-                    <mat-select [(value)]="cube.qlRed" formControlName="qlRed" required>
-                        <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>GREEN</mat-label>
-                    <mat-select [(value)]="cube.qlGreen" formControlName="qlGreen" required>
-                        <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-                <mat-form-field appearance="fill">
-                    <mat-label>BLUE</mat-label>
-                    <mat-select [(value)]="cube.qlBlue" formControlName="qlBlue" required>
-                        <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
-                    </mat-select>
-                </mat-form-field>
+            <div class="quicklook">
+                <label class="title-rgb">Bands Quicklook</label>
+                <div class="inline-block box-rgb">
+                    <mat-form-field>
+                        <mat-label>RED</mat-label>
+                        <mat-select [(value)]="cube.qlRed" formControlName="qlRed" required>
+                            <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>GREEN</mat-label>
+                        <mat-select [(value)]="cube.qlGreen" formControlName="qlGreen" required>
+                            <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>BLUE</mat-label>
+                        <mat-select [(value)]="cube.qlBlue" formControlName="qlBlue" required>
+                            <mat-option *ngFor="let band of cube.bands" [value]="band">{{ band }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
             </div>
         </div>
 
