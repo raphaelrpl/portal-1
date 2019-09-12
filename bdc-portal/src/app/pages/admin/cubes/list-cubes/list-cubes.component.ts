@@ -3,6 +3,7 @@ import { MatSort, MatDialog } from '@angular/material';
 import { CubesService } from '../cubes.service';
 import { DescribeCubesComponent } from '../describe-cubes/describe-cubes.component';
 import { LogsCubesComponent } from '../logs-cubes/logs-cubes.component';
+import { EditCubesComponent } from '../edit-cubes/edit-cubes.component';
 import { CubeMetadata } from '../cube.interface';
 import { AuthService } from '../../../auth/auth.service';
 
@@ -16,6 +17,7 @@ export class ListCubesComponent implements OnInit {
   public displayedColumns: string[];
   public dataSource = [];
   public authorized = null;
+  public authorizedPOST = null;
 
   constructor(
     private cs: CubesService,
@@ -57,6 +59,13 @@ export class ListCubesComponent implements OnInit {
     });
   }
 
+  public openEdit(cubeInfos: CubeMetadata) {
+    this.dialog.open(EditCubesComponent, {
+      width: '600px',
+      data: cubeInfos
+    });
+  }
+
   private async checkAuthorization() {
     try {
       const response = await this.as.token('bdc_portal:manage_cubes:get');
@@ -65,8 +74,15 @@ export class ListCubesComponent implements OnInit {
       } else {
         throw '';
       }
+
+      const responsePost = await this.as.token('bdc_portal:manage_cubes:post');
+      if (responsePost) {
+        this.authorizedPOST = true;
+      } else {
+        throw '';
+      }
     } catch(err) {
-      this.authorized = false;
+      this.authorizedPOST = false;
     }
   }
 }

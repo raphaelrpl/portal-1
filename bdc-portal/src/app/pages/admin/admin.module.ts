@@ -25,6 +25,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { LogsCubesComponent } from './cubes/logs-cubes/logs-cubes.component';
+import { EditCubesComponent } from './cubes/edit-cubes/edit-cubes.component';
 import { DescribeCubesComponent } from './cubes/describe-cubes/describe-cubes.component';
 import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
 
@@ -34,6 +35,7 @@ import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
     AdminComponent,
     ListCubesComponent,
     DescribeCubesComponent,
+    EditCubesComponent,
     LogsCubesComponent,
     CreateCubeComponent,
     SidenavComponent,
@@ -63,7 +65,8 @@ import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
   ],
   entryComponents: [
     DescribeCubesComponent,
-    LogsCubesComponent
+    LogsCubesComponent,
+    EditCubesComponent
   ]
 })
 export class AdminModule { }

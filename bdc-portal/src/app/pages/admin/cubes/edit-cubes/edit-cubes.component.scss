@@ -1,0 +1,23 @@
+.container-edit_cubes {
+    
+    p {
+        display: flex;
+        align-items: center;
+        font-size: 1.3em;
+        color: #000;
+
+        .mat-icon {
+            margin-right: 10px;
+        }
+    }
+
+    .inline-block {
+        display: flex;
+        align-items: center;
+    }
+
+    button {
+        display: block;
+        margin: 15px auto;
+    }
+}
