@@ -61,9 +61,9 @@
                             LOGS
                         </button>
                         <button
-                            [routerLink]="'/admin/cubes/create/'+element.datacube"
                             color="primary"
-                            disabled
+                            (click)="openEdit(element)"
+                            [disabled]="!authorizedPOST"
                             mat-raised-button>
                             EDIT
                         </button>
