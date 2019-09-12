@@ -93,7 +93,7 @@ export class BoxTimeSeriesComponent {
         });
 
       } else {
-        let query = `?coverage=bdc:${this.collection}:${this.subCollection}`;
+        let query = `?coverage=${this.collection}:${this.subCollection}`;
         query += `&latitude=${this.latLng.lat}`;
         query += `&longitude=${this.latLng.lng}`;
         query += `&start_date=${this.rangeTemporal[0]}`;
