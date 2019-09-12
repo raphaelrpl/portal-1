@@ -18,7 +18,9 @@ import { MatButtonModule,
   MatNativeDateModule,
   MatDatepickerModule,
   MatSelectModule,
-  MatCheckboxModule
+  MatCheckboxModule,
+  MatPaginatorModule,
+  MatSortModule
 } from '@angular/material';
 import { AuthModule } from '../auth/auth.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -55,9 +57,11 @@ import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
     MatBottomSheetModule,
     MatInputModule,
     MatTableModule,
+    MatSortModule,
     MatNativeDateModule,
     MatDatepickerModule,
     MatCheckboxModule,
+    MatPaginatorModule,
     FormsModule,
     ReactiveFormsModule,
     MatSidenavModule,

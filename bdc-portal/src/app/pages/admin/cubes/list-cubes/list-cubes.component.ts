@@ -53,9 +53,9 @@ export class ListCubesComponent implements OnInit {
 
   public openLogs(cubeInfos: CubeMetadata) {
     this.dialog.open(LogsCubesComponent, {
-      width: '600px',
-      height: '500px',
-      data: cubeInfos.datacube
+      width: '830px',
+      height: '700px',
+      data: cubeInfos
     });
   }
 

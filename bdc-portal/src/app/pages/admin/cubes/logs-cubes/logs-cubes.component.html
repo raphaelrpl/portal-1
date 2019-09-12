@@ -1,6 +1,56 @@
 <div class="container-logs_cubes" *ngIf="cube">
-    <h1>{{ cube }} - Activities</h1>
-    <hr />
+    <h1>{{ cube.datacube }} - Activities</h1>
+    <div class="inline-block">
+        <mat-form-field appearance="outline">
+                <mat-label>Status</mat-label>
+                <mat-select [(value)]="status">
+                    <mat-option *ngFor="let sts of statusList" [value]="sts">{{ sts }}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        <button (click)="searchActivities()"
+            mat-raised-button>
+            Apply
+        </button>
+    </div>
 
-    logs / activities
+    <div *ngIf="dataSource.data.length" class="result">
+        <mat-form-field>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter activities">
+        </mat-form-field>
+            
+        <table mat-table [dataSource]="dataSource" matSort matSortStart="desc">
+            <!-- Action Column -->
+            <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> ACTION </th>
+                <td mat-cell *matCellDef="let element"> {{element.action}} </td>
+            </ng-container>
+            
+            <!-- Cube Name Column -->
+            <ng-container matColumnDef="cube">
+                <th mat-header-cell *matHeaderCellDef> CUBE </th>
+                <td mat-cell *matCellDef="let element"> {{element.cube}} </td>
+            </ng-container>
+            
+            <!-- Tile ID Column -->
+            <ng-container matColumnDef="tileid">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> TILE ID </th>
+                <td mat-cell *matCellDef="let element"> {{element.tileid}} </td>
+            </ng-container>
+            
+            <!-- Period Column -->
+            <ng-container matColumnDef="period">
+                <th mat-header-cell *matHeaderCellDef> PERIOD </th>
+                <td mat-cell *matCellDef="let element"> {{element.period}} </td>
+            </ng-container>
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator 
+            [pageSize]="5"
+            [pageSizeOptions]="[5, 10, 20]" 
+            showFirstLastButtons>
+        </mat-paginator>
+    </div>
 </div>
