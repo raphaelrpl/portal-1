@@ -63,7 +63,13 @@ body {
 }
 
 .mat-slider-track-fill, .mat-slider-thumb, .mat-slider-thumb-label {
-    background-color: gray !important;
+    background-color: #4caf50 !important; 
+    border:0px !important;
+}
+
+.mat-slider-horizontal { 
+    min-width: 190px !important; 
+    margin-top: 10px !important;
 }
 
 .mat-form-field {
