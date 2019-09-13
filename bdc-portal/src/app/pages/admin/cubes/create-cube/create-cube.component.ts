@@ -148,7 +148,7 @@ export class CreateCubeComponent implements OnInit {
               verticalPosition: 'top',
               panelClass: 'app_snack-bar-success'
             });
-            this.start(this.cube['name'], this.tiles);
+            this.start(this.cube['name'], this.tiles, formatDateUSA(new Date(this.cube['startDate'])), formatDateUSA(new Date(this.cube['lastDate'])));
 
           } else {
             this.router.navigate(['/admin/cubes']);
@@ -167,9 +167,9 @@ export class CreateCubeComponent implements OnInit {
     }
   }
 
-  private async start(cubename: string, tiles: string) {
+  private async start(cubename: string, tiles: string, startDate: string, endDate: string) {
     try {
-      const query = `datacube=${cubename}&pr=${tiles}`;
+      const query = `datacube=${cubename}&pr=${tiles}&start=${startDate}&end=${endDate}`;
       const response = await this.cs.start(query);
       if (response) {
         this.snackBar.open('Successfully started cube!', '', {
