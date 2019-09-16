@@ -7,12 +7,19 @@ import { showLoading, closeLoading } from 'src/app/app.action';
 import { AppState } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 
 @Component({
   templateUrl: './create-cube.component.html',
-  styleUrls: ['./create-cube.component.scss']
+  styleUrls: ['./create-cube.component.scss'],
+  providers: [{
+    provide: DateAdapter, useClass: AppDateAdapter
+  },
+  {
+    provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+  }]
 })
 export class CreateCubeComponent implements OnInit {
 

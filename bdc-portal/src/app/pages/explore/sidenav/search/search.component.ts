@@ -1,6 +1,6 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { Store, select } from '@ngrx/store';
 import { rectangle, LatLngBoundsExpression } from 'leaflet';
 
@@ -12,6 +12,7 @@ import {
   setRangeTemporal, setFeatures, setGrid, setTStep, setTSchema, setSamples, removeGroupLayer, setBbox
 } from '../../explore.action';
 import { showLoading, closeLoading } from 'src/app/app.action';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
 
 /**
  * component to search data of the BDC project
@@ -20,7 +21,13 @@ import { showLoading, closeLoading } from 'src/app/app.action';
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
-  styleUrls: ['./search.component.scss']
+  styleUrls: ['./search.component.scss'],
+  providers: [{
+    provide: DateAdapter, useClass: AppDateAdapter
+  },
+  {
+    provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+  }]
 })
 export class SearchComponent implements OnInit {
 
@@ -77,8 +84,7 @@ export class SearchComponent implements OnInit {
         east: ['', [Validators.required]],
         south: ['', [Validators.required]],
         start_date: ['', [Validators.required]],
-        last_date: ['', [Validators.required]],
-        type: ['']
+        last_date: ['', [Validators.required]]
       });
     }
 
@@ -113,9 +119,12 @@ export class SearchComponent implements OnInit {
     try {
       const response = await this.ss.getCollections();
       this.collections = [];
-      response.links.forEach( c => {
+      response.links.forEach( async c => {
         if (c.rel === 'child') {
-          this.collections.push(c.title);
+          const response = await this.ss.getCollectionByName(c.title);
+          const cubes = response.properties['bdc:time_aggregations'].filter(
+            t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => `${c.title}:${t.name}`));
+          this.collections = [...this.collections, ...cubes];
         }
       });
     } catch (err) {
@@ -134,8 +143,8 @@ export class SearchComponent implements OnInit {
       const lastDate = new Date(vm.searchObj['last_date'].setDate(getLastDateMonth(new Date(vm.searchObj['last_date']))));
 
       const bbox = Object.values(vm.searchObj['bbox']);
-      let query = `type=${vm.searchObj['types']}`;
-      query += `&collections=${vm.searchObj['cube']}`;
+      let query = `type=${vm.searchObj['cube'].split(':')[1]}`;
+      query += `&collections=${vm.searchObj['cube'].split(':')[0]}`;
       query += `&bbox=${bbox[2]},${bbox[1]},${bbox[3]},${bbox[0]}`;
       query += `&time=${formatDateUSA(startDate)}`;
       query += `/${formatDateUSA(lastDate)}`;
@@ -146,7 +155,6 @@ export class SearchComponent implements OnInit {
         vm.store.dispatch(setBands(vm.bands));
         vm.store.dispatch(setTSchema({tschema: vm.tschema}));
         vm.store.dispatch(setTStep({tstep: vm.tstep || 0}));
-        vm.store.dispatch(setGrid({grid: vm.grid}));
         vm.store.dispatch(setRangeTemporal([
           startDate,
           lastDate
@@ -238,7 +246,6 @@ export class SearchComponent implements OnInit {
         west: null,
         east: null
       },
-      type: [],
       step: null,
       start_date: '',
       last_date: ''
@@ -250,7 +257,7 @@ export class SearchComponent implements OnInit {
    */
   public async getCollection(name: string) {
     try {
-      const response = await this.ss.getCollectionByName(name);
+      const response = await this.ss.getCollectionByName(name.split(':')[0]);
 
       // set times (range temporal of cube)
       const times = response.extent.time;
@@ -260,16 +267,14 @@ export class SearchComponent implements OnInit {
       ];
       this.searchObj['start_date'] = new Date(times[0]);
       this.searchObj['last_date'] = new Date(times[1]);
-      // set collection types
-      this.typesCollection = response.properties['bdc:time_aggregations'].filter(
-        t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => t.name));
       // set bands
       this.bands = response.properties['bdc:bands'];
-      // set wrs/grid
-      this.grid = response['properties']['bdc:wrs'];
       // set temporal schema and temporal step if monthly
       this.tschema = response['properties']['bdc:tschema'];
       this.tstep = response['properties']['bdc:tstep'];
+      // set wrs/grid
+      this.grid = response['properties']['bdc:wrs'];
+      this.store.dispatch(setGrid({grid: this.grid}));
 
     } catch (_) {}
   }
@@ -330,7 +335,7 @@ export class SearchComponent implements OnInit {
       [bbox.south, bbox.west]
     ];
     const newLayers = rectangle(bounds, {
-      color: '#666',
+      color: '#CCC',
       weight: 1,
       interactive: false,
       className: 'previewBbox'

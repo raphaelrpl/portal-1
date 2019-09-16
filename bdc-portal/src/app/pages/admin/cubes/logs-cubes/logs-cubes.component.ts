@@ -1,4 +1,4 @@
-import { Component, Inject, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, Inject, ViewChild, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar, MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { CubeMetadata } from '../cube.interface';
 import { closeLoading, showLoading } from 'src/app/app.action';
@@ -28,6 +28,7 @@ export class LogsCubesComponent implements AfterViewInit {
     public cs: CubesService,
     private snackBar: MatSnackBar,
     private store: Store<AppState>,
+    private ref: ChangeDetectorRef,
     public dialogRef: MatDialogRef<LogsCubesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: CubeMetadata) {
       if (data) {
@@ -66,6 +67,7 @@ export class LogsCubesComponent implements AfterViewInit {
       });
 
     } finally {
+      this.ref.detectChanges();
       this.store.dispatch(closeLoading());
     }
   }

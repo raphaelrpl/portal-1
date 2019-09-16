@@ -126,18 +126,6 @@
             </mat-form-field>
         </div>
 
-        <div [hidden]="!(searchObj.cube && products && products.indexOf('cubes') >= 0)">
-            <mat-form-field appearance="fill">
-                <mat-label>Type</mat-label>
-                <mat-select [(value)]="searchObj.types" formControlName="type" [required]="products && products.indexOf('cubes') >= 0">
-                    <mat-option *ngFor="let type of typesCollection" [value]="type">{{ type }}</mat-option>
-                </mat-select>
-                <mat-error *ngIf="formSearch.get('type').status === 'INVALID'">
-                    <form-field-error [errors]="formSearch.get('type').errors"></form-field-error>
-                </mat-error>
-            </mat-form-field>
-        </div>
-
         <button type="submit" mat-raised-button color="primary" class="btn-filter">
             FILTER
         </button>

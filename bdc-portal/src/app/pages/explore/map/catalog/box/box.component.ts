@@ -4,10 +4,11 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../../explore.state';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, DateAdapter, MAT_DATE_FORMATS } from '@angular/material';
 import { showLoading, closeLoading } from 'src/app/app.action';
 import { AppState } from 'src/app/app.state';
 import { removeGroupLayer } from '../../../explore.action';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
 
 /**
  * Map Search Catalog component
@@ -16,7 +17,13 @@ import { removeGroupLayer } from '../../../explore.action';
 @Component({
   selector: 'app-box-catalog',
   templateUrl: './box.component.html',
-  styleUrls: ['./box.component.scss']
+  styleUrls: ['./box.component.scss'],
+  providers: [{
+    provide: DateAdapter, useClass: AppDateAdapter
+  },
+  {
+    provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+  }]
 })
 export class BoxCatalogComponent implements OnInit {
 
