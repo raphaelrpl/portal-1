@@ -6,9 +6,9 @@ export class AppDateAdapter extends NativeDateAdapter {
     parse(value: any): Date | null {
         if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
             const str = value.split('/');
-            const year = Number(str[2]);
+            const year = Number(str[0]);
             const month = Number(str[1]) - 1;
-            const date = Number(str[0]);
+            const date = Number(str[2]);
             return new Date(year, month, date);
         }
         const timestamp = typeof value === 'number' ? value : Date.parse(value);
