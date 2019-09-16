@@ -193,7 +193,7 @@ export class MapComponent implements OnInit {
         circlemarker: false,
         rectangle: {
           shapeOptions: {
-            color: '#AAA'
+            color: '#CCC'
           }
         }
       }
@@ -213,7 +213,7 @@ export class MapComponent implements OnInit {
     this.map.on(Draw.Event.CREATED, e => {
       const layer: any = e['layer'];
       const newLayer = rectangle(layer.getBounds(), {
-        color: '#666',
+        color: '#CCC',
         weight: 1,
         interactive: false,
         className: 'previewBbox'
@@ -235,7 +235,7 @@ export class MapComponent implements OnInit {
     };
     // mount base layers
     this.ls.getBaseLayers().forEach( (l: BdcLayer) => {
-      if (l.id === 'osm') {
+      if (l.id === 'google_hybrid') {
         l.layer.addTo(this.map);
       }
       this.layersControl.baseLayers[l.name] = l.layer;
@@ -311,7 +311,7 @@ export class MapComponent implements OnInit {
 
       for (let i = data.results.length - 1; i >= 0; i--) {
         const newLayer = rectangle(data.results[i].bounds, {
-          color: '#666',
+          color: '#CCC',
           weight: 1,
           interactive: false,
           className: 'previewBbox'

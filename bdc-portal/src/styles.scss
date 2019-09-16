@@ -63,7 +63,13 @@ body {
 }
 
 .mat-slider-track-fill, .mat-slider-thumb, .mat-slider-thumb-label {
-    background-color: gray !important;
+    background-color: #4caf50 !important; 
+    border:0px !important;
+}
+
+.mat-slider-horizontal { 
+    min-width: 190px !important; 
+    margin-top: 10px !important;
 }
 
 .mat-form-field {
@@ -76,22 +82,24 @@ body {
     background: #FFF !important;
 }
 
+.mat-accordion .mat-expansion-panel:first-of-type { 
+    border-top-right-radius: 0px !important; 
+    border-top-left-radius: 0px !important; 
+}
+
 .mat-form-field-appearance-fill .mat-form-field-flex { 
     background-color: #f9f9f9 !important; 
-    border-bottom: 2px solid #1da9f4 !important;
+    border-bottom: 2px solid var(--mainBgPrimary) !important;
 }
 
 .mat-expansion-panel-header-description, .mat-expansion-indicator::after {
     color: #fff !important;
 }
 
-.mat-accordion .mat-expansion-panel:first-of-type { 
-    border-top-right-radius: 0px !important; 
-    border-top-left-radius: 0px !important; 
-}
-
-.mat-expansion-panel-header:hover {
-    background-color: rgba(#1da9f4, 0.8) !important; 
+.mat-expansion-panel-header {
+    &:hover {
+        background-color: rgba(#1da9f4, 0.8) !important;
+    }
 }
 
 button.mat-primary {

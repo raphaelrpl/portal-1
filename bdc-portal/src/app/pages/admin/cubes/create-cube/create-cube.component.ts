@@ -7,12 +7,19 @@ import { showLoading, closeLoading } from 'src/app/app.action';
 import { AppState } from 'src/app/app.state';
 import { Store } from '@ngrx/store';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
+import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material';
+import { MatSnackBar, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 
 @Component({
   templateUrl: './create-cube.component.html',
-  styleUrls: ['./create-cube.component.scss']
+  styleUrls: ['./create-cube.component.scss'],
+  providers: [{
+    provide: DateAdapter, useClass: AppDateAdapter
+  },
+  {
+    provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+  }]
 })
 export class CreateCubeComponent implements OnInit {
 
@@ -148,7 +155,7 @@ export class CreateCubeComponent implements OnInit {
               verticalPosition: 'top',
               panelClass: 'app_snack-bar-success'
             });
-            this.start(this.cube['name'], this.tiles);
+            this.start(this.cube['name'], this.tiles, formatDateUSA(new Date(this.cube['startDate'])), formatDateUSA(new Date(this.cube['lastDate'])));
 
           } else {
             this.router.navigate(['/admin/cubes']);
@@ -167,9 +174,9 @@ export class CreateCubeComponent implements OnInit {
     }
   }
 
-  private async start(cubename: string, tiles: string) {
+  private async start(cubename: string, tiles: string, startDate: string, endDate: string) {
     try {
-      const query = `datacube=${cubename}&pr=${tiles}`;
+      const query = `datacube=${cubename}&pr=${tiles}&start=${startDate}&end=${endDate}`;
       const response = await this.cs.start(query);
       if (response) {
         this.snackBar.open('Successfully started cube!', '', {

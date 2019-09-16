@@ -16,7 +16,7 @@ export const BaseLayers: BdcLayer[] = [
    },
    {
       id: 'google_hybrid',
-      enabled: false,
+      enabled: true,
       name: 'Google Hybrid',
       layer: tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
          subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -40,7 +40,7 @@ export const BaseLayers: BdcLayer[] = [
    },
    {
       id: 'osm',
-      enabled: true,
+      enabled: false,
       name: 'OSM',
       layer: tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
          attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
