@@ -47,9 +47,11 @@ export class DialogFeatureComponent {
         this.rangeTemporal = data['range'];
       }
       data['bands'].forEach( (band: string) => {
-        this.bands[band] = true;
+        if (band !== 'quality') {
+          this.bands[band] = true;
+        } 
       });
-      this.bandsList = data['bands'];
+      this.bandsList = data['bands'].filter( band => band !== 'quality');
   }
 
   /** format date to USA template */
