@@ -66,7 +66,9 @@ export class CubesService {
      */
     public async start(query: string) {
         const urlSuffix = `/process?${query}`;
-        const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`).toPromise();
+        const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`, {
+            responseType: "text"
+        }).toPromise();
         return response;
     }
 
