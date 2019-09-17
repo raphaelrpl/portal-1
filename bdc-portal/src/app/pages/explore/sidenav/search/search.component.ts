@@ -117,12 +117,12 @@ export class SearchComponent implements OnInit {
    */
   private async getCollections() {
     try {
-      const response = await this.ss.getCollections();
+      const responseCollections = await this.ss.getCollections();
       this.collections = [];
-      response.links.forEach( async c => {
+      responseCollections.links.forEach( async c => {
         if (c.rel === 'child') {
-          const response = await this.ss.getCollectionByName(c.title);
-          const cubes = response.properties['bdc:time_aggregations'].filter(
+          const responseCollection = await this.ss.getCollectionByName(c.title);
+          const cubes = responseCollection.properties['bdc:time_aggregations'].filter(
             t => t.name !== 'SCENE' && t.name !== 'MERGED').map((t => `${c.title}:${t.name}`));
           this.collections = [...this.collections, ...cubes];
         }

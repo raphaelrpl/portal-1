@@ -67,7 +67,9 @@ export class BoxCatalogComponent implements OnInit {
           this.searchObj.lastDate = this.searchObj.lastDate || new Date(Object.values(res.actualRangeTemporal)[1] as any);
         }
         if (res.bbox) {
-          this.bbox = `${res.bbox['_southWest']['lng']},${res.bbox['_southWest']['lat']},${res.bbox['_northEast']['lng']},${res.bbox['_northEast']['lat']}`;
+          let bbox = `${res.bbox['_southWest']['lng']},${res.bbox['_southWest']['lat']},`;
+          bbox += `${res.bbox['_northEast']['lng']},${res.bbox['_northEast']['lat']}`;
+          this.bbox = bbox;
         }
       });
       this.formSearch = this.fb.group({

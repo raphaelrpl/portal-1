@@ -49,7 +49,7 @@ export class DialogFeatureComponent {
       data['bands'].forEach( (band: string) => {
         if (band !== 'quality') {
           this.bands[band] = true;
-        } 
+        }
       });
       this.bandsList = data['bands'].filter( band => band !== 'quality');
   }

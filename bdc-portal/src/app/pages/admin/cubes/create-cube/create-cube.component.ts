@@ -65,12 +65,12 @@ export class CreateCubeComponent implements OnInit {
     this.rangeTemporal = [
       new Date(2016, 9, 1),
       new Date()
-    ]
+    ];
     this.temporalSchema = [
-      "ANUAL",
-      "MENSAL",
-      "SAZONAL"
-    ]
+      'ANUAL',
+      'MENSAL',
+      'SAZONAL'
+    ];
     this.datasets = [];
     this.resetForm();
     this.getDatasets();
@@ -92,14 +92,14 @@ export class CreateCubeComponent implements OnInit {
       qlRed: '',
       qlGreen: '',
       qlBlue: ''
-    }
+    };
   }
 
   private async getDatasets() {
     try {
       const response = await this.cs.getDatasets();
       const parser = new DOMParser();
-      const xml = parser.parseFromString(response, "text/xml");
+      const xml = parser.parseFromString(response, 'text/xml');
       xml.getElementsByTagName('Url')[0].childNodes.forEach( child => {
         const childEl = (child as any);
         if (childEl.attributes && childEl.attributes[0] && childEl.attributes[0].nodeValue === 'dataset') {
@@ -107,19 +107,19 @@ export class CreateCubeComponent implements OnInit {
             if (item.attributes && item.attributes[0]) {
               this.datasets.push(item.attributes[0].nodeValue);
             }
-          })
+          });
         }
-      })
+      });
 
-    } catch(err) {}
+    } catch (err) {}
   }
 
   private async getGrids() {
     try {
       const response = await this.cs.getGrids();
-      this.grids = Object.values(response).map( grid => grid.name );
+      this.grids = Object.values(response).map( grid => grid['name'] );
 
-    } catch(err) {}
+    } catch (err) {}
   }
 
   public getBands() {
@@ -132,9 +132,9 @@ export class CreateCubeComponent implements OnInit {
             this.bands.push(band);
             this.cube['bands'].push(band);
           }
-        })
+        });
       }
-    })
+    });
   }
 
   public async create() {
@@ -155,16 +155,21 @@ export class CreateCubeComponent implements OnInit {
               verticalPosition: 'top',
               panelClass: 'app_snack-bar-success'
             });
-            this.start(this.cube['name'], this.tiles, formatDateUSA(new Date(this.cube['startDate'])), formatDateUSA(new Date(this.cube['lastDate'])));
+            this.start(this.cube['name'], this.tiles, formatDateUSA(
+              new Date(this.cube['startDate'])),
+              formatDateUSA(new Date(this.cube['lastDate'])
+            ));
 
           } else {
             this.router.navigate(['/admin/cubes']);
             this.store.dispatch(closeLoading());
           }
-        } else throw '';
+        } else {
+          throw new Error('error');
+        }
       }
 
-    } catch(err) {
+    } catch (err) {
       this.snackBar.open('Error creating cube!', '', {
         duration: 4000,
         verticalPosition: 'top',
@@ -185,9 +190,11 @@ export class CreateCubeComponent implements OnInit {
           panelClass: 'app_snack-bar-success'
         });
         this.router.navigate(['/admin/cubes']);
-      } else throw '';
+      } else {
+        throw new Error('error');
+      }
 
-    } catch(err) {
+    } catch (err) {
       this.snackBar.open('Error starting cube!', '', {
         duration: 4000,
         verticalPosition: 'top',
@@ -205,9 +212,9 @@ export class CreateCubeComponent implements OnInit {
       if (response) {
         this.authorized = true;
       } else {
-        throw '';
+        throw new Error('error');
       }
-    } catch(err) {
+    } catch (err) {
       this.authorized = false;
     }
   }

@@ -48,6 +48,6 @@ export class CatalogComponent {
       if (response) {
         this.logged = true;
       }
-    } catch(err) {}
+    } catch (err) {}
   }
 }

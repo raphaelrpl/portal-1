@@ -61,10 +61,10 @@ export const colorsByBand = {
 };
 
 export const bandsBySatSen = {
-    "HLS.L30": ["coastal", "blue", "green", "red",  "nir",  "swir1", "swir2", "quality"],
-    "HLS.S30": ["coastal", "blue", "green", "red",  "nir",  "swir1", "swir2", "quality"],
-    "LC8SR": ["blue", "coastal", "evi", "green", "ndvi", "nir", "quality", "red", "swir1", "swir2"],
-    "MOD13Q1": ["ndvi", "evi", "red", "nir", "blue", "swir2", "quality"],
-    "MYD13Q1": ["ndvi", "evi", "red", "nir", "blue", "swir2", "quality"],
-    "S2SR": ["coastal", "blue", "green", "red", "redge1", "redge2", "redge3", "nir", "bnir", "wvap", "swir1", "swir2", "ndvi", "quality"]
-}
+    'HLS.L30': ['coastal', 'blue', 'green', 'red',  'nir',  'swir1', 'swir2', 'quality'],
+    'HLS.S30': ['coastal', 'blue', 'green', 'red',  'nir',  'swir1', 'swir2', 'quality'],
+    LC8SR: ['blue', 'coastal', 'evi', 'green', 'ndvi', 'nir', 'quality', 'red', 'swir1', 'swir2'],
+    MOD13Q1: ['ndvi', 'evi', 'red', 'nir', 'blue', 'swir2', 'quality'],
+    MYD13Q1: ['ndvi', 'evi', 'red', 'nir', 'blue', 'swir2', 'quality'],
+    S2SR: ['coastal', 'blue', 'green', 'red', 'redge1', 'redge2', 'redge3', 'nir', 'bnir', 'wvap', 'swir1', 'swir2', 'ndvi', 'quality']
+};

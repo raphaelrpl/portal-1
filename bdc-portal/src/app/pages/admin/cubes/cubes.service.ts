@@ -67,7 +67,7 @@ export class CubesService {
     public async start(query: string) {
         const urlSuffix = `/process?${query}`;
         const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`, {
-            responseType: "text"
+            responseType: 'text'
         }).toPromise();
         return response;
     }
@@ -78,7 +78,7 @@ export class CubesService {
     public async getActivities(cube: string, status: string) {
         const urlSuffix = `/inspect?status=${status}&cubename=${cube}`;
         const response = await this.http.get(`${this.urlMaestro}${urlSuffix}`, {
-            responseType: "text"
+            responseType: 'text'
         }).toPromise();
         return response;
     }

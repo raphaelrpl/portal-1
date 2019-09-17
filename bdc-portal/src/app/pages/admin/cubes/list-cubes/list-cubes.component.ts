@@ -32,15 +32,15 @@ export class ListCubesComponent implements OnInit {
 
   private async getCubes() {
     try {
-      const response = await this.cs.getCubes()
+      const response = await this.cs.getCubes();
       if (response) {
         this.dataSource = response.map( (cube: CubeMetadata) => {
           const bands = cube.bands.split(',').join(' | ');
           const quicklook = cube.quicklook.split(',').join(' | ');
-          return {...cube, bands, quicklook}
+          return {...cube, bands, quicklook};
         });
       }
-    } catch(err) {}
+    } catch (err) {}
   }
 
   public openDetails(cubeInfos: CubeMetadata) {
@@ -72,16 +72,16 @@ export class ListCubesComponent implements OnInit {
       if (response) {
         this.authorized = true;
       } else {
-        throw '';
+        throw new Error('error');
       }
 
       const responsePost = await this.as.token('bdc_portal:manage_cubes:post');
       if (responsePost) {
         this.authorizedPOST = true;
       } else {
-        throw '';
+        throw new Error('error');
       }
-    } catch(err) {
+    } catch (err) {
       this.authorizedPOST = false;
     }
   }

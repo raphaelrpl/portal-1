@@ -83,7 +83,7 @@ export const reducer = createReducer(initialState,
     return { ...state, tschema: payload['tschema'].toString() };
   }),
   on(setTStep, (state, payload) => {
-    return { ...state, tstep: parseInt(payload['tstep']) };
+    return { ...state, tstep: parseInt(payload['tstep'], 2) };
   }),
   on(setOpacity, (state, payload) => {
     return { ...state, opacity: payload['opacity'].toString() };

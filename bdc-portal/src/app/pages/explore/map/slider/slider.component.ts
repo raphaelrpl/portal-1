@@ -64,7 +64,7 @@ export class SliderComponent {
         const lastDate = new Date(res.rangeTemporal['1']);
         while (startDate <= lastDate) {
           this.steps.push(startDate);
-          startDate = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(startDate) : addDays(startDate, parseInt(this.tstep));
+          startDate = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(startDate) : addDays(startDate, parseInt(this.tstep, 2));
         }
         this.steps.unshift(this.tschema.toLocaleLowerCase() === 'm' ?
           new Date(res.rangeTemporal['0']) :
@@ -113,7 +113,7 @@ export class SliderComponent {
     if (actualDate) {
       // get start / date by period
       const startPeriod = new Date(actualDate.setMonth(actualDate.getMonth()));
-      const endPeriod = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(actualDate) : addDays(actualDate, parseInt(this.tstep));
+      const endPeriod = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(actualDate) : addDays(actualDate, parseInt(this.tstep, 2));
 
       // apply filter
       const featSelected = this.features.filter(feat => {
@@ -148,7 +148,8 @@ export class SliderComponent {
 
       setTimeout( _ => {
         this.store.dispatch(setFeaturesPeriod(featSelectedEdited));
-        const startDatePeriod = this.tschema.toLocaleLowerCase() === 'm' ? subMonth(actualDate) : subDays(actualDate, parseInt(this.tstep));
+        const startDatePeriod = this.tschema.toLocaleLowerCase() === 'm' ?
+          subMonth(actualDate) : subDays(actualDate, parseInt(this.tstep, 2));
         this.store.dispatch(setActualRangeTemporal([startDatePeriod, endPeriod]));
       });
     }

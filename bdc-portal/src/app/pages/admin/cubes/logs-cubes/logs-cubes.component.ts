@@ -14,13 +14,13 @@ import { Activity } from './activity.interface';
 export class LogsCubesComponent implements AfterViewInit {
 
   public cube: CubeMetadata;
-  
+
   public displayedColumns = ['action', 'cube', 'tileid', 'period'];
   public dataSource = new MatTableDataSource([{} as Activity]);
-  
+
   public statusList = ['DONE', 'DOING', 'NOTDONE', 'ERROR', 'SUSPEND', 'CHECK'];
   public status = 'DOING';
-  
+
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
@@ -45,7 +45,7 @@ export class LogsCubesComponent implements AfterViewInit {
     try {
       this.store.dispatch(showLoading());
       const response = await this.cs.getActivities(this.cube.datacube, this.status);
-      const activities = response.split("}}")[1].split("\n").slice(1, -1);
+      const activities = response.split('}}')[1].split('\n').slice(1, -1);
       const activitiesList = activities.map( activity => {
         const activityDetails = activity.split(' - ');
         const activityDetailsFile = activityDetails[3].split(' ');
@@ -54,11 +54,11 @@ export class LogsCubesComponent implements AfterViewInit {
           cube: activityDetailsFile[0],
           tileid: activityDetailsFile[1],
           period: `${activityDetailsFile[2]} / ${activityDetailsFile[4]}`
-        }
+        };
       });
       this.dataSource.data = activitiesList;
 
-    } catch(err) {
+    } catch (err) {
       this.dataSource.data = [];
       this.snackBar.open('Activities not found!', '', {
         duration: 4000,
@@ -74,7 +74,7 @@ export class LogsCubesComponent implements AfterViewInit {
 
   public applyFilter(value: string) {
     this.dataSource.filter = value.trim();
-    
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

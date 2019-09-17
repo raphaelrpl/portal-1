@@ -23,7 +23,7 @@ export class DescribeCubesComponent {
           ...data,
           start: formatDateUSA(new Date(data.start)),
           end: formatDateUSA(new Date(data.end)),
-        }
+        };
 
         this.getStatus(data.datacube);
       }
@@ -36,11 +36,11 @@ export class DescribeCubesComponent {
         response.forEach( status => {
           this.statusList.push(status.status);
           this.status[status.status] = status['count(*)'];
-        })
+        });
       }
 
-    } catch(err) {
-      this.status = {}
+    } catch (err) {
+      this.status = {};
     }
   }
 }

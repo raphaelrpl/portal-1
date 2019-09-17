@@ -28,7 +28,7 @@ export class EditCubesComponent implements OnInit {
     startDate: null,
     lastDate: null,
     tiles: ''
-  }
+  };
 
   constructor(
     public cs: CubesService,
@@ -43,7 +43,7 @@ export class EditCubesComponent implements OnInit {
           startDate: new Date(data.start),
           lastDate: new Date(data.end),
           tiles: ''
-        }
+        };
       }
 
       this.formStartCube = this.fb.group({
@@ -55,9 +55,9 @@ export class EditCubesComponent implements OnInit {
 
   ngOnInit(): void {
     this.rangeTemporal = [
-      new Date(2016,9,1),
+      new Date(2016, 9, 1),
       new Date()
-    ]
+    ];
   }
 
   public async startProcess() {
@@ -75,10 +75,12 @@ export class EditCubesComponent implements OnInit {
             panelClass: 'app_snack-bar-success'
           });
           this.dialogRef.close();
-        } else throw '';
+        } else {
+          throw new Error('error');
+        }
       }
 
-    } catch(err) {
+    } catch (err) {
       this.snackBar.open('Error starting cube!', '', {
         duration: 4000,
         verticalPosition: 'top',
