@@ -60,6 +60,9 @@ export const colorsByBand = {
     }
 };
 
+/**
+ * return bands by sattelite/sensor
+ */
 export const bandsBySatSen = {
     'HLS.L30': ['coastal', 'blue', 'green', 'red',  'nir',  'swir1', 'swir2', 'quality'],
     'HLS.S30': ['coastal', 'blue', 'green', 'red',  'nir',  'swir1', 'swir2', 'quality'],

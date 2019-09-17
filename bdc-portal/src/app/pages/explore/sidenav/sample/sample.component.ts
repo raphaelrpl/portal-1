@@ -6,6 +6,10 @@ import { tileLayer } from 'leaflet';
 import { setLayers, removeGroupLayer } from '../../explore.action';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 
+/**
+ * Samples component
+ * component to display and filter samples available
+ */
 @Component({
   selector: 'app-sample',
   templateUrl: './sample.component.html',
@@ -13,16 +17,24 @@ import { formatDateUSA } from 'src/app/shared/helpers/date';
 })
 export class SampleComponent {
 
+  /** samples */
   public samples: Feature[];
+  /** range temporal selected */
   public rangeTemporal: string[];
-  public classes: string[] = [];
-  public authors: string[] = [];
+  /** list with name classes */
   public classesList: string[];
-  public bbox: string;
+  /** authors finded in search */
   public authorsList: string[];
+  /** bounding box of search */
+  public bbox: string;
+  /** list with status by classes (enable or disabled) */
   public classesStatus = {};
+  /** list with colors by classes */
   public classesColors = {};
+  /** list with authors selected in input select (this component) */
+  public authors: string[] = [];
 
+  /** initialize services and get search information of the Explore store */
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       const lastSamples = this.samples || [];
@@ -57,6 +69,7 @@ export class SampleComponent {
     });
   }
 
+  /** filter classes by authors */
   public filtered() {
     this.samples.forEach( (sample: Feature) => {
       const authorName = sample.properties['system_name'];
@@ -71,6 +84,7 @@ export class SampleComponent {
     });
   }
 
+  /** clean samples */
   private removeSamplesSearch() {
     // remove sample layers
     this.store.dispatch(removeGroupLayer({
@@ -85,6 +99,7 @@ export class SampleComponent {
     this.authors = [];
   }
 
+  /** enable and display samples by class in the map */
   public enableClass(event, className: string) {
     if (event.checked) {
       let queryCQL = '';
@@ -126,6 +141,7 @@ export class SampleComponent {
     }
   }
 
+  /** redirect to download samples */
   public DownloadSamplesByClass(className) {
     let queryCQL = '';
     // filter author

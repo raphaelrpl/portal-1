@@ -1,8 +1,13 @@
 import { NativeDateAdapter } from '@angular/material';
 
-
+/**
+ * adapter to parser and format dates of the input date
+ */
 export class AppDateAdapter extends NativeDateAdapter {
 
+    /**
+     * parser initial date to EN format (YYYY/mm/dd)
+     */
     parse(value: any): Date | null {
         if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
             const str = value.split('/');
@@ -14,6 +19,11 @@ export class AppDateAdapter extends NativeDateAdapter {
         const timestamp = typeof value === 'number' ? value : Date.parse(value);
         return isNaN(timestamp) ? null : new Date(timestamp);
     }
+
+    /**
+     * format date result to EN format (YYYY/mm/dd)
+     * possibles: with or without days 
+     */
     format(date: Date, displayFormat: string): string {
         // tslint:disable-next-line
         if (displayFormat == 'input') {
@@ -31,11 +41,17 @@ export class AppDateAdapter extends NativeDateAdapter {
         }
     }
 
+    /**
+     * add 0 before number if day or month < 10
+     */
     private _to2digit(n: number) {
         return ('00' + n).slice(-2);
     }
 }
 
+/**
+ * options to format date
+ */
 export const APP_DATE_FORMATS = {
     parse: {
         dateInput: { month: 'short', year: 'numeric', day: 'numeric' }

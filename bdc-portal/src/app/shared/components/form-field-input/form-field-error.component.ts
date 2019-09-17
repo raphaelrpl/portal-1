@@ -1,4 +1,4 @@
-import { Component, Input, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, Input, ChangeDetectionStrategy } from '@angular/core';
 import { ValidationErrors } from '@angular/forms';
 
 /**
@@ -11,12 +11,11 @@ import { ValidationErrors } from '@angular/forms';
   styleUrls: ['./form-field-error.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FormFieldErrorComponent implements OnInit {
+export class FormFieldErrorComponent {
 
+  /** prefix of error */
   @Input() errorPrefix: string;
+  /** validations Object by Errors */
   @Input() errors: ValidationErrors;
 
-  constructor() {}
-
-  ngOnInit() {}
 }

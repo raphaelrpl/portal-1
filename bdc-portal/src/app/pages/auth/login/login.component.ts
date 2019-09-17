@@ -17,11 +17,16 @@ import { Login } from '../auth.action';
 })
 export class LoginComponent {
 
+  /** username */
   public username: string;
+  /** password */
   public password: string;
+  /** form options */
   public formLogin: FormGroup;
+  /** infos of the login error, used to display in the window */
   public error: object;
 
+  /** set validators of the form */
   constructor(
     private as: AuthService,
     private store: Store<AppState>,
@@ -35,6 +40,9 @@ export class LoginComponent {
     });
   }
 
+  /** 
+   * request login in the system (Oauth Sevrer OBT) 
+   */
   public async login() {
     if (this.formLogin.status !== 'VALID') {
       this.error = {
@@ -75,6 +83,7 @@ export class LoginComponent {
     }
   }
 
+  /** close dialog of the window */
   public closeDialog() {
     this.dialogRef.close();
   }

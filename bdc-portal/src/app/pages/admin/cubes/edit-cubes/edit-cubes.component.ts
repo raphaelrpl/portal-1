@@ -9,6 +9,10 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
 
+/**
+ * Edit Cube
+ * component to initialize cube reprocessing
+ */
 @Component({
   templateUrl: './edit-cubes.component.html',
   styleUrls: ['./edit-cubes.component.scss'],
@@ -21,15 +25,23 @@ import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.ad
 })
 export class EditCubesComponent implements OnInit {
 
+  /** cube informations */
   public cube: CubeMetadata;
+  /** range temporal available to reprocess */
   public rangeTemporal: Date[];
+  /** form options */
   public formStartCube: FormGroup;
+  /** informations used to cube reprocess */
   public infos = {
+    /** start date reprocess */
     startDate: null,
+    /** end date reprocess */
     lastDate: null,
+    /** tile id */
     tiles: ''
   };
 
+  /** get cube infos and set form options */
   constructor(
     public cs: CubesService,
     public dialogRef: MatDialogRef<EditCubesComponent>,
@@ -53,6 +65,7 @@ export class EditCubesComponent implements OnInit {
       });
     }
 
+  /** set range temporal available to reprocess */
   ngOnInit(): void {
     this.rangeTemporal = [
       new Date(2016, 9, 1),
@@ -60,6 +73,7 @@ export class EditCubesComponent implements OnInit {
     ];
   }
 
+  /** start cube reprocessing */
   public async startProcess() {
     try {
       this.store.dispatch(showLoading());

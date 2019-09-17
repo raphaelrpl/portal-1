@@ -11,6 +11,10 @@ import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.ad
 import { Router } from '@angular/router';
 import { MatSnackBar, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 
+/**
+ * Create Cube Component
+ * component to create cube 
+ */
 @Component({
   templateUrl: './create-cube.component.html',
   styleUrls: ['./create-cube.component.scss'],
@@ -23,17 +27,30 @@ import { MatSnackBar, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 })
 export class CreateCubeComponent implements OnInit {
 
+  /** cube inforations */
   public cube: object;
+  /** form options */
   public formCreateCube: FormGroup;
+  /** range temporal available */
   public rangeTemporal: Date[];
+  /** datasets list available */
   public datasets: string [];
+  /** grids list available */
   public grids: string[];
+  /** temporal schema list available */
   public temporalSchema: string [];
+  /** bands list available */
   public bands: string[];
+  /** authorization of user */
   public authorized = null;
+  /** start process in creating cube */
   public dispatch = false;
+  /** tiles selected */
   public tiles = '';
 
+  /**
+   * start services and define form options
+   */
   constructor(
     private cs: CubesService,
     private as: AuthService,
@@ -60,6 +77,10 @@ export class CreateCubeComponent implements OnInit {
       });
   }
 
+  /** 
+   * check user authentication and 
+   * mount list with informations available of the datasets, bands and GRS
+   */
   ngOnInit() {
     this.checkAuthorization();
     this.rangeTemporal = [
@@ -77,6 +98,9 @@ export class CreateCubeComponent implements OnInit {
     this.getGrids();
   }
 
+  /**
+   * reset inputs form
+   */
   private resetForm() {
     this.cube = {
       name: '',
@@ -95,6 +119,9 @@ export class CreateCubeComponent implements OnInit {
     };
   }
 
+  /**
+   * get Datasets (sattelite/sensor) available
+   */
   private async getDatasets() {
     try {
       const response = await this.cs.getDatasets();
@@ -114,6 +141,9 @@ export class CreateCubeComponent implements OnInit {
     } catch (err) {}
   }
 
+  /**
+   * get GRS available
+   */
   private async getGrids() {
     try {
       const response = await this.cs.getGrids();
@@ -122,6 +152,9 @@ export class CreateCubeComponent implements OnInit {
     } catch (err) {}
   }
 
+  /**
+   * get Bands available
+   */
   public getBands() {
     this.bands = [];
     this.cube['bands'] = [];
@@ -137,6 +170,9 @@ export class CreateCubeComponent implements OnInit {
     });
   }
 
+  /**
+   * dispatch creating cube
+   */
   public async create() {
     try {
       if (this.formCreateCube.status === 'VALID') {
@@ -179,6 +215,9 @@ export class CreateCubeComponent implements OnInit {
     }
   }
 
+  /**
+   * start cube processing
+   */
   private async start(cubename: string, tiles: string, startDate: string, endDate: string) {
     try {
       const query = `datacube=${cubename}&pr=${tiles}&start=${startDate}&end=${endDate}`;
@@ -206,6 +245,9 @@ export class CreateCubeComponent implements OnInit {
     }
   }
 
+  /**
+   * check user authorizations
+   */
   private async checkAuthorization() {
     try {
       const response = await this.as.token('bdc_portal:manage_cubes:post');
