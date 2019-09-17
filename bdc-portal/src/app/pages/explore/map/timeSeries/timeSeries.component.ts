@@ -21,7 +21,7 @@ export class TimeSeriesComponent {
   /** status of the activation function in the map */
   public actived = false;
   /** features selected in search */
-  public features$: Feature[] = [];
+  public features: Feature[] = [];
   /** center (lat/lng) of map */
   private center: LatLng;
   /** layer maker */
@@ -33,7 +33,7 @@ export class TimeSeriesComponent {
     private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
-        this.features$ = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
+        this.features = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
       }
       if (res.positionMap) {
         const position = new LatLngBounds(res.positionMap['_southWest'], res.positionMap['_northEast']);

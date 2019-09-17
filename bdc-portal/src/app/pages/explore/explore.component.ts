@@ -30,6 +30,8 @@ export class ExploreComponent implements OnInit, AfterViewInit {
   public footerHeight: number;
   /** map height in window */
   public innerHeight: number;
+  /** map width in window */
+  public innerWidth: number;
 
   /**
    * get Height of the toolbar and footer components
@@ -65,6 +67,7 @@ export class ExploreComponent implements OnInit, AfterViewInit {
   @HostListener('window:resize', ['$event'])
   onResize(_: any) {
     this.innerHeight = window.innerHeight - this.toolbarHeight - this.footerHeight;
+    this.innerWidth = window.innerWidth;
   }
 
 }

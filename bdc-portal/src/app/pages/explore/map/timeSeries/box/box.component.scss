@@ -48,3 +48,17 @@
         align-items: center;
     }
 }
+
+@media (max-width: 600px) {
+    .box-time_series {
+        .filter-bands {
+            p {
+                font-size: 1em;
+            }
+
+            .mat-checkbox {
+                font-size: 0.9em;
+            }
+        }
+    }
+}

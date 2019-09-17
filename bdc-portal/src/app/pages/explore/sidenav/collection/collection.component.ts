@@ -19,9 +19,9 @@ import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature
 export class CollectionComponent {
 
   /** all selected features in the search form */
-  public features$: Feature[] = [];
+  public features: Feature[] = [];
   /** features by selected period */
-  public featuresPeriod$: Feature[] = [];
+  public featuresPeriod: Feature[] = [];
   /** selected period in the slider */
   public period: number;
   /** value of the opacity cube in the map */
@@ -39,10 +39,10 @@ export class CollectionComponent {
               private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       if (res.features) {
-        this.features$ = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
+        this.features = Object.values(res.features).slice(0, (Object.values(res.features).length - 1)) as Feature[];
       }
       if (res.featuresPeriod) {
-        this.featuresPeriod$ = Object.values(res.featuresPeriod).slice(0, (Object.values(res.featuresPeriod).length - 1)) as Feature[];
+        this.featuresPeriod = Object.values(res.featuresPeriod).slice(0, (Object.values(res.featuresPeriod).length - 1)) as Feature[];
       }
       if (res.bands) {
         this.bands = Object.values(res.bands).slice(0, (Object.values(res.bands).length - 1)) as string[];
@@ -66,7 +66,7 @@ export class CollectionComponent {
   public onChangeLayer(event) {
     if (event.checked) {
       const lyrGroup = [];
-      this.featuresPeriod$ = this.featuresPeriod$.map( (f: any) => {
+      this.featuresPeriod = this.featuresPeriod.map( (f: any) => {
         const coordinates = f.geometry.coordinates[0];
         // [lat, lng] => TL, TR, BR, BL
         const anchor = [
@@ -97,15 +97,15 @@ export class CollectionComponent {
       });
 
       setTimeout( _ => {
-        this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
+        this.store.dispatch(setFeaturesPeriod(this.featuresPeriod));
       });
 
     } else {
-      this.featuresPeriod$ = this.featuresPeriod$.map( f => {
+      this.featuresPeriod = this.featuresPeriod.map( f => {
         return {...f, enabled: false};
       });
 
-      const nameLayers = this.featuresPeriod$.map( (f: any) => `qls_${f.id}` );
+      const nameLayers = this.featuresPeriod.map( (f: any) => `qls_${f.id}` );
       this.store.dispatch(removeLayers(nameLayers));
       this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
@@ -128,7 +128,7 @@ export class CollectionComponent {
    * set zoom in the Cube of the map
    */
   public setZoomByCube() {
-    const featuresGeoJson = featureGroup(this.featuresPeriod$.map((f: any) => geoJSON(f)));
+    const featuresGeoJson = featureGroup(this.featuresPeriod.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
@@ -152,13 +152,13 @@ export class CollectionComponent {
    * enable or disable actions box in the feature
    */
   public enableFeatureActions(featureId: string) {
-    this.featuresPeriod$ = this.featuresPeriod$.map( f => {
+    this.featuresPeriod = this.featuresPeriod.map( f => {
       if (f.id === featureId) {
         f['actions'] = !(f['actions'] === true);
       }
       return f;
     });
-    this.store.dispatch(setFeaturesPeriod(this.featuresPeriod$));
+    this.store.dispatch(setFeaturesPeriod(this.featuresPeriod));
   }
 
   /**
@@ -182,7 +182,7 @@ export class CollectionComponent {
     this.dialog.open(DialogFeatureComponent, {
       width: '600px',
       data: {
-        features: this.features$,
+        features: this.features,
         bands: this.bands,
         range: this.range
       }

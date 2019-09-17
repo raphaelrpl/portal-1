@@ -2,14 +2,14 @@
 
   <div class="collection">
     <div class="collection-header">
-      <p>{{ features$['0'].collection.toUpperCase() }}</p>
+      <p>{{ features['0'].collection.toUpperCase() }}</p>
     </div>
 
     <!-- ACTIONS COLLECTION -->
-    <div *ngIf="featuresPeriod$.length">
+    <div *ngIf="featuresPeriod.length">
       <div class="collection-functions">
         <mat-slide-toggle
-          [(ngModel)]="featuresPeriod$['0'].enabled"
+          [(ngModel)]="featuresPeriod['0'].enabled"
           (change)="onChangeLayer($event)">
         </mat-slide-toggle>
 
@@ -21,7 +21,7 @@
 
         <mat-icon
           class="btns"
-          *ngIf="featuresPeriod$['0'].enabled"
+          *ngIf="featuresPeriod['0'].enabled"
           (click)="viewOpacityCube()">
           brightness_medium
         </mat-icon>
@@ -45,7 +45,7 @@
 
     <!-- FEATURE -->
     <div class="box-features">
-      <div *ngFor="let feature of featuresPeriod$">
+      <div *ngFor="let feature of featuresPeriod">
         <div class="feature"
              (click)="enableFeatureActions(feature.id)">
           <div class="feature_ql">

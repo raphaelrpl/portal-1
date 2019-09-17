@@ -43,3 +43,13 @@
         }
     }
 }
+
+@media (max-width: 600px) {
+    .tol_container {
+        .tol_cont-title {
+            span {
+                display: none;
+            }
+        }
+    }
+}
