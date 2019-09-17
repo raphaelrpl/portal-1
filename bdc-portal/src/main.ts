@@ -15,7 +15,7 @@ initApm({
   logLevel: 'error',
   active: false,
   serverUrl: window['__env'].urlAPMServer,
-})
+});
 
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));

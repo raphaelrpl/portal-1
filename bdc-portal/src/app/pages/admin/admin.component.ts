@@ -4,7 +4,10 @@ import { AuthState } from '../auth/auth.state';
 import { Store, select } from '@ngrx/store';
 import { Router } from '@angular/router';
 
-
+/**
+ * Admin component
+ * Initialization component of the dashboard pages
+ */
 @Component({
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']

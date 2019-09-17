@@ -74,3 +74,31 @@
         }
     }
 }
+
+@media (max-width: 1024px) {
+    .dialog-feature {
+        overflow: none;
+    }
+}
+
+@media (max-width: 600px) {
+    .dialog-feature {
+        header {
+            p {
+                font-size: 1em;
+            }
+        }
+
+        .box-assets {
+            .assets_cubes {
+                .buttons {
+                    display: block;
+                    
+                    button {
+                        margin-bottom: 10px;
+                    }
+                } 
+            }
+        }
+    }
+}

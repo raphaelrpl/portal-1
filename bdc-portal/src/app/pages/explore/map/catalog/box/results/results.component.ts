@@ -35,8 +35,8 @@ export class CatalogResultsComponent {
   }
 
   /** cut word at max requested */
-  public getStringMax(string: string, max: number): string {
-    return string.length <= max ? string : string.substr(0, max) + '...';
+  public getStringMax(word: string, max: number): string {
+    return word.length <= max ? word : word.substr(0, max) + '...';
   }
 
   /**

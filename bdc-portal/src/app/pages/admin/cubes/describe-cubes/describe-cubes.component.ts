@@ -4,16 +4,24 @@ import { formatDateUSA } from 'src/app/shared/helpers/date';
 import { CubesService } from '../cubes.service';
 import { CubeMetadata } from '../cube.interface';
 
+/**
+ * Describe Cube component
+ * component used to display aditional informations of the cube
+ */
 @Component({
   templateUrl: './describe-cubes.component.html',
   styleUrls: ['./describe-cubes.component.scss']
 })
 export class DescribeCubesComponent {
 
+  /** cube informations */
   public cube: CubeMetadata;
+  /** number of processing activities performed on this cube */
   public status = {};
+  /** list with activities types */
   public statusList = [];
 
+  /** get cube informations and get cube activities */
   constructor(
     private cs: CubesService,
     public dialogRef: MatDialogRef<DescribeCubesComponent>,
@@ -23,12 +31,13 @@ export class DescribeCubesComponent {
           ...data,
           start: formatDateUSA(new Date(data.start)),
           end: formatDateUSA(new Date(data.end)),
-        }
+        };
 
         this.getStatus(data.datacube);
       }
   }
 
+  /** get cube activities separated by status/type */
   private async getStatus(cubeName: string) {
     try {
       const response = await this.cs.getProcessByCube(cubeName);
@@ -36,11 +45,11 @@ export class DescribeCubesComponent {
         response.forEach( status => {
           this.statusList.push(status.status);
           this.status[status.status] = status['count(*)'];
-        })
+        });
       }
 
-    } catch(err) {
-      this.status = {}
+    } catch (err) {
+      this.status = {};
     }
   }
 }

@@ -11,9 +11,12 @@ import { Component, Input } from '@angular/core';
 })
 export class AlertComponent {
 
+  /** type of alert (error/warning) */
   @Input('type') type: string;
+  /** message to display */
   @Input('message') message: string;
 
+  /** return icon by type */
   public getIcon(type: string): string {
     switch (type) {
       case 'error':

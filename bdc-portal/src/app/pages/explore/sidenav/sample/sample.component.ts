@@ -6,6 +6,10 @@ import { tileLayer } from 'leaflet';
 import { setLayers, removeGroupLayer } from '../../explore.action';
 import { formatDateUSA } from 'src/app/shared/helpers/date';
 
+/**
+ * Samples component
+ * component to display and filter samples available
+ */
 @Component({
   selector: 'app-sample',
   templateUrl: './sample.component.html',
@@ -13,16 +17,24 @@ import { formatDateUSA } from 'src/app/shared/helpers/date';
 })
 export class SampleComponent {
 
+  /** samples */
   public samples: Feature[];
+  /** range temporal selected */
   public rangeTemporal: string[];
-  public classes: string[] = [];
-  public authors: string[] = [];
+  /** list with name classes */
   public classesList: string[];
-  public bbox: string;
+  /** authors finded in search */
   public authorsList: string[];
+  /** bounding box of search */
+  public bbox: string;
+  /** list with status by classes (enable or disabled) */
   public classesStatus = {};
+  /** list with colors by classes */
   public classesColors = {};
+  /** list with authors selected in input select (this component) */
+  public authors: string[] = [];
 
+  /** initialize services and get search information of the Explore store */
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       const lastSamples = this.samples || [];
@@ -57,6 +69,7 @@ export class SampleComponent {
     });
   }
 
+  /** filter classes by authors */
   public filtered() {
     this.samples.forEach( (sample: Feature) => {
       const authorName = sample.properties['system_name'];
@@ -71,6 +84,7 @@ export class SampleComponent {
     });
   }
 
+  /** clean samples */
   private removeSamplesSearch() {
     // remove sample layers
     this.store.dispatch(removeGroupLayer({
@@ -85,6 +99,7 @@ export class SampleComponent {
     this.authors = [];
   }
 
+  /** enable and display samples by class in the map */
   public enableClass(event, className: string) {
     if (event.checked) {
       let queryCQL = '';
@@ -101,10 +116,10 @@ export class SampleComponent {
       // filter class
       queryCQL += ` AND class_name = '${className}'`;
       // filter date
-      queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`
+      queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`;
       // filter bbox
       queryCQL += ` AND BBOX(location,${this.bbox})`;
-      const layer = tileLayer.wms("http://brazildatacube.dpi.inpe.br/geoserver/samples/wms", {
+      const layer = tileLayer.wms('http://brazildatacube.dpi.inpe.br/geoserver/samples/wms', {
         layers: 'samples:sample',
         format: 'image/png',
         styles: 'samples:samples',
@@ -126,10 +141,11 @@ export class SampleComponent {
     }
   }
 
+  /** redirect to download samples */
   public DownloadSamplesByClass(className) {
-    let queryCQL = ''
+    let queryCQL = '';
     // filter author
-    if (this.authors.length == 1) {
+    if (this.authors.length === 1) {
       queryCQL += `system_name = '${this.authors[0]}'`;
     } else {
       queryCQL += '(';
@@ -146,7 +162,8 @@ export class SampleComponent {
     queryCQL += ` AND BBOX(location,${this.bbox})`;
 
     // download file
-    const url = `http://brazildatacube.dpi.inpe.br/geoserver/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}&request=GetFeature&typeName=samples:sample&outputFormat=SHAPE-ZIP`;
+    let url = `http://brazildatacube.dpi.inpe.br/geoserver/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}`;
+    url += `&request=GetFeature&typeName=samples:sample&outputFormat=SHAPE-ZIP`;
     const element = document.createElement('a');
     element.setAttribute('href', url);
     element.setAttribute('download', `samples_${className}`);

@@ -7,23 +7,36 @@ import { Store } from '@ngrx/store';
 import { CubesService } from '../cubes.service';
 import { Activity } from './activity.interface';
 
+/**
+ * component to display logs/activities of the cube
+ */
 @Component({
   templateUrl: './logs-cubes.component.html',
   styleUrls: ['./logs-cubes.component.scss']
 })
 export class LogsCubesComponent implements AfterViewInit {
 
+  /** cube infos */
   public cube: CubeMetadata;
-  
+
+  /** columns of the table */
   public displayedColumns = ['action', 'cube', 'tileid', 'period'];
+  /** activities */
   public dataSource = new MatTableDataSource([{} as Activity]);
-  
+
+  /** status available to select */
   public statusList = ['DONE', 'DOING', 'NOTDONE', 'ERROR', 'SUSPEND', 'CHECK'];
+  /** status selected */
   public status = 'DOING';
-  
+
+  /** reference to paginator element */
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
+  /** reference to sort table element */
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
+  /** 
+   * get infos of the cube 
+   */
   constructor(
     public cs: CubesService,
     private snackBar: MatSnackBar,
@@ -36,16 +49,22 @@ export class LogsCubesComponent implements AfterViewInit {
       }
   }
 
+  /**
+   * mount paginator and sort in table 
+   */
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
+  /** 
+   * get activities of the cube 
+   */
   public async searchActivities() {
     try {
       this.store.dispatch(showLoading());
       const response = await this.cs.getActivities(this.cube.datacube, this.status);
-      const activities = response.split("}}")[1].split("\n").slice(1, -1);
+      const activities = response.split('}}')[1].split('\n').slice(1, -1);
       const activitiesList = activities.map( activity => {
         const activityDetails = activity.split(' - ');
         const activityDetailsFile = activityDetails[3].split(' ');
@@ -54,11 +73,11 @@ export class LogsCubesComponent implements AfterViewInit {
           cube: activityDetailsFile[0],
           tileid: activityDetailsFile[1],
           period: `${activityDetailsFile[2]} / ${activityDetailsFile[4]}`
-        }
+        };
       });
       this.dataSource.data = activitiesList;
 
-    } catch(err) {
+    } catch (err) {
       this.dataSource.data = [];
       this.snackBar.open('Activities not found!', '', {
         duration: 4000,
@@ -72,9 +91,12 @@ export class LogsCubesComponent implements AfterViewInit {
     }
   }
 
+  /** 
+   * filter activities selected 
+   */
   public applyFilter(value: string) {
     this.dataSource.filter = value.trim();
-    
+
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }

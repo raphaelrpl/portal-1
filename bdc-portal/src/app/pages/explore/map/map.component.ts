@@ -103,6 +103,7 @@ export class MapComponent implements OnInit {
           this.setGrid(res.grid);
         }
         // display other grid
+        // tslint:disable-next-line
         if (res.opacity >= 0 && res.opacity != this.actualOpacity) {
           this.map.eachLayer( l => {
             if (l['options'].alt && l['options'].alt.indexOf(`qls_`) >= 0) {
