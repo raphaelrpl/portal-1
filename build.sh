@@ -21,5 +21,5 @@ IMAGE_BASE="registry.dpi.inpe.br/brazildatacube/portal"
 IMAGE_FULL="${IMAGE_BASE}:${IMAGE_TAG}"
 
 docker build -t ${IMAGE_FULL} .
-rm -r dist
+sudo rm -r dist
 docker push ${IMAGE_FULL}

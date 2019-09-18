@@ -10,6 +10,9 @@ export class CatalogService {
     /** url base of stac compose */
     private urlStacCompose = window['__env'].urlStacCompose;
 
+    /** url base of RC Maestro */
+    private urlRCMaestro = window['__env'].urlRCMaestro;
+
     /** start http service client */
     constructor(private http: HttpClient) { }
 
@@ -37,6 +40,15 @@ export class CatalogService {
     public async getItems(query: string): Promise<any> {
         const urlSuffix = `/collections/items?${query}`;
         const response = await this.http.get(`${this.urlStacCompose}${urlSuffix}`).toPromise();
+        return response;
+    }
+
+    /**
+     * get Images by provider in catalog INPE
+     */
+    public async getImagesCatalog(query: string): Promise<any> {
+        const urlSuffix = `/consultscenes?${query}`;
+        const response = await this.http.get(`${this.urlRCMaestro}${urlSuffix}`).toPromise();
         return response;
     }
 }
