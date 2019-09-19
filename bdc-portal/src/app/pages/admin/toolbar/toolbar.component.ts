@@ -1,10 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { LoginComponent } from '../../auth/login/login.component';
-import { MatDialog, MatSnackBar } from '@angular/material';
 import { AuthState } from '../../auth/auth.state';
-import { Store, select } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Logout } from '../../auth/auth.action';
-import { Router } from '@angular/router';
 
 /**
  * Toolbar component
@@ -18,10 +15,7 @@ import { Router } from '@angular/router';
 export class ToolbarComponent {
 
   /** subscribe in store */
-  constructor(
-    private snackBar: MatSnackBar,
-    public router: Router,
-    private store: Store<AuthState>) {}
+  constructor(private store: Store<AuthState>) {}
 
   /** pointer to issue event to explore component */
   @Output() toggleToEmit = new EventEmitter();
@@ -38,11 +32,13 @@ export class ToolbarComponent {
    */
   logout() {
     this.store.dispatch(Logout());
-    this.router.navigate(['/explore']);
-    this.snackBar.open('Logout Successfully!', '', {
-      duration: 2000,
-      verticalPosition: 'top',
-      panelClass: 'app_snack-bar-success'
-    });
+    this.goMap();
+  }
+
+  /**
+   * Logout in application and redirect to explore page
+   */
+  goMap() {
+    window.location.href = `${window.location.origin}/explore`;
   }
 }

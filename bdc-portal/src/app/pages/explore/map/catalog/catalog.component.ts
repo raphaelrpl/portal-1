@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AuthState } from 'src/app/pages/auth/auth.state';
 import { AuthService } from 'src/app/pages/auth/auth.service';
+import { Logout } from 'src/app/pages/auth/auth.action';
 
 /**
  * Map initial Catalog component
@@ -48,6 +49,10 @@ export class CatalogComponent {
       if (response) {
         this.logged = true;
       }
-    } catch (err) {}
+    } catch (err) {
+      if (err.status && err.status == 403) {
+        this.store.dispatch(Logout());
+      }
+    }
   }
 }
