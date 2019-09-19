@@ -39,6 +39,7 @@ func main() {
 	new_content = strings.ReplaceAll(new_content, "URL_STAC", "'"+os.Getenv("URL_STAC")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_WTSS", "'"+os.Getenv("URL_WTSS")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_OAUTH", "'"+os.Getenv("URL_OAUTH")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_OAUTH_APP", "'"+os.Getenv("URL_OAUTH_APP")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_SOLOIST", "'"+os.Getenv("URL_SOLOIST")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_MAESTRO", "'"+os.Getenv("URL_MAESTRO")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_RC_MAESTRO", "'"+os.Getenv("URL_RC_MAESTRO")+"'")
