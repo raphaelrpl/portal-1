@@ -9,6 +9,7 @@ import { showLoading, closeLoading } from 'src/app/app.action';
 import { AppState } from 'src/app/app.state';
 import { removeGroupLayer } from '../../../explore.action';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
+import { sensorByProvider } from 'src/app/shared/helpers/CONSTS';
 
 /**
  * Map Search Catalog component
@@ -45,6 +46,8 @@ export class BoxCatalogComponent implements OnInit {
   public collections = [];
   /** items/features selected */
   public items: object[];
+  /** images existing/available in catalog */
+  public imagesCatalog = [];
   /** bounding box used to search */
   public bbox = '';
   /** object with search information */
@@ -101,6 +104,7 @@ export class BoxCatalogComponent implements OnInit {
       this.collectionsList = [];
       this.collections = [];
       if (this.providers.length) {
+        // get images available in providers
         const response = await this.cs.getCollections(this.providers.join(','));
         Object.keys(response).forEach( provider => {
           Object.values(response[provider]).forEach( collection => {
@@ -140,6 +144,17 @@ export class BoxCatalogComponent implements OnInit {
           });
 
         } else {
+          // get images existing in catalog
+          // TODO:
+          // const sensors = this.providers
+          //   .filter( provider => sensorByProvider[provider])
+          //   .map( provider => sensorByProvider[provider]);
+          // let queryCatalog = `start=${formatDateUSA(this.searchObj.startDate)}`;
+          // queryCatalog += `&end=${formatDateUSA(this.searchObj.startDate)}`;
+          // queryCatalog += `&satsen=${sensors.join(',')}`
+          // const responseImgsCatalog = await this.cs.getImagesCatalog(queryCatalog);
+          // this.imagesCatalog = responseImgsCatalog.result;
+
           this.store.dispatch(removeGroupLayer({
             key: 'alt',
             prefix: 'catalog'

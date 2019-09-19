@@ -6,14 +6,14 @@ import { BdcGrid } from './layer.interface';
 export const Grids: BdcGrid[] = [
    {
       id: 'aea_500k',
-      enabled: true,
+      enabled: false,
       name: 'WFI',
       layer: null,
       filter: true
    },
    {
       id: 'aea_250k',
-      enabled: false,
+      enabled: true,
       name: '250k',
       layer: null,
       filter: true

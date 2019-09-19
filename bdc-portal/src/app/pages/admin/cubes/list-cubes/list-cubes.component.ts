@@ -91,7 +91,13 @@ export class ListCubesComponent implements OnInit {
   }
 
   /** check authorizations of the user */
-  private async checkAuthorization() {
+  private checkAuthorization() {
+    this.checkAuthGET()
+    this.checkAuthPOST()
+  }
+
+  /** check authorization of the user - scope GE T*/
+  private async checkAuthGET() {
     try {
       const response = await this.as.token('bdc_portal:manage_cubes:get');
       if (response) {
@@ -100,12 +106,21 @@ export class ListCubesComponent implements OnInit {
         throw new Error('error');
       }
 
+    } catch (err) {
+      this.authorized = false;
+    }
+  }
+
+  /** check authorization of the user - scope POST */
+  private async checkAuthPOST() {
+    try {
       const responsePost = await this.as.token('bdc_portal:manage_cubes:post');
       if (responsePost) {
         this.authorizedPOST = true;
       } else {
         throw new Error('error');
       }
+
     } catch (err) {
       this.authorizedPOST = false;
     }

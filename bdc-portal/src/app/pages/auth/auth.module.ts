@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// import { AuthRoutingModule } from './auth-routing.module';
-import { LoginComponent } from './login/login.component';
+import { AuthRoutingModule } from './auth-routing.module';
+import { RedirectLoginComponent } from './redirect-login/redirect-login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule, MatButtonModule, MatIconModule, MatSnackBarModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
@@ -14,15 +14,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
  */
 @NgModule({
   declarations: [
-    LoginComponent
+    RedirectLoginComponent
   ],
   exports: [
-    LoginComponent
+    RedirectLoginComponent
   ],
   imports: [
     CommonModule,
     SharedModule,
-    // AuthRoutingModule,
+    AuthRoutingModule,
     FormsModule,
     HttpClientModule,
     MatButtonModule,
@@ -30,9 +30,6 @@ import { SharedModule } from 'src/app/shared/shared.module';
     MatInputModule,
     MatSnackBarModule,
     ReactiveFormsModule
-  ],
-  entryComponents: [
-    LoginComponent
   ]
 })
 export class AuthModule { }

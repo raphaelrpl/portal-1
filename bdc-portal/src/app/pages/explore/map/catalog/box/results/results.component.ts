@@ -112,4 +112,15 @@ export class CatalogResultsComponent {
     const bounds = featureGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
   }
+
+  /**
+   * dispatch download and publish of the feature/image
+   * TODO:
+   */
+  public async downlaodFeature(feature: any) {
+    try {
+      console.log(feature);
+
+    } catch(err) {}
+  }
 }

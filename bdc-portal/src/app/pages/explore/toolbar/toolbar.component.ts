@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { LoginComponent } from '../../auth/login/login.component';
 import { MatDialog, MatSnackBar } from '@angular/material';
+import { Router } from '@angular/router';
 import { AuthState } from '../../auth/auth.state';
 import { Store, select } from '@ngrx/store';
 import { Logout } from '../../auth/auth.action';
@@ -23,6 +23,7 @@ export class ToolbarComponent {
   constructor(
     private snackBar: MatSnackBar,
     public dialog: MatDialog,
+    public router: Router,
     private store: Store<AuthState>) {
     this.store.pipe(select('auth')).subscribe(res => {
       this.logged = res.userId && res.token;
@@ -43,11 +44,8 @@ export class ToolbarComponent {
    * Open Login Dialog
    */
   openLogin() {
-    this.dialog.open(LoginComponent, {
-      width: '400px',
-      restoreFocus: false,
-      disableClose: true
-    });
+    const url = this.router.url;
+    window.location.href = `http://localhost:4201/auth/bdc_portal/login?url=${url}`;
   }
 
   /**

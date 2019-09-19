@@ -71,3 +71,12 @@ export const bandsBySatSen = {
     MYD13Q1: ['ndvi', 'evi', 'red', 'nir', 'blue', 'swir2', 'quality'],
     S2SR: ['coastal', 'blue', 'green', 'red', 'redge1', 'redge2', 'redge3', 'nir', 'bnir', 'wvap', 'swir1', 'swir2', 'ndvi', 'quality']
 };
+
+
+/**
+ * return sensor by provider
+ */
+export const sensorByProvider = {
+    'landsat-8-l1': 'OLI',
+    'sentinel-2-l1c': 'MSI'
+};
