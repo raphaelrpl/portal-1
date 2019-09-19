@@ -64,11 +64,15 @@ export class SliderComponent {
         const lastDate = new Date(res.rangeTemporal['1']);
         while (startDate <= lastDate) {
           this.steps.push(startDate);
-          startDate = this.tschema.toLocaleLowerCase() === 'm' ? addMonth(startDate) : addDays(startDate, parseInt(this.tstep));
+          startDate = this.nextPeriod(startDate);
         }
+
+        // insert first step/period
         this.steps.unshift(this.tschema.toLocaleLowerCase() === 'm' ?
           new Date(res.rangeTemporal['0']) :
           new Date(this.features[0]['properties']['datetime']));
+        // remove last period
+        this.steps.pop();
         this.steps.pop();
 
         // update infos to display
@@ -79,11 +83,7 @@ export class SliderComponent {
             return { value: date.getTime() };
           }),
           translate: (value: number, _: LabelType): string => {
-            if (this.tschema.toLocaleLowerCase() !== 'm') {
-              return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}-${new Date(value).getDate()}`;
-            } else {
-              return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
-            }
+            return `${this.formatDate(value)} / ${this.formatDate(this.nextPeriod(new Date(value)).getTime())}`
           }
         };
 
@@ -152,6 +152,24 @@ export class SliderComponent {
           subMonth(actualDate) : subDays(actualDate, parseInt(this.tstep));
         this.store.dispatch(setActualRangeTemporal([startDatePeriod, endPeriod]));
       });
+    }
+  }
+
+  /** 
+   * sum with one period
+   */
+  public nextPeriod(date: Date): Date {
+    return this.tschema.toLocaleLowerCase() === 'm' ? addMonth(date) : addDays(date, parseInt(this.tstep));
+  }
+
+  /** 
+   * format datetime to string by temporal schema
+   */
+  public formatDate(value: number): string {
+    if (this.tschema.toLocaleLowerCase() !== 'm') {
+      return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}-${new Date(value).getDate()}`;
+    } else {
+      return `${new Date(value).getFullYear()}-${new Date(value).getMonth() + 1}`;
     }
   }
 

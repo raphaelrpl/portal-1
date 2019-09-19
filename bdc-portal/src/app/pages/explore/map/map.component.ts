@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ɵConsole } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import * as L from 'leaflet';
 import 'leaflet.fullscreen/Control.FullScreen.js';
