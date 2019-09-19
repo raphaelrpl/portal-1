@@ -45,7 +45,7 @@ export class ToolbarComponent {
    */
   openLogin() {
     const url = this.router.url;
-    window.location.href = `http://localhost:4201/auth/bdc_portal/login?url=${url}`;
+    window.location.href = `${window['__env'].urlOauthApp}/auth/bdc_portal/login?url=${url}`;
   }
 
   /**
