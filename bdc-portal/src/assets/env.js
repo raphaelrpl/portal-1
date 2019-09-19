@@ -11,6 +11,8 @@
     window.__env.urlWTSS = 'http://datacube-001.dpi.inpe.br:5023/wtss';
     // API url Oauth
     window.__env.urlOauth = 'http://brazildatacube.dpi.inpe.br/oauth';
+    // API url Oauth APP
+    window.__env.urlOauthApp = 'http://datacube-001.dpi.inpe.br:8005';
     // API url Soloist
     window.__env.urlSoloist = 'http://datacube-001.dpi.inpe.br:5021';
     // API url Maestro
