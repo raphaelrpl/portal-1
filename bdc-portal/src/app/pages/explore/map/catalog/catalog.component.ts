@@ -16,7 +16,7 @@ import { Logout } from 'src/app/pages/auth/auth.action';
 export class CatalogComponent {
 
   /** if user logged */
-  public logged = false;
+  public logged = true;
   /** if display box to search */
   public viewBox = false;
 
@@ -45,7 +45,7 @@ export class CatalogComponent {
 
   public async checkAuthorization() {
     try {
-      const response = await this.as.token(`${window['__env'].appName}:catalog:read`);
+      const response = await this.as.token(`${window['__env'].appName}:catalog:get`);
       if (response) {
         this.logged = true;
       }

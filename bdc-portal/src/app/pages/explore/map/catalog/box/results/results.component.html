@@ -33,6 +33,7 @@
                 <p><b>{{ getStringMax(feature.id, 20) }}</b></p>
                 <p><b>{{ feature.properties.collection }}</b></p>
                 <p>{{ getDateFormated(feature.properties.datetime) }}</p>
+                <p><b style="font-size: 0.75em; color: green;">{{ verifyCataloged(feature) ? 'CATALOGED' : '' }}</b></p>
             </div>
         </div>
 
@@ -50,6 +51,7 @@
             </mat-icon>
 
             <mat-icon
+                *ngIf="!verifyCataloged(feature) && authPOST"
                 (click)="downloadFeature(feature)"
                 class="btns">
                 cloud_download
