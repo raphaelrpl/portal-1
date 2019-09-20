@@ -58,9 +58,7 @@ export class SliderComponent {
         this.tstep = res.tstep;
 
         // mount list with dates
-        let startDate = this.tschema.toLocaleLowerCase() === 'm' ?
-          new Date(res.rangeTemporal['0']) :
-          new Date(this.features[0]['properties']['datetime']);
+        let startDate = new Date(res.rangeTemporal['0']);
         const lastDate = new Date(res.rangeTemporal['1']);
         while (startDate <= lastDate) {
           this.steps.push(startDate);
@@ -68,9 +66,7 @@ export class SliderComponent {
         }
 
         // insert first step/period
-        this.steps.unshift(this.tschema.toLocaleLowerCase() === 'm' ?
-          new Date(res.rangeTemporal['0']) :
-          new Date(this.features[0]['properties']['datetime']));
+        this.steps.unshift(new Date(res.rangeTemporal['0']));
         // remove last period
         this.steps.pop();
         this.steps.pop();
