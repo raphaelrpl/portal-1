@@ -99,7 +99,7 @@ export class ListCubesComponent implements OnInit {
   /** check authorization of the user - scope GE T*/
   private async checkAuthGET() {
     try {
-      const response = await this.as.token('bdc_portal:manage_cubes:get');
+      const response = await this.as.token(`${window['__env'].appName}:manage_cubes:get`);
       if (response) {
         this.authorized = true;
       } else {
@@ -114,7 +114,7 @@ export class ListCubesComponent implements OnInit {
   /** check authorization of the user - scope POST */
   private async checkAuthPOST() {
     try {
-      const responsePost = await this.as.token('bdc_portal:manage_cubes:post');
+      const responsePost = await this.as.token(`${window['__env'].appName}:manage_cubes:post`);
       if (responsePost) {
         this.authorizedPOST = true;
       } else {
