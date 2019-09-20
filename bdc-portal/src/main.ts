@@ -11,7 +11,7 @@ if (environment.production) {
 
 import { init as initApm } from 'elastic-apm-js-base';
 initApm({
-  serviceName: 'oauth_app',
+  serviceName: 'bdc-portal',
   logLevel: 'error',
   active: false,
   serverUrl: window['__env'].urlAPMServer,

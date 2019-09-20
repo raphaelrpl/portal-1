@@ -21,7 +21,7 @@
     window.__env.urlRCMaestro = 'http://datacube-001.dpi.inpe.br:5030';
     // API url DataSearch - INPE
     window.__env.urlDataSearchINPE = 'http://www.dpi.inpe.br/datasearch/';
-    // URL APM SERVE
+    // URL APM SERVER
     window.__env.urlAPMServer = 'http://127.0.0.1:8200/';
 
 }(this));
