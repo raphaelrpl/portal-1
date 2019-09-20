@@ -56,9 +56,9 @@
 
             <!-- CLOUD COVER -->
             <mat-form-field appearance="fill" style="margin-top: -20px;">
-                <mat-label>Cloud Cover (min)</mat-label>
+                <mat-label>Cloud Cover (max)</mat-label>
                 <input type="number"
-                    min="0"
+                    min="1"
                     max="100"
                     matInput
                     name="cloud"
@@ -74,7 +74,9 @@
 
         <div class="results">
             <app-results-catalog
-                [features]="items">
+                [features]="items"
+                [itemsCatalog]="imagesCatalog"
+                [authPOST]="authPOST">
             </app-results-catalog>
         </div>
     </div>

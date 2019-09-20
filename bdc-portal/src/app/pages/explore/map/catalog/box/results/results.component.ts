@@ -5,6 +5,10 @@ import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 import { setLayers, removeGroupLayer, setPositionMap } from 'src/app/pages/explore/explore.action';
 import { ExploreState } from 'src/app/pages/explore/explore.state';
 import { Store } from '@ngrx/store';
+import { CatalogService } from '../../catalog.service';
+import { MatSnackBar } from '@angular/material';
+import { showLoading, closeLoading } from 'src/app/app.action';
+import { AuthState } from 'src/app/pages/auth/auth.state';
 
 /** Map Results Catalog component
  * component to display images of the catalog
@@ -19,13 +23,23 @@ export class CatalogResultsComponent {
   /** features seleted */
   @Input('features') public features;
 
+  /** images cataloged  */
+  @Input('itemsCatalog') public itemsCatalog;
+
+  /** if POST permission - in download  */
+  @Input('authPOST') public authPOST;  
+
   /** count of result per page */
   public perPage = 10;
   /** page selected */
   public page = 1;
 
   /** import store explore */
-  constructor(private store: Store<ExploreState>) {}
+  constructor(
+    private cs: CatalogService,
+    private snackBar: MatSnackBar,
+    private storeApp: Store<AuthState>,
+    private store: Store<ExploreState>) {}
 
   /** convert date to USA format */
   public getDateFormated(dateStr: string): string {
@@ -114,13 +128,62 @@ export class CatalogResultsComponent {
   }
 
   /**
-   * dispatch download and publish of the feature/image
-   * TODO:
+   * check if the image is cataloged (Sentinel or Landsat)
    */
-  public async downlaodFeature(feature: any) {
-    try {
-      console.log(feature);
+  public verifyCataloged(feature) {
+    const instrument = feature['properties']['eo:instrument'];
+    if (instrument && (instrument.indexOf("MSI") >= 0 || instrument.indexOf("OLI") >= 0)) {
+      const sat = instrument.indexOf("MSI") >= 0 ? 'sentinel' : 'landsat'
+      const filter = this.itemsCatalog.filter( (item: string) => {
+        const productId = feature['properties'][`${sat}:product_id`];
+        return (
+          item.split('_')[0] == productId.split('_')[0] &&
+          item.split('_')[2] == productId.split('_')[2] &&
+          (sat == 'sentinel' ? item.split('_')[5] == productId.split('_')[5] : item.split('_')[5] == productId.split('_')[5])
+        );
+      })
+      return filter.length > 0;
 
-    } catch(err) {}
+    } else {
+      return true;
+    }
+  }
+
+  /**
+   * dispatch download and publish of the feature/image
+   */
+  public async downloadFeature(feature: any) {
+    try {
+      this.storeApp.dispatch(showLoading());
+      let query = `222222222satsen=${feature['properties']['eo:platform'].indexOf('sentinel') >= 0 ? 'S2' : 'LC8'}`;
+      query += `&start=${feature['properties']['datetime'].split('T')[0]}`;
+      query += `&end=${feature['properties']['datetime'].split('T')[0]}`;
+      query += `&cloud=${parseInt(feature['properties']['eo:cloud_cover'])+1}`;
+      query += `&w=${feature['bbox'][0]}`;
+      query += `&s=${feature['bbox'][1]}`;
+      query += `&n=${feature['bbox'][3]}`;
+      query += `&e=${feature['bbox'][2]}`;
+
+      const response = await this.cs.downloadImagesCatalog(query);
+      if (response) {
+        this.snackBar.open('Download Started!', '', {
+          duration: 5000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-success'
+        });
+      } else {
+        throw new Error('');
+      }
+
+    } catch(err) {
+      this.snackBar.open('Error in start download!', '', {
+        duration: 5000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+      
+    } finally {
+      this.storeApp.dispatch(closeLoading());
+    }
   }
 }

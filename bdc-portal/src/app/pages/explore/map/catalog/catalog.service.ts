@@ -51,4 +51,13 @@ export class CatalogService {
         const response = await this.http.get(`${this.urlRCMaestro}${urlSuffix}`).toPromise();
         return response;
     }
+
+    /**
+     * Download and Publish Images in catalog INPE
+     */
+    public async downloadImagesCatalog(query: string): Promise<any> {
+        const urlSuffix = `/radcor?${query}&action=process`;
+        const response = await this.http.get(`${this.urlRCMaestro}${urlSuffix}`).toPromise();
+        return response;
+    }
 }

@@ -10,6 +10,8 @@ import { AppState } from 'src/app/app.state';
 import { removeGroupLayer } from '../../../explore.action';
 import { AppDateAdapter, APP_DATE_FORMATS } from 'src/app/shared/helpers/date.adapter';
 import { sensorByProvider } from 'src/app/shared/helpers/CONSTS';
+import { AuthService } from 'src/app/pages/auth/auth.service';
+import { AuthState } from 'src/app/pages/auth/auth.state';
 
 /**
  * Map Search Catalog component
@@ -34,6 +36,8 @@ export class BoxCatalogComponent implements OnInit {
   @Output() toggleToEmit = new EventEmitter();
 
   public formSearch: FormGroup;
+  /** if user POST permission */
+  public authPOST = false;
   /** list of providers */
   public providersObjects = {};
   /** list with title of the providers */
@@ -60,9 +64,11 @@ export class BoxCatalogComponent implements OnInit {
   /** select data of the store application and set form validators */
   constructor(
     private cs: CatalogService,
+    private as: AuthService,
     private snackBar: MatSnackBar,
     private fb: FormBuilder,
     private storeApp: Store<AppState>,
+    private storeAuth: Store<AuthState>,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         if (Object.values(res.actualRangeTemporal).length) {
@@ -81,6 +87,13 @@ export class BoxCatalogComponent implements OnInit {
         startDate: ['', [Validators.required]],
         lastDate: ['', [Validators.required]],
         cloudCover: ['']
+      });
+      this.storeAuth.pipe(select('auth')).subscribe(res => {
+        if (res.userId && res.token) {
+          this.checkAuthorization();
+        } else {
+          this.authPOST = false;
+        }
       });
   }
 
@@ -101,10 +114,10 @@ export class BoxCatalogComponent implements OnInit {
   /** get collections by providers */
   public async getCollections() {
     try {
+      this.storeApp.dispatch(showLoading());
       this.collectionsList = [];
       this.collections = [];
       if (this.providers.length) {
-        // get images available in providers
         const response = await this.cs.getCollections(this.providers.join(','));
         Object.keys(response).forEach( provider => {
           Object.values(response[provider]).forEach( collection => {
@@ -115,6 +128,9 @@ export class BoxCatalogComponent implements OnInit {
         });
       }
     } catch (err) {}
+    finally {
+      this.storeApp.dispatch(closeLoading());
+    }
   }
 
   /** disabled box/component */
@@ -145,21 +161,20 @@ export class BoxCatalogComponent implements OnInit {
 
         } else {
           // get images existing in catalog
-          // TODO:
-          // const sensors = this.providers
-          //   .filter( provider => sensorByProvider[provider])
-          //   .map( provider => sensorByProvider[provider]);
-          // let queryCatalog = `start=${formatDateUSA(this.searchObj.startDate)}`;
-          // queryCatalog += `&end=${formatDateUSA(this.searchObj.startDate)}`;
-          // queryCatalog += `&satsen=${sensors.join(',')}`
-          // const responseImgsCatalog = await this.cs.getImagesCatalog(queryCatalog);
-          // this.imagesCatalog = responseImgsCatalog.result;
+          const sensors = this.collections.filter( cp => sensorByProvider[cp.split(':')[1]])
+            .map( cp => sensorByProvider[cp.split(':')[1]]);
+          let queryCatalog = `start=${formatDateUSA(this.searchObj.startDate)}`;
+          queryCatalog += `&end=${formatDateUSA(this.searchObj.lastDate)}`;
+          queryCatalog += `&satsen=${sensors.join(',')}`
+          const responseImgsCatalog = await this.cs.getImagesCatalog(queryCatalog);
+          this.imagesCatalog = responseImgsCatalog.result;
 
           this.store.dispatch(removeGroupLayer({
             key: 'alt',
             prefix: 'catalog'
           }));
 
+          // get images availables
           let query = `collections=${this.collections.join(',')}`;
           query += `&bbox=${this.bbox}`;
           query += `&time=${formatDateUSA(this.searchObj.startDate)}`;
@@ -190,5 +205,14 @@ export class BoxCatalogComponent implements OnInit {
     } finally {
       this.storeApp.dispatch(closeLoading());
     }
+  }
+
+  public async checkAuthorization() {
+    try {
+      const response = await this.as.token(`${window['__env'].appName}:catalog:post`);
+      if (response) {
+        this.authPOST = true;
+      }
+    } catch (err) {}
   }
 }

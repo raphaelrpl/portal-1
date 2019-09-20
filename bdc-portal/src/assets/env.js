@@ -8,7 +8,7 @@
     // API url STAC
     window.__env.urlStac = 'http://datacube-001.dpi.inpe.br:5025';
     // API url STAC-Compose
-    window.__env.urlStacCompose = 'http://localhost:5000/stac_compose';
+    window.__env.urlStacCompose = 'http://datacube-001.dpi.inpe.br:5026/stac_compose';
     // API url WTSS
     window.__env.urlWTSS = 'http://datacube-001.dpi.inpe.br:5023/wtss';
     // API url Oauth
