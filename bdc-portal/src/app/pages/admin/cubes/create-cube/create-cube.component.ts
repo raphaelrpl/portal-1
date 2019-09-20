@@ -250,7 +250,7 @@ export class CreateCubeComponent implements OnInit {
    */
   private async checkAuthorization() {
     try {
-      const response = await this.as.token('bdc_portal:manage_cubes:post');
+      const response = await this.as.token(`${window['__env'].appName}:manage_cubes:post`);
       if (response) {
         this.authorized = true;
       } else {

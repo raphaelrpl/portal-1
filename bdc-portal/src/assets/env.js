@@ -1,6 +1,8 @@
 (function (window) {
     window.__env = window.__env || {};
 
+    // environment type
+    window.__env.appName = 'bdc_portal_homol';
     // API url Geoserver
     window.__env.urlGeoserver = 'http://brazildatacube.dpi.inpe.br/geoserver';
     // API url STAC
