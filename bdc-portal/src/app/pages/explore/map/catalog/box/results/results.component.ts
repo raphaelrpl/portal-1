@@ -155,7 +155,7 @@ export class CatalogResultsComponent {
   public async downloadFeature(feature: any) {
     try {
       this.storeApp.dispatch(showLoading());
-      let query = `222222222satsen=${feature['properties']['eo:platform'].indexOf('sentinel') >= 0 ? 'S2' : 'LC8'}`;
+      let query = `satsen=${feature['properties']['eo:platform'].indexOf('sentinel') >= 0 ? 'S2' : 'LC8'}`;
       query += `&start=${feature['properties']['datetime'].split('T')[0]}`;
       query += `&end=${feature['properties']['datetime'].split('T')[0]}`;
       query += `&cloud=${parseInt(feature['properties']['eo:cloud_cover'])+1}`;
