@@ -4,6 +4,7 @@ import { Store } from '@ngrx/store';
 import { AppState } from 'src/app/app.state';
 import { Login } from '../auth.action';
 import { ActivatedRoute, Router } from '@angular/router';
+import { getCookie } from 'src/app/shared/helpers/Cookie';
 
 /**
  * redirect login page component
@@ -26,8 +27,9 @@ export class RedirectLoginComponent implements OnInit{
 		const token = this.route.snapshot.queryParams['access_token'];
 		const userId = this.route.snapshot.queryParams['user_id'];
 		const url = this.route.snapshot.queryParams['callback'];
+		const tokenByCookie = getCookie('oauth.obt.inpe.br').replace('oauth.obt.inpe.br', '');
 
-		if (!token || !userId || !url) {
+		if (!token || !userId || !url || !tokenByCookie || (token !== tokenByCookie)) {
 			this.snackBar.open('Error in Login!', '', {
 				duration: 2000,
 				verticalPosition: 'top',

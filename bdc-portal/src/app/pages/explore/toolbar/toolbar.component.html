@@ -26,6 +26,7 @@
 
                 <button
                     mat-icon-button
+                    *ngIf="logged"
                     (click)="logout()"
                     class="logout-btn">
                     <mat-icon>exit_to_app</mat-icon>
