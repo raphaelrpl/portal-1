@@ -69,7 +69,9 @@ export class SliderComponent {
         this.steps.unshift(new Date(res.rangeTemporal['0']));
         // remove last period
         this.steps.pop();
-        this.steps.pop();
+        if (this.tschema.toLocaleLowerCase() !== 'm') {
+          this.steps.pop();
+        }
 
         // update infos to display
         this.options = {
