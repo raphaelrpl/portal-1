@@ -43,16 +43,11 @@ export class SampleComponent {
         this.authorsList = [];
         this.samples = Object.values(res.samples).slice(0, (Object.values(res.samples).length - 1)) as Feature[];
 
+        // clear samples of the map 
         if (lastSamples.length && lastSamples.length !== this.samples.length) {
           this.removeSamplesSearch();
         }
-
-        this.samples.forEach((sample: Feature) => {
-          if (this.authorsList.indexOf(sample.properties['system_name']) < 0) {
-            this.authorsList.push(sample.properties['system_name']);
-          }
-          this.filtered();
-        });
+        this.filtered();
 
         if (Object.values(res.rangeTemporal).length) {
           this.rangeTemporal = [
@@ -71,9 +66,17 @@ export class SampleComponent {
 
   /** filter classes by authors */
   public filtered() {
+    this.classesList = []
     this.samples.forEach( (sample: Feature) => {
       const authorName = sample.properties['system_name'];
       const className = sample.properties['class_name'];
+      
+      // mount list with authors
+      if (this.authorsList.indexOf(sample.properties['system_name']) < 0) {
+        this.authorsList.push(sample.properties['system_name']);
+      }
+
+      // mount classes by author
       if (this.authors.indexOf(authorName) >= 0) {
         if (this.classesList.indexOf(className) < 0) {
           this.classesList.push(className);

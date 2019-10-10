@@ -22,9 +22,10 @@
         flex-direction: column;
         margin: 5px 0;
         padding: 10px;
-        background: rgba(0,0,0,0.1);
-        border-top: 1px solid #999;
-        border-bottom: 1px solid #999;
+        background: #EFEFEF;
+        border-top: 1px solid #1da9f4;
+        border-radius: 5px;
+        border-bottom: 1px solid #1da9f4;
 
         .input-color {
             background: rgba(0,0,0,0.1);
@@ -37,6 +38,7 @@
 
         .actions {
             display: flex;
+            margin-top: 5px;
         }
 
         .mat-icon {
