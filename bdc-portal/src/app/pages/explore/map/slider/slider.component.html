@@ -2,7 +2,6 @@
     <ng5-slider
         [(value)]="value"
         [options]="options"
-        (userChangeStart)="changeValue()"
-        (userChange)="changeValue()">
+        (userChangeEnd)="changeValue()">
     </ng5-slider>
 </div>
