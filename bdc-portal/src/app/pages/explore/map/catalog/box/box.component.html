@@ -10,7 +10,7 @@
     <div class="content">
         <form class="box_search" [formGroup]="formSearch" (ngSubmit)="search()">
             <!-- PROVIDERS -->
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="outline">
                 <mat-label>Select Providers</mat-label>
                 <mat-select [(value)]="providers" multiple formControlName="providers" required>
                     <mat-option *ngFor="let provider of providersList" [value]="provider" (click)="getCollections()">{{ provider }}</mat-option>
@@ -18,7 +18,7 @@
             </mat-form-field>
 
             <!-- COLLECTIONS -->
-            <mat-form-field appearance="fill" style="margin-top: -20px;">
+            <mat-form-field appearance="outline" style="margin-top: -20px;">
                 <mat-label>Select Collections</mat-label>
                 <mat-select [(value)]="collections" multiple formControlName="collections" required>
                     <mat-option *ngFor="let collection of collectionsList" [value]="collection">
@@ -28,12 +28,14 @@
             </mat-form-field>
 
             <!-- RANGE DATES -->
-            <mat-form-field appearance="fill" style="margin-top: -20px; width: 49%">
+            <mat-form-field appearance="outline" style="margin-top: -20px; width: 49%">
                 <mat-label>Start Date</mat-label>
                 <input matInput
                     [matDatepicker]="startDate"
                     placeholder="Start Date"
                     name="startDate"
+                    [min]="rangeTemporal[0]"
+                    [max]="rangeTemporal[1]"
                     formControlName="startDate"
                     [(ngModel)]="searchObj.startDate"
                     required>
@@ -41,11 +43,13 @@
                 <mat-datepicker #startDate></mat-datepicker>
             </mat-form-field>
 
-            <mat-form-field appearance="fill" style="margin-top: -20px; margin-left: 2%; width: 49%">
+            <mat-form-field appearance="outline" style="margin-top: -20px; margin-left: 2%; width: 49%">
                 <mat-label>Last Date</mat-label>
                 <input matInput
                     [matDatepicker]="lastDate"
                     placeholder="Last Date"
+                    [min]="rangeTemporal[0]"
+                    [max]="rangeTemporal[1]"
                     name="lastDate"
                     formControlName="lastDate"
                     [(ngModel)]="searchObj.lastDate"
@@ -55,7 +59,7 @@
             </mat-form-field>
 
             <!-- CLOUD COVER -->
-            <mat-form-field appearance="fill" style="margin-top: -20px;">
+            <mat-form-field appearance="outline" style="margin-top: -20px;">
                 <mat-label>Cloud Cover (max)</mat-label>
                 <input type="number"
                     min="1"

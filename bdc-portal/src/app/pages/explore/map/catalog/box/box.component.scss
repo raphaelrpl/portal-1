@@ -7,6 +7,7 @@
     border: 2px solid rgba(0,0,0,0.2);
     border-radius: 2px;
     width: 350px;
+    border-radius: 7.5px;
     overflow: auto;
 
     .header {
@@ -18,7 +19,9 @@
         justify-content: space-between;
         background: #FFF;
         font-size: 1em;
-        color: #333;
+        color: #176dc2;
+        border-bottom: 1px solid #2196f3;
+        border-radius: 7.5px 7.5px 0 0;
         padding: 0px 15px 0 20px;
         box-shadow: 0 1px 4px rgba(0,0,0,0.16);
 
@@ -28,7 +31,7 @@
     }
 
     .content {
-        background: #FFF;
+        background: rgba(#FFF, 0.9);
         margin-top: 57px;
 
         .box_search {
@@ -44,6 +47,26 @@
         .results {
             padding: 10px;
         }
+    }
+
+    /* SCROLL */
+    &::-webkit-scrollbar {
+        width: 8px;
+        border-radius: 0 7px 7px 0;
+    }
+    /* Track */
+    &::-webkit-scrollbar-track {
+        background: #FFF;
+        border-radius: 0 7px 7px 0;
+    }
+    /* Handle */
+    &::-webkit-scrollbar-thumb {
+        background: var(--mainColor);
+        border-radius: 0 7px 7px 0;
+    }
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover {
+        background: var(--mainColor);
     }
 
 }
