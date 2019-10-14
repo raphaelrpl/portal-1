@@ -17,4 +17,4 @@ RUN npm install
 RUN npm install -g @angular/cli@8.3.3
 
 # add app
-CMD [ "npm", "run", "build" ]
+CMD [ "npm", "run", "build", "--", "--base-href", "/portal/" ]
