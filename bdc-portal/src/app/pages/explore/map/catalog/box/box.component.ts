@@ -56,10 +56,11 @@ export class BoxCatalogComponent implements OnInit {
   public bbox = '';
   /** object with search information */
   public searchObj = {
-    cloudCover: 50,
+    cloudCover: 90,
     startDate: null,
     lastDate: null
   };
+  public rangeTemporal: Date[];
 
   /** select data of the store application and set form validators */
   constructor(
@@ -100,6 +101,11 @@ export class BoxCatalogComponent implements OnInit {
   /** send request to mount component */
   ngOnInit() {
     this.getProviders();
+    
+    this.rangeTemporal = [
+      new Date(2000,1,1),
+      new Date()
+    ];
   }
 
   /** get providers available */

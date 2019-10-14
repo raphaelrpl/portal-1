@@ -20,19 +20,7 @@ export class CatalogComponent {
   /** if display box to search */
   public viewBox = false;
 
-  /** select data of the store application */
-  constructor(
-    private as: AuthService,
-    private store: Store<AuthState>) {
-    this.store.pipe(select('auth')).subscribe(res => {
-      if (res.userId && res.token) {
-        this.checkAuthorization();
-      } else {
-        this.logged = false;
-      }
-    });
-  }
-
+  
   /** display box to search */
   public showBox() {
     this.viewBox = true;
@@ -43,16 +31,4 @@ export class CatalogComponent {
     this.viewBox = false;
   }
 
-  public async checkAuthorization() {
-    try {
-      const response = await this.as.token(`${window['__env'].appName}:catalog:get`);
-      if (response) {
-        this.logged = true;
-      }
-    } catch (err) {
-      if (err.status && err.status == 403) {
-        this.store.dispatch(Logout());
-      }
-    }
-  }
 }
