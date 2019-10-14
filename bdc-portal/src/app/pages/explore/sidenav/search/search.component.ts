@@ -109,7 +109,10 @@ export class SearchComponent implements OnInit {
 
     this.getCollections();
     this.resetSearch();
-    this.rangeTemporal = [];
+    this.rangeTemporal = [
+      new Date(2000,1,1),
+      new Date()
+    ];
   }
 
   /**
