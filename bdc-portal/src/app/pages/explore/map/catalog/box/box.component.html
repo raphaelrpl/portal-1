@@ -1,7 +1,11 @@
 <div class="box-catalog"
-    *ngIf="visibleBox">
+    *ngIf="visibleBox"
+    cdkDrag>
     <div class="header">
-        <h1>CATALOG</h1>
+        <h1 cdkDragHandle>
+            <mat-icon>open_with</mat-icon>
+            CATALOG
+        </h1>
         <button mat-icon-button (click)="closeBox()">
             <mat-icon>close</mat-icon>
         </button>

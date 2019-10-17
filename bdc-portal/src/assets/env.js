@@ -6,15 +6,15 @@
     // API url Geoserver
     window.__env.urlGeoserver = 'http://brazildatacube.dpi.inpe.br/geoserver';
     // API url STAC
-    window.__env.urlStac = 'http://datacube-001.dpi.inpe.br:5025';
+    window.__env.urlStac = 'http://brazildatacube.dpi.inpe.br/bdc-stac';
     // API url STAC-Compose
-    window.__env.urlStacCompose = 'http://datacube-001.dpi.inpe.br:5026/stac_compose';
+    window.__env.urlStacCompose = 'http://brazildatacube.dpi.inpe.br/stac-compose';
     // API url WTSS
-    window.__env.urlWTSS = 'http://datacube-001.dpi.inpe.br:5024/wtss';
+    window.__env.urlWTSS = 'http://brazildatacube.dpi.inpe.br/wtss';
     // API url Oauth
-    window.__env.urlOauth = 'http://brazildatacube.dpi.inpe.br/oauth';
+    window.__env.urlOauth = 'http://oauth.dpi.inpe.br/api/oauth';
     // API url Oauth APP
-    window.__env.urlOauthApp = 'http://datacube-001.dpi.inpe.br:8005';
+    window.__env.urlOauthApp = 'http://oauth.dpi.inpe.br';
     // API url Soloist
     window.__env.urlSoloist = 'http://datacube-001.dpi.inpe.br:5021';
     // API url Maestro

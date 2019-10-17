@@ -24,5 +24,12 @@ export const Grids: BdcGrid[] = [
       name: 'MGRS',
       layer: null,
       filter: false
+   },
+   {
+      id: 'wrs',
+      enabled: false,
+      name: 'WRS',
+      layer: null,
+      filter: false
    }
 ];

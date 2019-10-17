@@ -17,6 +17,8 @@ export interface ExploreState {
     readonly layerGroupToDisabled: object;
     /** grid name displayed in the map */
     readonly grid: string;
+    /** tiles with data in cube selected */
+    readonly tiles: string[];
     /** bands of the selected cube */
     readonly bands: string[];
     /** bounding box of the map */
