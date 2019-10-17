@@ -124,26 +124,9 @@ export class MapComponent implements OnInit {
       center: latLng(-16, -52)
     };
 
-    this.getTilesUsed();
     setTimeout(() => {
       this.setControlLayers();
-    }, 2000);
-  }
-
-  /**
-   * get Tiles with data in grids
-   */
-  private async getTilesUsed() {
-    try {
-      const collections = await this.ss.getCollections();
-      this.tilesUsed = [];
-      collections['links'].forEach( async (c: any) => {
-        if (c.title) {
-          const collection = await this.ss.getCollectionByName(c.title);
-          this.tilesUsed = [...this.tilesUsed, ...collection.properties['bdc:tiles']];
-        }
-      });
-    } catch (err) {}
+    }, 100);
   }
 
   /**
@@ -243,35 +226,14 @@ export class MapComponent implements OnInit {
     });
     // mount overlays
     this.ls.getGridsLayers().forEach( (l: BdcGrid) => {
-      if (l.filter) {
-        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
-          layers: `grids:${l.id}`,
-          format: 'image/png',
-          styles: 'grids:tiles_used',
-          transparent: true,
-          cql_filter: `Tile IN ('${this.tilesUsed.join("','")}')`,
-          alt: `grid_${l.id}`
-        } as any);
-        const layerGridUsed = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
-          layers: `grids:${l.id}`,
-          format: 'image/png',
-          styles: 'grids:tiles',
-          transparent: true,
-          cql_filter: `Tile NOT IN ('${this.tilesUsed.join("','")}')`,
-          alt: `grid_${l.id}`
-        } as any);
-        this.layersControl.overlays[l.id] = layerGroup([layerGrid, layerGridUsed]);
-
-      } else {
-        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
-          layers: `grids:${l.id}`,
-          format: 'image/png',
-          styles: 'grids:tiles',
-          transparent: true,
-          alt: `grid_${l.id}`
-        } as any);
-        this.layersControl.overlays[l.id] = layerGroup([layerGrid]);
-      }
+      const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+        layers: `grids:${l.id}`,
+        format: 'image/png',
+        styles: 'grids:tiles',
+        transparent: true,
+        alt: `grid_${l.id}`
+      } as any);
+      this.layersControl.overlays[l.id] = layerGroup([layerGrid]);
 
       if (l.enabled) {
         this.actualGrid = l.id;
@@ -294,6 +256,57 @@ export class MapComponent implements OnInit {
       useDMS: false,
       useLatLngOrder: true,
     }).addTo(this.map);
+  }
+
+  /**
+   * active view/remove feature
+   */
+  private setViewInfo() {
+    // add  to delete feature
+    this.map.on('contextmenu', async evt => {
+      // get infos point
+      const latlng = evt['latlng'];
+      const point = this.map.latLngToContainerPoint(latlng);
+      const size = this.map.getSize();
+
+      try {
+        let has = false;
+        this.map.eachLayer(async l => {
+          if (!has && l['options'].alt && l['options'].alt.indexOf('grid_') >= 0) {
+            let layerName = l['options'].alt.replace('grid_', '');
+            const response = await this.ls.getInfoByWMS(
+              layerName, this.map.getBounds().toBBoxString(), point.x, point.y, size.y, size.x);
+  
+            if (response.features.length > 0) {
+              this.displayPopup(layerName, response.features[0].properties, latlng);
+              has = true;
+            }
+          }
+        });
+      } catch(err) {
+        this.map.closePopup();
+        return;
+      }
+    });
+  }
+
+  /**
+   * open popup with infos feature
+   */
+  public displayPopup(title, contentJSON, latlng) {
+    let content = '<table class="view_info-table">';
+    content += `<caption>${title}</caption>`;
+    Object.keys(contentJSON).forEach(key => {
+      if (key !== 'bbox') {
+        content += `<tr><td><b>${key}</b></td><td>${contentJSON[key]}</td></tr>`;
+      }
+    });
+    content += '</table>';
+
+    L.popup({ maxWidth: 800})
+      .setLatLng(latlng)
+      .setContent(content)
+      .openOn(this.map);
   }
 
   /**
@@ -334,5 +347,6 @@ export class MapComponent implements OnInit {
     this.setDrawControl();
     this.setCoordinatesControl();
     this.setGeocoderControl();
+    this.setViewInfo();
   }
 }

@@ -113,3 +113,19 @@ button.mat-primary {
         cursor: not-allowed;
     }
 }
+
+// style view infos layers
+table.view_info-table {
+    caption {
+        display: block;
+        font-weight: 600;
+        padding: 5px 0;
+        font-size: 1.2em;
+        text-align: left;
+    }
+
+    td {
+        border: 1px solid #999;
+        padding: 5px;
+    }
+}
