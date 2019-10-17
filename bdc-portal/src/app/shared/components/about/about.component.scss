@@ -1,0 +1,59 @@
+.about-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: "Roboto", "Helvetica Neue", sans-serif;
+
+    header {
+        width: 100%;
+        padding: 20px;
+        margin: -20px 0 0 -20px;
+        background: var(--mainBgPrimary);
+        text-align: justify;
+        color: #FFF;
+
+        .logo {
+            display: flex;
+            justify-content: center;
+        }
+    
+        .title {
+            text-align: center;
+            color: #FFF;
+        }
+    }
+
+    .description {
+        padding: 20px;
+        margin-bottom: 20px;
+        text-align: justify;
+    }
+
+    .supporters {
+        width: 100%;
+
+        img {
+            width: 100%;
+        }
+    }
+
+    .btn-link {
+        width: 400px;
+        border-radius: 25px;
+        border: 2px solid green;
+        display: block;
+        margin: 40px auto 20px auto;
+        background: #FFF;
+        padding: 10px 0;
+        cursor: pointer;
+        color: green;
+        font-size: 1.2em;
+        outline: none;
+        text-align: center;
+        text-decoration: none;
+
+        &:hover {
+            background: rgba(#000, 0.1);
+        }
+    }
+}

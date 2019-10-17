@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { AuthState } from '../../auth/auth.state';
 import { Store, select } from '@ngrx/store';
 import { Logout } from '../../auth/auth.action';
+import { AboutComponent } from 'src/app/shared/components/about/about.component';
 
 /**
  * Toolbar component
@@ -58,6 +59,15 @@ export class ToolbarComponent {
       duration: 2000,
       verticalPosition: 'top',
       panelClass: 'app_snack-bar-success'
+    });
+  }
+
+  /**
+   * Open About component
+   */
+  openAbout() {
+    this.dialog.open(AboutComponent, {
+      width: '750px'
     });
   }
 }

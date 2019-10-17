@@ -17,6 +17,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { DialogFeatureComponent } from './components/dialog-feature/dialog-feature.component';
 import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 import { AlertComponent } from './components/alert/alert.component';
+import { AboutComponent } from './components/about/about.component';
 
 /**
  * Shared Module
@@ -29,6 +30,7 @@ import { AlertComponent } from './components/alert/alert.component';
     LoadingComponent,
     FormFieldErrorComponent,
     AlertComponent,
+    AboutComponent,
     DialogFeatureComponent
   ],
   exports: [
@@ -50,7 +52,8 @@ import { AlertComponent } from './components/alert/alert.component';
     NgxSpinnerModule
   ],
   entryComponents: [
-    DialogFeatureComponent
+    DialogFeatureComponent,
+    AboutComponent,
   ]
 })
 export class SharedModule { }

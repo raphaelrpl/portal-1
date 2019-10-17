@@ -12,10 +12,17 @@
 
             <div class="tol_cont-buttons">
                 <span
+                    style="margin-right: 15px;"
+                    (click)="openAbout()">
+                    About
+                </span>
+ 
+                <span
                     *ngIf="!logged"
                     (click)="openLogin()">
                     Login
                 </span>
+
                 <span
                     *ngIf="logged"
                     [routerLink]="'/admin'">
