@@ -277,7 +277,8 @@ export class SearchComponent implements OnInit {
       this.tstep = response['properties']['bdc:tstep'];
       // set wrs/grid
       this.grid = response['properties']['bdc:wrs'];
-      this.store.dispatch(setGrid({grid: this.grid}));
+      const tiles = response['properties']['bdc:tiles'];
+      this.store.dispatch(setGrid({grid: this.grid, tiles}));
 
     } catch (_) {}
   }

@@ -45,8 +45,6 @@ export class MapComponent implements OnInit {
   private tilesUsed: number[];
   /** bounding box of Map */
   private bbox = null;
-  /** grid selected and visible in the map */
-  private actualGrid: string;
   /** opacity of images disaplyed in the map */
   private actualOpacity = 1;
 
@@ -99,7 +97,13 @@ export class MapComponent implements OnInit {
           this.setPosition(res.positionMap);
         }
         // display other grid
-        if (res.grid !== '' && res.grid !== this.actualGrid) {
+        if (res.grid !== '' && this.tilesUsed !== res.tiles) {
+          this.tilesUsed = res.tiles;
+          this.map.eachLayer( l => {
+            if (l['options']['alt'] && l['options']['alt'].indexOf('grid_') >= 0) {
+              this.map.removeLayer(l);
+            }
+          });
           this.setGrid(res.grid);
         }
         // display other grid
@@ -141,12 +145,28 @@ export class MapComponent implements OnInit {
    */
   private setGrid(grid: string) {
     Object.keys(this.layersControl.overlays).forEach( (key: string) => {
-      const layer = this.layersControl.overlays[key];
       if (key === grid) {
-        this.map.addLayer(layer);
-      } else {
-        this.actualGrid = grid;
-        this.map.removeLayer(layer);
+        const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${key}`,
+          format: 'image/png',
+          styles: 'grids:tiles_used',
+          transparent: true,
+          cql_filter: `Tile IN ('${this.tilesUsed.join("','")}')`,
+          alt: `grid_${key}`
+        } as any);
+        const layerGridUsed = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
+          layers: `grids:${key}`,
+          format: 'image/png',
+          styles: 'grids:tiles',
+          transparent: true,
+          cql_filter: `Tile NOT IN ('${this.tilesUsed.join("','")}')`,
+          alt: `grid_${key}`
+        } as any);
+        this.layersControl.overlays[key] = layerGroup([layerGrid, layerGridUsed]);
+
+        setTimeout(() => {
+          this.map.addLayer(this.layersControl.overlays[key]);
+        }, 100);
       }
     });
   }
@@ -236,7 +256,6 @@ export class MapComponent implements OnInit {
       this.layersControl.overlays[l.id] = layerGroup([layerGrid]);
 
       if (l.enabled) {
-        this.actualGrid = l.id;
         this.map.addLayer(this.layersControl.overlays[l.id]);
       }
     });

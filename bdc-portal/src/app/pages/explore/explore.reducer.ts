@@ -28,6 +28,7 @@ const initialState: ExploreState = {
   layerGroupToDisabled: [],
   bands: [],
   grid: '',
+  tiles: [],
   positionMap: null,
   loading: false,
   bbox: null,
@@ -65,7 +66,7 @@ export const reducer = createReducer(initialState,
     return { ...state, bands: payload };
   }),
   on(setGrid, (state, payload) => {
-    return { ...state, grid: payload['grid'].toString() };
+    return { ...state, grid: payload['grid'].toString(), tiles: payload['tiles'] };
   }),
   on(setPositionMap, (state, payload) => {
     return { ...state, positionMap: payload };
