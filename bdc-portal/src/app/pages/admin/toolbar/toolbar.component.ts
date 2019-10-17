@@ -39,6 +39,6 @@ export class ToolbarComponent {
    * Logout in application and redirect to explore page
    */
   goMap() {
-    window.location.href = `${window.location.origin}/explore`;
+    window.location.href = `${window.location.origin}/portal/explore`;
   }
 }
