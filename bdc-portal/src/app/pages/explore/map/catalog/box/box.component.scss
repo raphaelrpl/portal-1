@@ -6,24 +6,34 @@
     max-height: 70%;
     border: 2px solid rgba(0,0,0,0.2);
     border-radius: 2px;
-    width: 350px;
+    width: 310px;
     border-radius: 7.5px;
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
 
     .header {
         display: flex;
         position: fixed;
         z-index: 999;
-        width: 315px;
+        width: 275px;
         align-items: center;
         justify-content: space-between;
         background: #FFF;
-        font-size: 1em;
+        font-size: 16px;
         color: #176dc2;
         border-bottom: 1px solid #2196f3;
         border-radius: 7.5px 7.5px 0 0;
         padding: 0px 15px 0 20px;
         box-shadow: 0 1px 4px rgba(0,0,0,0.16);
+
+        h1 {
+            display: flex;
+            align-items: center;
+            .mat-icon {
+                color: #176dc2;
+                margin-right: 10px;
+            }
+        }
 
         .mat-icon {
             color: #999;

@@ -22,6 +22,7 @@ import {
   MatCheckboxModule,
   MatMenuModule
 } from '@angular/material';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ChartsModule } from 'ng2-charts';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -72,6 +73,7 @@ import { SampleComponent } from './sidenav/sample/sample.component';
     CommonModule,
     SharedModule,
     AuthModule,
+    DragDropModule,
     MatButtonModule,
     MatToolbarModule,
     MatIconModule,
