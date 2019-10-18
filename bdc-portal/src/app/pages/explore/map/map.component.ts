@@ -58,10 +58,12 @@ export class MapComponent implements OnInit {
         if (Object.values(res.layers).length > 1) {
           const lyrs = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
           lyrs.forEach( l => {
-            if (l['options'].alt) {
-              if (res.opacity && l['options'].alt.indexOf(`qls_`) >= 0) {
-                (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity)).setZIndex(9999);
+            if (l['options'].className) {
+              if (l['options'].className.indexOf(`qls_`) >= 0) {
+                (l as L.TileLayer).setZIndex(999);
               }
+            }
+            if (l['options'].alt) {
               if (l['options'].alt.indexOf(`samples_`) >= 0) {
                 (l as L.TileLayer).setZIndex(999);
               }
@@ -217,8 +219,10 @@ export class MapComponent implements OnInit {
     this.map.on(Draw.Event.CREATED, e => {
       const layer: any = e['layer'];
       const newLayer = rectangle(layer.getBounds(), {
-        color: '#CCC',
-        weight: 1,
+        color: '#FFF',
+        weight: 3,
+        fill: false,
+        dashArray: '10',
         interactive: false,
         className: 'previewBbox'
       });

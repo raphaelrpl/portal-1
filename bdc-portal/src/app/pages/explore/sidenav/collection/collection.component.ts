@@ -33,6 +33,8 @@ export class CollectionComponent {
   /** range with dates (start-end) of the selected period */
   private range: Date[];
 
+  private urlBDCTiler = window['__env'].urlBDCTiler;
+
   /** get infos by store application */
   constructor(public dialog: MatDialog,
               private snackBar: MatSnackBar,
@@ -65,25 +67,17 @@ export class CollectionComponent {
    */
   public onChangeLayer(event) {
     if (event.checked) {
+      const bands = "red,green,blue";
+      const color_formula = "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+
       const lyrGroup = [];
       this.featuresPeriod = this.featuresPeriod.map( (f: any) => {
-        const coordinates = f.geometry.coordinates[0];
-        // [lat, lng] => TL, TR, BR, BL
-        const anchor = [
-          [coordinates[0][1], coordinates[0][0]],
-          [coordinates[3][1], coordinates[3][0]],
-          [coordinates[2][1], coordinates[2][0]],
-          [coordinates[1][1], coordinates[1][0]]
-        ];
-        const layerTile = (L as any).imageTransform(f.assets.thumbnail.href, anchor, {
-          alt: `qls_${f.id}`,
-          interactive: true
-        }).bindPopup(`
-          <b>ID:</b> ${f.id}<br>
-          <b>Tile:</b> ${f.properties['bdc:tile']}<br>
-          <b>Datetime:</b> ${f.properties['datetime']}<br>
-          <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
-        `);
+        let url = `${this.urlBDCTiler}/${f.collection}/${f.id}/{z}/{x}/{y}.png`;
+        url += `?bands=${bands}&color_formula=${color_formula}`;
+        const layerTile = new L.TileLayer(url, {
+          className: `qls_${f.id}`,
+          attribution: `Brazil Data Cube`
+        });
 
         lyrGroup.push(layerTile);
         return {...f, enabled: true};

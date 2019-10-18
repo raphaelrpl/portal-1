@@ -38,6 +38,8 @@ export class SliderComponent {
   /** temporal step of the selected cube */
   private tstep: string;
 
+  private urlBDCTiler = window['__env'].urlBDCTiler;
+
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
       const lastStep = this.steps;
@@ -102,7 +104,7 @@ export class SliderComponent {
   public changeValue(startDate: Date) {
     // remove images displayed
     this.store.dispatch(removeGroupLayer({
-      key: 'alt',
+      key: 'className',
       prefix: 'qls_'
     }));
 
@@ -120,23 +122,15 @@ export class SliderComponent {
 
       // plot new features
       const featSelectedEdited = featSelected.map( (f: any) => {
-        const coordinates = f.geometry.coordinates[0];
-        // [lat, lng] => TL, TR, BR, BL
-        const anchor = [
-          [coordinates[0][1], coordinates[0][0]],
-          [coordinates[3][1], coordinates[3][0]],
-          [coordinates[2][1], coordinates[2][0]],
-          [coordinates[1][1], coordinates[1][0]]
-        ];
-        const layerTile = (L as any).imageTransform(f.assets.thumbnail.href, anchor, {
-          alt: `qls_${f.id}`,
-          interactive: true
-        }).bindPopup(`
-          <b>ID:</b> ${f.id}<br>
-          <b>Tile:</b> ${f.properties['bdc:tile']}<br>
-          <b>Datetime:</b> ${f.properties['datetime']}<br>
-          <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
-        `);
+        const bands = "red,green,blue";
+        const color_formula = "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+
+        let url = `${this.urlBDCTiler}/${f.collection}/${f.id}/{z}/{x}/{y}.png`;
+        url += `?bands=${bands}&color_formula=${color_formula}`;
+        const layerTile = new L.TileLayer(url, {
+          className: `qls_${f.id}`,
+          attribution: `Brazil Data Cube`
+        });
 
         if (this.actived) {
           this.store.dispatch(setLayers([layerTile]));
