@@ -7,7 +7,7 @@ import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import { geoJSON, featureGroup } from 'leaflet';
-import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity, removeLayers } from '../../explore.action';
+import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity, removeLayers, removeGroupLayer } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
@@ -24,10 +24,6 @@ export class CollectionComponent {
   public featuresPeriod: Feature[] = [];
   /** selected period in the slider */
   public period: number;
-  /** value of the opacity cube in the map */
-  public opacity = 10;
-  /** status visible opacity box */
-  public opacityEnabled = false;
   /** list of bands */
   private bands: string[];
   /** range with dates (start-end) of the selected period */
@@ -99,8 +95,10 @@ export class CollectionComponent {
         return {...f, enabled: false};
       });
 
-      const nameLayers = this.featuresPeriod.map( (f: any) => `qls_${f.id}` );
-      this.store.dispatch(removeLayers(nameLayers));
+      this.store.dispatch(removeGroupLayer({
+        key: 'className',
+        prefix: 'qls_'
+      }));
       this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
@@ -125,21 +123,6 @@ export class CollectionComponent {
     const featuresGeoJson = featureGroup(this.featuresPeriod.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
-  }
-
-  /**
-   * enable or disable opacity box
-   */
-  public viewOpacityCube() {
-    this.opacityEnabled = !this.opacityEnabled;
-  }
-
-  /**
-   * set new value to opacity Cube
-   */
-  public setOpacityCube() {
-    const newOpacity = (this.opacity / 10).toString();
-    this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
   /**

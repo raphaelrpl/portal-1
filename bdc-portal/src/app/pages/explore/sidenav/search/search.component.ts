@@ -179,7 +179,7 @@ export class SearchComponent implements OnInit {
 
     } catch (err) {
       vm.changeStepNav(0);
-      vm.snackBar.open('INCORRECT SEARCH!', '', {
+      vm.snackBar.open('RESULTS NOT FOUND!', '', {
         duration: 5000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-error'

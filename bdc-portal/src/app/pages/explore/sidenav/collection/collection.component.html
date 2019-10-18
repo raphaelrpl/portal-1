@@ -21,13 +21,6 @@
 
         <mat-icon
           class="btns"
-          *ngIf="featuresPeriod['0'].enabled"
-          (click)="viewOpacityCube()">
-          brightness_medium
-        </mat-icon>
-
-        <mat-icon
-          class="btns"
           (click)="viewCubeDetails()">
           cloud_download
         </mat-icon>
@@ -53,13 +46,26 @@
           </div>
 
           <div class="feature_desc">
-            <p><b>{{ feature.id }}</b></p>
-            <p>{{ getDateFormated(feature.properties.datetime) }}</p>
+            <p> <mat-icon>map</mat-icon> <b>{{ feature.properties['bdc:tile'] }}</b> </p>
+            <p> <mat-icon>burst_mode</mat-icon> <b>{{ feature.properties['bdc:time_aggregation'] }}</b> </p>
+            <p> <mat-icon>date_range</mat-icon> {{ getDateFormated(feature.properties.datetime) }} </p>
           </div>
         </div>
 
         <!-- ACTIONS FEATURE -->
         <div class="feature-actions" *ngIf="feature.actions">
+          <mat-icon
+            (click)="getInfoFeature(feature)"
+            class="btns">
+            info
+          </mat-icon>
+
+          <mat-icon
+            (click)="setColors(feature)"
+            class="btns">
+            settings_applications
+          </mat-icon>
+
           <mat-icon
             (click)="setZoomByFeature(feature)"
             class="btns">

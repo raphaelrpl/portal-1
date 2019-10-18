@@ -1,0 +1,71 @@
+<section class="edit-color_container"
+    *ngIf="!visible"
+    cdkDrag>
+    <div class="header">
+        <h1 cdkDragHandle>
+            EDIT
+        </h1>
+        <button mat-icon-button (click)="closeBox()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="bands">
+            <mat-form-field appearance="outline" style="border-top: 2px solid red">
+                <mat-label>RED</mat-label>
+                <mat-select [(value)]="bands.red" formControlName="band">
+                    <mat-option *ngFor="let band of bands" [value]="band">
+                        {{ band }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline" style="border-top: 2px solid green;">
+                <mat-label>GREEN</mat-label>
+                <mat-select [(value)]="bands.red" formControlName="band">
+                    <mat-option *ngFor="let band of bands" [value]="band">
+                        {{ band }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="border-top: 2px solid blue">
+                <mat-label>BLUE</mat-label>
+                <mat-select [(value)]="bands.red" formControlName="band">
+                    <mat-option *ngFor="let band of bands" [value]="band">
+                        {{ band }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="box-slider">
+            <mat-label>Saturation</mat-label>
+            <mat-slider [min]="0"
+                [(ngModel)]="value"
+                [max]="10"
+                [step]="0.1"
+                [value]="1.7"
+                (change)="onSliderChange($event, style)">
+            </mat-slider>
+            <mat-label>1.7</mat-label>
+        </div>
+
+        <div class="box-slider">
+            <mat-label>Gamma</mat-label>
+            <mat-slider [min]="0"
+                [(ngModel)]="value"
+                [max]="10"
+                [step]="0.1"
+                [value]="4.5"
+                (change)="onSliderChange($event, style)">
+            </mat-slider>
+            <mat-label>4.5</mat-label>
+        </div>
+
+        <button type="submit" mat-raised-button>
+            SET
+        </button>
+    </div>
+</section>
