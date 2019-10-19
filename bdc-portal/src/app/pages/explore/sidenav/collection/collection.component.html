@@ -25,15 +25,6 @@
           cloud_download
         </mat-icon>
       </div>
-
-      <div class="box-opacity" *ngIf="opacityEnabled">
-        <mat-slider
-          [max]="10"
-          [min]="0"
-          [(ngModel)]="opacity">
-        </mat-slider>
-        <button mat-stroked-button (click)="setOpacityCube()">update</button>
-      </div>
     </div>
 
     <!-- FEATURE -->
@@ -54,12 +45,6 @@
 
         <!-- ACTIONS FEATURE -->
         <div class="feature-actions" *ngIf="feature.actions">
-          <mat-icon
-            (click)="getInfoFeature(feature)"
-            class="btns">
-            info
-          </mat-icon>
-
           <mat-icon
             (click)="setColors(feature)"
             class="btns">

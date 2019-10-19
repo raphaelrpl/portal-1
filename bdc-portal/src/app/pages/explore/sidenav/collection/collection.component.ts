@@ -7,7 +7,7 @@ import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import { geoJSON, featureGroup } from 'leaflet';
-import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity, removeLayers, removeGroupLayer } from '../../explore.action';
+import { setLayers, setPositionMap, setFeaturesPeriod, removeGroupLayer, setEditFeature } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
@@ -164,5 +164,12 @@ export class CollectionComponent {
         range: this.range
       }
     });
+  }
+
+  /**
+   * enable edit box to feature
+   */
+  public setColors(feature) {
+    this.store.dispatch(setEditFeature(feature));
   }
 }

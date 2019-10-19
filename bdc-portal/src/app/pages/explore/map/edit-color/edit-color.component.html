@@ -1,5 +1,5 @@
 <section class="edit-color_container"
-    *ngIf="!visible"
+    *ngIf="feature"
     cdkDrag>
     <div class="header">
         <h1 cdkDragHandle>
@@ -12,59 +12,68 @@
 
     <div class="content">
         <div class="bands">
-            <mat-form-field appearance="outline" style="border-top: 2px solid red">
+            <mat-form-field appearance="outline" style="border-top: 4px solid red">
                 <mat-label>RED</mat-label>
-                <mat-select [(value)]="bands.red" formControlName="band">
-                    <mat-option *ngFor="let band of bands" [value]="band">
-                        {{ band }}
+                <mat-select [(value)]="red">
+                    <mat-option *ngFor="let band of bandsAvailable" [value]="band">
+                        {{ band.toUpperCase() }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
     
-            <mat-form-field appearance="outline" style="border-top: 2px solid green;">
+            <mat-form-field appearance="outline" style="border-top: 4px solid green;">
                 <mat-label>GREEN</mat-label>
-                <mat-select [(value)]="bands.red" formControlName="band">
-                    <mat-option *ngFor="let band of bands" [value]="band">
-                        {{ band }}
+                <mat-select [(value)]="green">
+                    <mat-option *ngFor="let band of bandsAvailable" [value]="band">
+                        {{ band.toUpperCase() }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
 
-            <mat-form-field appearance="outline" style="border-top: 2px solid blue">
+            <mat-form-field appearance="outline" style="border-top: 4px solid blue">
                 <mat-label>BLUE</mat-label>
-                <mat-select [(value)]="bands.red" formControlName="band">
-                    <mat-option *ngFor="let band of bands" [value]="band">
-                        {{ band }}
+                <mat-select [(value)]="blue">
+                    <mat-option *ngFor="let band of bandsAvailable" [value]="band">
+                        {{ band.toUpperCase() }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
 
-        <div class="box-slider">
+        <div class="box-slider" style="margin-top: -30px;">
             <mat-label>Saturation</mat-label>
             <mat-slider [min]="0"
-                [(ngModel)]="value"
+                [(ngModel)]="saturation"
                 [max]="10"
-                [step]="0.1"
-                [value]="1.7"
-                (change)="onSliderChange($event, style)">
+                [step]="0.1">
             </mat-slider>
-            <mat-label>1.7</mat-label>
+            <mat-label>{{ saturation }}</mat-label>
         </div>
 
         <div class="box-slider">
             <mat-label>Gamma</mat-label>
             <mat-slider [min]="0"
-                [(ngModel)]="value"
+                [(ngModel)]="gamma"
                 [max]="10"
-                [step]="0.1"
-                [value]="4.5"
-                (change)="onSliderChange($event, style)">
+                [step]="0.1">
             </mat-slider>
-            <mat-label>4.5</mat-label>
+            <mat-label>{{ gamma }}</mat-label>
         </div>
 
-        <button type="submit" mat-raised-button>
+        <div class="box-slider">
+            <mat-label>Sigmoidal</mat-label>
+            <mat-slider [min]="0"
+                [(ngModel)]="sigmoidal"
+                [max]="100"
+                [step]="5">
+            </mat-slider>
+            <mat-label>{{ sigmoidal }}</mat-label>
+        </div>
+
+        <button 
+            type="submit" 
+            mat-raised-button color="primary" 
+            (click)="compositeImage()">
             SET
         </button>
     </div>

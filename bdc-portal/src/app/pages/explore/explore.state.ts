@@ -29,12 +29,12 @@ export interface ExploreState {
     readonly actualRangeTemporal: Date[];
     /** selected bounding box */
     readonly bbox: LatLngBoundsExpression;
-    /** opacity of the cube */
-    readonly opacity: string;
     /** tempral schema of the cube */
     readonly tschema: string;
     /** temporal step of the cube */
     readonly tstep: number;
     /** status visible - loading component */
     readonly loading: boolean;
+    /** editable feature */
+    readonly featureEdit: object;
 }
