@@ -45,13 +45,10 @@ export class MapComponent implements OnInit {
   private tilesUsed: number[];
   /** bounding box of Map */
   private bbox = null;
-  /** opacity of images disaplyed in the map */
-  private actualOpacity = 1;
 
   /** start Layer and Seatch Services */
   constructor(
     private ls: LayerService,
-    private ss: SearchService,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         // add layers
@@ -59,7 +56,7 @@ export class MapComponent implements OnInit {
           const lyrs = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
           lyrs.forEach( l => {
             if (l['options'].className) {
-              if (l['options'].className.indexOf(`qls_`) >= 0) {
+              if (l['options'].className.indexOf(`cube_`) >= 0) {
                 (l as L.TileLayer).setZIndex(999);
               }
             }
@@ -107,16 +104,6 @@ export class MapComponent implements OnInit {
             }
           });
           this.setGrid(res.grid);
-        }
-        // display other grid
-        // tslint:disable-next-line
-        if (res.opacity >= 0 && res.opacity != this.actualOpacity) {
-          this.map.eachLayer( l => {
-            if (l['options'].alt && l['options'].alt.indexOf(`qls_`) >= 0) {
-              (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity));
-            }
-          });
-          this.actualOpacity = res.opacity;
         }
       });
   }

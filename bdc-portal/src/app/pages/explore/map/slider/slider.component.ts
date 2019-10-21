@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
-import { setFeaturesPeriod, setLayers, removeGroupLayer, setActualRangeTemporal } from '../../explore.action';
+import { setFeaturesPeriod, setLayers, removeGroupLayer, setActualRangeTemporal, setEditFeature } from '../../explore.action';
 import { Layer } from 'leaflet';
 import { addMonth, addDays, subMonth, subDays } from 'src/app/shared/helpers/date';
 
@@ -78,7 +78,6 @@ export class SliderComponent {
         // update infos to display
         this.options = {
           showTicks: true,
-          showSelectionBar: true,
           stepsArray: this.steps.map((date: Date) => {
             return { value: date.getTime() };
           }),
@@ -105,7 +104,7 @@ export class SliderComponent {
     // remove images displayed
     this.store.dispatch(removeGroupLayer({
       key: 'className',
-      prefix: 'qls_'
+      prefix: 'cube_'
     }));
 
     // filter new features
@@ -122,13 +121,16 @@ export class SliderComponent {
 
       // plot new features
       const featSelectedEdited = featSelected.map( (f: any) => {
-        const bands = "red,green,blue";
-        const color_formula = "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+        const composite = f['composite']
+        const bands = composite ? Object.values(composite['bands']).join(',') : 'red,green,blue';
+        const color_formula = composite ? 
+          `Gamma RGB ${composite.gamma} Saturation ${composite.saturation} Sigmoidal RGB ${composite.sigmoidal} 0.35` : 
+          "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
 
-        let url = `${this.urlBDCTiler}/${f.collection}/${f.id}/{z}/{x}/{y}.png`;
+        let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
         url += `?bands=${bands}&color_formula=${color_formula}`;
         const layerTile = new L.TileLayer(url, {
-          className: `qls_${f.id}`,
+          className: `cube_${f.id}`,
           attribution: `Brazil Data Cube`
         });
 

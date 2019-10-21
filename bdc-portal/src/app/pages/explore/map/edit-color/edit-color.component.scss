@@ -2,7 +2,7 @@
     position: absolute;
     z-index: 999;
     left: 10px;
-    bottom: 100px;
+    bottom: 150px;
     max-height: 40%;
     border: 2px solid rgba(0,0,0,0.2);
     border-radius: 2px;
@@ -27,10 +27,10 @@
         box-shadow: 0 1px 4px rgba(0,0,0,0.16);
         
         h1 {
-            cursor: grab;
             display: flex;
             align-items: center;
             margin: 5px 0;
+            cursor: grab;
         }
 
         .mat-icon {

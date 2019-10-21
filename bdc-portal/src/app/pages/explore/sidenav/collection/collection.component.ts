@@ -68,10 +68,10 @@ export class CollectionComponent {
 
       const lyrGroup = [];
       this.featuresPeriod = this.featuresPeriod.map( (f: any) => {
-        let url = `${this.urlBDCTiler}/${f.collection}/${f.id}/{z}/{x}/{y}.png`;
+        let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
         url += `?bands=${bands}&color_formula=${color_formula}`;
         const layerTile = new L.TileLayer(url, {
-          className: `qls_${f.id}`,
+          className: `cube_${f.id}`,
           attribution: `Brazil Data Cube`
         });
 
@@ -97,7 +97,7 @@ export class CollectionComponent {
 
       this.store.dispatch(removeGroupLayer({
         key: 'className',
-        prefix: 'qls_'
+        prefix: 'cube_'
       }));
       this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
