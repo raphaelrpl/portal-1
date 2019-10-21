@@ -67,14 +67,6 @@ export const setBands = createAction(
 );
 
 /**
- * set Opacity Cube in store application
- */
-export const setOpacity = createAction(
-    '[Map Component] Opacity Layer',
-    props()
-);
-
-/**
  * set temporal schema of the Cube in store application
  */
 export const setTSchema = createAction(
@@ -121,4 +113,12 @@ export const setRangeTemporal = createAction(
 export const setActualRangeTemporal = createAction(
     '[Map Component] Range Actual Temporal',
     props<Date[]>()
+);
+
+/**
+ * set Feature to Edit
+ */
+export const setEditFeature = createAction(
+    '[Map Component] Editable Feature',
+    props<object>()
 );

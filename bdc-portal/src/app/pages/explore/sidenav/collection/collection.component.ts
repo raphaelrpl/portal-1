@@ -7,7 +7,7 @@ import 'src/assets/plugins/Leaflet.ImageTransform/leafletImageTransform.js';
 import { Feature } from './collection.interface';
 import { ExploreState } from '../../explore.state';
 import { geoJSON, featureGroup } from 'leaflet';
-import { setLayers, setPositionMap, setFeaturesPeriod, setOpacity, removeLayers } from '../../explore.action';
+import { setLayers, setPositionMap, setFeaturesPeriod, removeGroupLayer, setEditFeature } from '../../explore.action';
 import { MatSnackBar, MatDialog } from '@angular/material';
 import { DialogFeatureComponent } from 'src/app/shared/components/dialog-feature/dialog-feature.component';
 
@@ -24,14 +24,12 @@ export class CollectionComponent {
   public featuresPeriod: Feature[] = [];
   /** selected period in the slider */
   public period: number;
-  /** value of the opacity cube in the map */
-  public opacity = 10;
-  /** status visible opacity box */
-  public opacityEnabled = false;
   /** list of bands */
   private bands: string[];
   /** range with dates (start-end) of the selected period */
   private range: Date[];
+
+  private urlBDCTiler = window['__env'].urlBDCTiler;
 
   /** get infos by store application */
   constructor(public dialog: MatDialog,
@@ -65,25 +63,17 @@ export class CollectionComponent {
    */
   public onChangeLayer(event) {
     if (event.checked) {
+      const bands = "red,green,blue";
+      const color_formula = "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+
       const lyrGroup = [];
       this.featuresPeriod = this.featuresPeriod.map( (f: any) => {
-        const coordinates = f.geometry.coordinates[0];
-        // [lat, lng] => TL, TR, BR, BL
-        const anchor = [
-          [coordinates[0][1], coordinates[0][0]],
-          [coordinates[3][1], coordinates[3][0]],
-          [coordinates[2][1], coordinates[2][0]],
-          [coordinates[1][1], coordinates[1][0]]
-        ];
-        const layerTile = (L as any).imageTransform(f.assets.thumbnail.href, anchor, {
-          alt: `qls_${f.id}`,
-          interactive: true
-        }).bindPopup(`
-          <b>ID:</b> ${f.id}<br>
-          <b>Tile:</b> ${f.properties['bdc:tile']}<br>
-          <b>Datetime:</b> ${f.properties['datetime']}<br>
-          <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
-        `);
+        let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
+        url += `?bands=${bands}&color_formula=${color_formula}`;
+        const layerTile = new L.TileLayer(url, {
+          className: `cube_${f.id}`,
+          attribution: `Brazil Data Cube`
+        });
 
         lyrGroup.push(layerTile);
         return {...f, enabled: true};
@@ -105,8 +95,10 @@ export class CollectionComponent {
         return {...f, enabled: false};
       });
 
-      const nameLayers = this.featuresPeriod.map( (f: any) => `qls_${f.id}` );
-      this.store.dispatch(removeLayers(nameLayers));
+      this.store.dispatch(removeGroupLayer({
+        key: 'className',
+        prefix: 'cube_'
+      }));
       this.snackBar.open('LAYERS DISABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
@@ -131,21 +123,6 @@ export class CollectionComponent {
     const featuresGeoJson = featureGroup(this.featuresPeriod.map((f: any) => geoJSON(f)));
     const bounds = featuresGeoJson.getBounds();
     this.store.dispatch(setPositionMap(bounds));
-  }
-
-  /**
-   * enable or disable opacity box
-   */
-  public viewOpacityCube() {
-    this.opacityEnabled = !this.opacityEnabled;
-  }
-
-  /**
-   * set new value to opacity Cube
-   */
-  public setOpacityCube() {
-    const newOpacity = (this.opacity / 10).toString();
-    this.store.dispatch(setOpacity({opacity: newOpacity}));
   }
 
   /**
@@ -187,5 +164,12 @@ export class CollectionComponent {
         range: this.range
       }
     });
+  }
+
+  /**
+   * enable edit box to feature
+   */
+  public setColors(feature) {
+    this.store.dispatch(setEditFeature(feature));
   }
 }

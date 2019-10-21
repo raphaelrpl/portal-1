@@ -43,6 +43,7 @@ import { CatalogComponent } from './map/catalog/catalog.component';
 import { BoxCatalogComponent } from './map/catalog/box/box.component';
 import { CatalogResultsComponent } from './map/catalog/box/results/results.component';
 import { SampleComponent } from './sidenav/sample/sample.component';
+import { EditColorComponent } from './map/edit-color/edit-color.component';
 
 
 /**
@@ -61,6 +62,7 @@ import { SampleComponent } from './sidenav/sample/sample.component';
     CatalogComponent,
     BoxCatalogComponent,
     CatalogResultsComponent,
+    EditColorComponent,
     SliderComponent,
     TimeSeriesComponent,
     BoxTimeSeriesComponent

@@ -7,14 +7,14 @@ import {
   setFeatures,
   setBands,
   setFeaturesPeriod,
-  setOpacity,
   setGrid,
   setTSchema,
   setTStep,
   setSamples,
   removeLayers,
   removeGroupLayer,
-  setActualRangeTemporal
+  setActualRangeTemporal,
+  setEditFeature
 } from './explore.action';
 import { ExploreState } from './explore.state';
 
@@ -36,7 +36,7 @@ const initialState: ExploreState = {
   tstep: 0,
   rangeTemporal: [],
   actualRangeTemporal: [],
-  opacity: '1'
+  featureEdit: {}
 };
 
 /**
@@ -86,7 +86,7 @@ export const reducer = createReducer(initialState,
   on(setTStep, (state, payload) => {
     return { ...state, tstep: parseInt(payload['tstep']) };
   }),
-  on(setOpacity, (state, payload) => {
-    return { ...state, opacity: payload['opacity'].toString() };
+  on(setEditFeature, (state, payload) => {
+    return { ...state, featureEdit: payload };
   })
 );
