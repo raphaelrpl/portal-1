@@ -3,7 +3,7 @@
     cdkDrag>
     <div class="header">
         <h1 cdkDragHandle>
-            EDIT ({{feature.properties['bdc:tile']}})
+            EDIT ({{feature.properties['bdc:tile']}} - {{getDateFormated(feature.properties['datetime'])}})
         </h1>
         <button mat-icon-button (click)="closeBox()">
             <mat-icon>close</mat-icon>

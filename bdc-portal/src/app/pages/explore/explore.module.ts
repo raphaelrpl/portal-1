@@ -44,6 +44,7 @@ import { BoxCatalogComponent } from './map/catalog/box/box.component';
 import { CatalogResultsComponent } from './map/catalog/box/results/results.component';
 import { SampleComponent } from './sidenav/sample/sample.component';
 import { EditColorComponent } from './map/edit-color/edit-color.component';
+import { SideBySideComponent } from './map/side-by-side-action/side-by-side.component';
 
 
 /**
@@ -65,6 +66,7 @@ import { EditColorComponent } from './map/edit-color/edit-color.component';
     EditColorComponent,
     SliderComponent,
     TimeSeriesComponent,
+    SideBySideComponent,
     BoxTimeSeriesComponent
   ],
   exports: [
