@@ -44,7 +44,8 @@ import { BoxCatalogComponent } from './map/catalog/box/box.component';
 import { CatalogResultsComponent } from './map/catalog/box/results/results.component';
 import { SampleComponent } from './sidenav/sample/sample.component';
 import { EditColorComponent } from './map/edit-color/edit-color.component';
-import { SideBySideComponent } from './map/side-by-side-action/side-by-side.component';
+import { SideBySideComponent } from './map/side-by-side/side-by-side.component';
+import { SideBySideBoxComponent } from './map/side-by-side/box/side-by-side-box.component';
 
 
 /**
@@ -67,6 +68,7 @@ import { SideBySideComponent } from './map/side-by-side-action/side-by-side.comp
     SliderComponent,
     TimeSeriesComponent,
     SideBySideComponent,
+    SideBySideBoxComponent,
     BoxTimeSeriesComponent
   ],
   exports: [
@@ -104,7 +106,8 @@ import { SideBySideComponent } from './map/side-by-side-action/side-by-side.comp
     LeafletDrawModule.forRoot()
   ],
   entryComponents: [
-    BoxTimeSeriesComponent
+    BoxTimeSeriesComponent,
+    SideBySideBoxComponent
   ]
 })
 export class ExploreModule { }

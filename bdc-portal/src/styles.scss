@@ -39,6 +39,30 @@ body {
     background-image: url("esri-leaflet-geocoder/dist/img/loading@2x.gif");
 }
 
+.leaflet-bottom .leaflet-control-scale {
+    margin-left: 210px;
+    display: flex;
+    margin-bottom: -30px;
+    
+    .leaflet-control-scale-line {
+        background: rgba(#FFF, 0.9);
+        border: none;
+        font-size: 12px;
+        padding: 2.5px 5;
+
+        &:first-child {
+            border-radius: 7.5px 0 0 7.5px;
+            border-right: 1px solid #666;
+        }
+        &:last-child {
+            border-radius: 0 7.5px 7.5px 0;
+        }
+        &:not(:first-child) {
+            margin-top: 0;
+        }
+    }
+}
+
 
 // MATERIAL DESIGN
 .mat-drawer-content {

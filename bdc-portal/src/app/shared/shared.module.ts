@@ -18,7 +18,6 @@ import { DialogFeatureComponent } from './components/dialog-feature/dialog-featu
 import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AboutComponent } from './components/about/about.component';
-import { SideBySideBoxComponent } from './components/side-by-side-box/side-by-side-box.component';
 
 /**
  * Shared Module
@@ -32,7 +31,6 @@ import { SideBySideBoxComponent } from './components/side-by-side-box/side-by-si
     FormFieldErrorComponent,
     AlertComponent,
     AboutComponent,
-    SideBySideBoxComponent,
     DialogFeatureComponent
   ],
   exports: [
@@ -55,8 +53,7 @@ import { SideBySideBoxComponent } from './components/side-by-side-box/side-by-si
   ],
   entryComponents: [
     DialogFeatureComponent,
-    AboutComponent,
-    SideBySideBoxComponent
+    AboutComponent
   ]
 })
 export class SharedModule { }

@@ -35,6 +35,8 @@
               "node_modules/leaflet.fullscreen/Control.FullScreen.css",
               "src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.css",
               "src/assets/plugins/Leaflet.Coordinates/Leaflet.Coordinates-0.1.5.ie.css",
+              "src/assets/plugins/Leaflet.SideBySide/layout.css",
+              "src/assets/plugins/Leaflet.SideBySide/range.css",
               "node_modules/esri-leaflet-geocoder/dist/esri-leaflet-geocoder.css",
               "node_modules/primeicons/primeicons.css"
             ],

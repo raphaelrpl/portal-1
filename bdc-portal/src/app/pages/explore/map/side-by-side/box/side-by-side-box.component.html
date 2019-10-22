@@ -1,0 +1,33 @@
+<section class="dialog-map">
+    <header>
+        <p>Select two periods:</p>
+        
+        <mat-form-field appearance="outline">
+            <mat-label>Select First Period</mat-label>
+            <mat-select [(value)]="first">
+                <mat-option
+                    *ngFor="let p of periods"
+                    [value]="p">{{ getDateFormated(p) }} / {{ getNextPeriod(p) }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Select Second Period</mat-label>
+            <mat-select [(value)]="second">
+                <mat-option
+                    *ngFor="let p of periods"
+                    [value]="p">{{ getDateFormated(p) }} / {{ getNextPeriod(p) }}</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <button (click)="applyOverlayers()" mat-raised-button [disabled]="!first || !second || disabled">
+            Compare
+        </button>
+    </header>
+
+    <div leaflet
+        class="map"
+        [leafletOptions]="options"
+        (leafletMapReady)="onMapReady($event)">
+    </div>
+</section>
