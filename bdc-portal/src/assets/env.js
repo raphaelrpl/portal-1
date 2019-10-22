@@ -25,5 +25,7 @@
     window.__env.urlDataSearchINPE = 'http://www.dpi.inpe.br/datasearch/';
     // URL APM SERVER
     window.__env.urlAPMServer = 'http://127.0.0.1:8200/';
+    // URL SampleDB Backend
+    window.__env.urlSampleDBBackend = 'http://127.0.0.1:5001';
 
 }(this));

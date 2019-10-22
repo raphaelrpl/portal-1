@@ -29,6 +29,11 @@ export class SidenavComponent {
         icon: 'filter_none',
         title: 'Cubes',
         group: 'cubes'
+      },
+      { path: '/admin/samples/upload',
+        icon: 'satellite',
+        title: 'Samples',
+        group: 'samples'
       }
     ];
   }

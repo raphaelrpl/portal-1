@@ -1,0 +1,42 @@
+@import 'src/assets/styles/admin-page-base.scss';
+
+.create-cube {
+    margin-top: 25px;
+
+    hr {
+        border-top: 1px dashed #999;
+        background: none;
+        margin: -10px 0 25px 0;
+    }
+
+    .inline-block {
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+
+        .mat-form-field {
+            margin-right: 10px;
+            min-width: 200px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+
+    .block-lg {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .block-lg > * {
+        width: 100%;
+    }
+
+    .example-section {
+        display: flex;
+        align-content: center;
+        align-items: center;
+        height: 60px;
+    }
+}

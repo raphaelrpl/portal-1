@@ -20,8 +20,11 @@ import { MatButtonModule,
   MatSelectModule,
   MatCheckboxModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatTooltipModule
 } from '@angular/material';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
+
 import { AuthModule } from '../auth/auth.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -30,6 +33,7 @@ import { LogsCubesComponent } from './cubes/logs-cubes/logs-cubes.component';
 import { EditCubesComponent } from './cubes/edit-cubes/edit-cubes.component';
 import { DescribeCubesComponent } from './cubes/describe-cubes/describe-cubes.component';
 import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
+import { UploadSampleComponent } from './samples/upload-sample/upload-sample.component';
 
 
 @NgModule({
@@ -41,7 +45,8 @@ import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
     LogsCubesComponent,
     CreateCubeComponent,
     SidenavComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    UploadSampleComponent
   ],
   imports: [
     AuthModule,
@@ -65,7 +70,9 @@ import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
     FormsModule,
     ReactiveFormsModule,
     MatSidenavModule,
-    MatMenuModule
+    MatMenuModule,
+    MatTooltipModule,
+    MaterialFileInputModule
   ],
   entryComponents: [
     DescribeCubesComponent,

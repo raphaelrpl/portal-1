@@ -1,0 +1,96 @@
+<section class="container-page__admin">
+  <!-- TITLE -->
+  <div class="admin-title">
+    <div class="title">
+      <span class="title-group">samples /</span>
+      <span class="title-sub-group">upload</span>
+    </div>
+  </div>
+
+  <form [formGroup]="formSampleUpload" (ngSubmit)="submit()" class="create-cube">
+
+    <!-- BASIC INFOS -->
+    <div class="block-lg">
+      <mat-form-field appearance="fill">
+        <mat-label>Classification System</mat-label>
+        <mat-select formControlName="classification_system">
+          <mat-option *ngFor="let class_system of systems" [value]="class_system">
+            {{class_system}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Input a sample</mat-label>
+        <ngx-mat-file-input #fileInput (change)="onFileSelected(formSampleUpload.value)" formControlName="file"
+          placeholder="Input a sample" [accept]="['.csv', '.zip']"></ngx-mat-file-input>
+        <mat-icon matSuffix>folder</mat-icon>
+      </mat-form-field>
+    </div>
+
+    <hr />
+
+    <h2 class="mat-h2">Configure the columns</h2>
+    <div class="block-lg" formGroupName="mappings">
+
+      <mat-form-field appearance="fill">
+        <mat-label>Class Name</mat-label>
+        <input matInput name="class_name" formControlName="class_name">
+      </mat-form-field>
+
+    </div>
+
+    <div class="inline-block" formGroupName="mappings">
+      <mat-form-field appearance="fill" formGroupName="start_date">
+        <mat-label>Start Date</mat-label>
+        <input matInput name="start_date" formControlName="key">
+
+        <section class="example-section">
+          <mat-checkbox formControlName="isColumn"
+              matTooltip="Is a column in dataset? You can uncheck to use as static value">
+              Is column?
+          </mat-checkbox>
+        </section>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" formGroupName="end_date">
+        <mat-label>End Date</mat-label>
+        <input matInput name="end_date" formControlName="key">
+
+        <section class="example-section">
+          <mat-checkbox formControlName="isColumn"
+            matTooltip="Is a column in dataset? You can uncheck to use as static value">
+            Is column?
+          </mat-checkbox>
+        </section>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" formGroupName="latitude">
+        <mat-label>Latitude</mat-label>
+        <input matInput name="latitude" formControlName="key">
+
+        <section class="example-section">
+          <mat-checkbox formControlName="isColumn"
+            matTooltip="Is a column in dataset? You can uncheck to use as static value">
+            Is column?
+          </mat-checkbox>
+        </section>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" formGroupName="longitude">
+        <mat-label>Longitude</mat-label>
+        <input matInput name="longitude" formControlName="key">
+        <section class="example-section">
+          <mat-checkbox formControlName="isColumn"
+            matTooltip="Is a column in dataset? You can uncheck to use as static value">
+            Is column?
+          </mat-checkbox>
+        </section>
+      </mat-form-field>
+    </div>
+
+    <button type="submit" mat-raised-button color="primary">
+      Upload
+    </button>
+  </form>
+</section>
