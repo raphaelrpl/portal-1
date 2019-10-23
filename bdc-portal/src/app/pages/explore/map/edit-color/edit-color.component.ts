@@ -78,7 +78,7 @@ export class EditColorComponent {
         // remove images displayed
         this.store.dispatch(removeGroupLayer({
             key: 'className',
-            prefix: 'cube_'
+            prefix: `cube_${this.feature.id}`
         }));
 
         // plot features
@@ -121,5 +121,12 @@ export class EditColorComponent {
                 this.store.dispatch(setLayers([layerTile]));
             }
         });
+    }
+
+    /** convert date to USA format */
+    public getDateFormated(dateStr: string): string {
+        const dates = dateStr.split('/');
+        const startDate = (new Date(dates[0])).toLocaleDateString();
+        return `${startDate}`;
     }
 }

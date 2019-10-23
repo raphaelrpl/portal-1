@@ -13,7 +13,6 @@ import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
 import { setPositionMap, setBbox, removeLayers, setLayers, removeGroupLayer } from '../explore.action';
-import { SearchService } from '../sidenav/search/search.service';
 
 /**
  * Map component
@@ -348,6 +347,10 @@ export class MapComponent implements OnInit {
     });
   }
 
+  public setScaleControl() {
+    L.control.scale().addTo(this.map);
+  }
+
   /**
    * event used when change Map
    */
@@ -357,6 +360,7 @@ export class MapComponent implements OnInit {
     this.setDrawControl();
     this.setCoordinatesControl();
     this.setGeocoderControl();
+    this.setScaleControl();
     this.setViewInfo();
   }
 }

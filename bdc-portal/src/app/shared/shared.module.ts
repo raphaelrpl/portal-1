@@ -53,7 +53,7 @@ import { AboutComponent } from './components/about/about.component';
   ],
   entryComponents: [
     DialogFeatureComponent,
-    AboutComponent,
+    AboutComponent
   ]
 })
 export class SharedModule { }

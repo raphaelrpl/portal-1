@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef, Inject } from '@angular/core';
+import { Component, ChangeDetectorRef, Inject, OnDestroy } from '@angular/core';
 import { ExploreState } from '../../../explore.state';
 import { Store, select } from '@ngrx/store';
 import { LatLng } from 'leaflet';
@@ -19,7 +19,7 @@ import { showLoading, closeLoading } from 'src/app/app.action';
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.scss']
 })
-export class BoxTimeSeriesComponent {
+export class BoxTimeSeriesComponent implements OnDestroy {
 
   /** bands of the cube */
   public bands: object = {};
@@ -77,6 +77,10 @@ export class BoxTimeSeriesComponent {
       }
     });
     this.latLng = data['latLng'];
+  }
+
+  ngOnDestroy(): void {
+    this.store.pipe(select('explore')).forEach(s => s.unsubscribe());
   }
 
   /** search time series in WTSS and plot result in graphic */
