@@ -66,7 +66,6 @@ export class CollectionComponent {
       const bands = "red,green,blue";
       const color_formula = "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
 
-      const lyrGroup = [];
       this.featuresPeriod = this.featuresPeriod.map( (f: any) => {
         let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
         url += `?bands=${bands}&color_formula=${color_formula}`;
@@ -75,11 +74,10 @@ export class CollectionComponent {
           attribution: `Brazil Data Cube`
         });
 
-        lyrGroup.push(layerTile);
+        this.store.dispatch(setLayers([layerTile]));
         return {...f, enabled: true};
       });
 
-      this.store.dispatch(setLayers([L.layerGroup(lyrGroup)]));
       this.snackBar.open('LAYERS ENABLED!', '', {
         duration: 2000,
         verticalPosition: 'top',
