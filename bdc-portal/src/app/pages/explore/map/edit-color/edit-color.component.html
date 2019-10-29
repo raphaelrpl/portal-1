@@ -3,7 +3,8 @@
     cdkDrag>
     <div class="header">
         <h1 cdkDragHandle>
-            EDIT ({{feature.properties['bdc:tile']}} - {{getDateFormated(feature.properties['datetime'])}})
+            {{ 'explore.map.edit.title' | translate }}
+             ({{feature.properties['bdc:tile']}} - {{getDateFormated(feature.properties['datetime'])}})
         </h1>
         <button mat-icon-button (click)="closeBox()">
             <mat-icon>close</mat-icon>
@@ -70,11 +71,21 @@
             <mat-label>{{ sigmoidal }}</mat-label>
         </div>
 
-        <button 
-            type="submit" 
-            mat-raised-button color="primary" 
-            (click)="compositeImage()">
-            SET
-        </button>
+        <div class="box-btns">
+            <button 
+                type="submit" 
+                mat-raised-button 
+                (click)="resetImage()">
+                {{ 'explore.map.edit.btnReset' | translate }}
+            </button>
+            <button 
+                type="submit" 
+                mat-raised-button 
+                color="primary" 
+                class="btn-apply"
+                (click)="compositeImage()">
+                {{ 'explore.map.edit.btn' | translate }}
+            </button>
+        </div>
     </div>
 </section>

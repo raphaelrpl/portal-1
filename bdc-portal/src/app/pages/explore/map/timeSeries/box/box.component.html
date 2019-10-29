@@ -12,7 +12,7 @@
             <b>{{ latLng['lng'] }}</b>
         ]</p>
         <p><mat-icon>apps</mat-icon>
-            Select Bands:
+            {{ 'explore.map.timeSeries.box.bandsLabel' | translate }}:
         </p>
         <div class="bands">
             <div *ngFor="let band of listBands" style="margin-top: 15px;">
@@ -23,7 +23,7 @@
         </div>
 
         <button mat-stroked-button color="primary" (click)="search()">
-            Generate Time Series
+            {{ 'explore.map.timeSeries.box.btn' | translate }}
         </button>
     </div>
 
@@ -45,7 +45,7 @@
                 [(ngModel)]="lineTension"
                 (change)="changeLineTension($event)">
             </mat-slide-toggle>
-            <p style="margin-left: 10px;">Line Tension</p>
+            <p style="margin-left: 10px;">{{ 'explore.map.timeSeries.box.btnTension' | translate }}</p>
         </div>
     </div>
 </div>

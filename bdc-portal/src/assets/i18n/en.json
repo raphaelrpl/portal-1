@@ -1,0 +1,109 @@
+{
+    "explore": {
+        "sidenav": {
+            "search": {
+                "title": "Search",
+                "form": {
+                    "resources": "Select Resources",
+                    "cube": "Select Cube",
+                    "bboxNorth": "North",
+                    "bboxSouth": "South",
+                    "bboxWest": "West",
+                    "bboxEast": "East",
+                    "startDate": "Start Date",
+                    "lastDate": "Last Date",
+                    "btn": "FILTER"
+                }
+            },
+            "collections": {
+                "title": "Cube"
+            },
+            "samples": {
+                "title": "Samples",
+                "form": {
+                    "authors": "Select Authors",
+                    "btn": "Apply Filter"
+                }
+            }
+        },
+
+        "toolbar": {
+            "btns": {
+                "about": "About",
+                "login": "Login",
+                "dash": "Dashboard"
+            }
+        },
+
+        "map": {
+            "catalog": {
+                "box": {
+                    "title": "CATALOG",
+                    "form": {
+                        "providers": "Select Providers",
+                        "collections": "Select Collections",
+                        "startDate": "Start Date",
+                        "lastDate": "Last Date",
+                        "cloud": "Cloud Cover",
+                        "btn": "SEARCH"
+                    }
+                },
+                "results": {
+                    "notFoundLabel": "Images not found",
+                    "paginationLabel": "Per page"
+                }
+            },
+            "edit": {
+                "title": "EDIT",
+                "btn": "APPLY",
+                "btnReset": "Reset Style"
+            },
+            "sideBySide": {
+                "box": {
+                    "label": "Select two periods",
+                    "firstInput": "Select First Period",
+                    "secondInput": "Select Second Period",
+                    "btn": "Compare"
+                }
+            },
+            "timeSeries": {
+                "label": "move the point and click in 'VIEW'",
+                "btns": {
+                    "view": "VIEW",
+                    "cancel": "Cancel"
+                },
+                "box": {
+                    "bandsLabel": "Select Bands",
+                    "btn": "Generate Time Series",
+                    "btnTension": "Line Tension"
+                }
+            }
+        }
+    },
+
+
+    "shared": {
+        "loading": {
+            "text": "Loading"
+        },
+        "formField": {
+            "required": "required",
+            "notUnique": "already exists",
+            "email": "Please enter a valid email"
+        },
+        "dialogFeature": {
+            "titles": {
+                "cube": "CUBE",
+                "date": "DATE"
+            },
+            "btns": {
+                "generate": "Generate Links",
+                "download": "Download File"
+            }
+        },
+        "about": {
+            "text": "<b><i>Brazil Data Cube</i></b> is a project that is being developed by Brazil’s National Institute for Space Research (INPE ), since January 2019,  that aims to create multidimensional data cubes of analysis-ready from medium-resolution Earth observation images for all Brazilian territory and to generate land use and cover information from these data cubes using machine learning and satellite image time series analysis. <br /><br /> The <b><i>Brazil Data Cube</i></b> project is part of the “<a href='http://www.fundoamazonia.gov.br/en/projeto/Environmental-Monitoring-of-Brazilian-Biomes/' target='_blank'>Environmental Monitoring of Brazilian Biomes</a>“, funded by the <a href='http://www.fundoamazonia.gov.br/en/home/' target='_blank'>Amazon Fund</a> through the financial collaboration of the Brazilian Development Bank (BNDES) and the Foundation for Science, Technology and Space Applications (FUNCATE) no. 17.2.0536.1.<br>",
+            "link": "Read more about Brazil Data Cube"
+        }
+    }
+}

@@ -1,12 +1,14 @@
 <div *ngIf="features && !features.length" class="alert-warning">
     <mat-icon>error_outline</mat-icon>
-    <p style="margin-left: 10px;">Features not found</p>
+    <p style="margin-left: 10px;">
+        {{ 'explore.map.catalog.results.notFoundLabel' | translate }}
+    </p>
 </div>
 
 <div *ngIf="features && features.length" class="features">
     <div class="results-label">
         <p>Total: <b>{{ features.length }}</b></p>
-        <p>Per page:
+        <p>{{ 'explore.map.catalog.results.paginationLabel' | translate }}:
             <input type="number"
                 min="1"
                 max="100"

@@ -139,6 +139,11 @@ export class EditColorComponent {
         });
     }
 
+    public resetImage() {
+        this.reset();
+        this.compositeImage();
+    }
+
     /** convert date to USA format */
     public getDateFormated(dateStr: string): string {
         const dates = dateStr.split('/');

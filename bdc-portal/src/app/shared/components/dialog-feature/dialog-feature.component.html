@@ -5,12 +5,24 @@
             {{ feature.id }}
         </h1>
         <span *ngIf="typeDownload == 'feature'">
-            <p><b>CUBE:</b> {{ feature.collection }}</p>
-            <p><b>DATE:</b> {{ getDateFormated(feature.properties.datetime) }}</p>
+            <p>
+                <b>{{ 'shared.dialogFeature.titles.cube' | translate }}:</b> 
+                {{ feature.collection }}
+            </p>
+            <p>
+                <b>{{ 'shared.dialogFeature.titles.date' | translate }}:</b> 
+                {{ getDateFormated(feature.properties.datetime) }}
+            </p>
         </span>
         <span *ngIf="typeDownload == 'cube'">
-            <p><b>CUBE:</b> {{ features['0'].collection }} ({{ features['0'].properties['bdc:time_aggregation'] }})</p>
-            <p><b>DATE:</b> {{ getDateFormated(rangeTemporal['0']) }} / {{ getDateFormated(rangeTemporal['1']) }}</p>
+            <p>
+                <b>{{ 'shared.dialogFeature.titles.cube' | translate }}:</b> 
+                {{ features['0'].collection }} ({{ features['0'].properties['bdc:time_aggregation'] }})
+            </p>
+            <p>
+                <b>{{ 'shared.dialogFeature.titles.date' | translate }}:</b> 
+                {{ getDateFormated(rangeTemporal['0']) }} / {{ getDateFormated(rangeTemporal['1']) }}
+            </p>
         </span>
     </header>
 
@@ -45,13 +57,13 @@
                         mat-raised-button
                         color="primary"
                         (click)="generateLinks()">
-                        Generate Links
+                        {{ 'shared.dialogFeature.btns.generate' | translate }}
                     </button>
 
                     <a [href]="fileUrl"
                         *ngIf="file==true"
                         [download]="fileName">
-                        Download File
+                        {{ 'shared.dialogFeature.btns.download' | translate }}
                     </a>
                 </div>
             </div>

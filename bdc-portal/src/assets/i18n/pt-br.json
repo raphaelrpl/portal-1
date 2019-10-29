@@ -1,0 +1,109 @@
+{
+    "explore": {
+        "sidenav": {
+            "search": {
+                "title": "Pesquisar",
+                "form": {
+                    "resources": "Selecione os Recursos",
+                    "cube": "Selecione os Cubos",
+                    "bboxNorth": "Norte",
+                    "bboxSouth": "Sul",
+                    "bboxWest": "Leste",
+                    "bboxEast": "Oeste",
+                    "startDate": "Data Inicial",
+                    "lastDate": "Data Final",
+                    "btn": "FILTRAR"
+                }
+            },
+            "collections": {
+                "title": "Cubo"
+            },
+            "samples": {
+                "title": "Amostras",
+                "form": {
+                    "authors": "Selecione os Autores",
+                    "btn": "Aplicar Filtrar"
+                }
+            }
+        },
+
+        "toolbar": {
+            "btns": {
+                "about": "Sobre",
+                "login": "Entrar",
+                "dash": "Painel"
+            }
+        },
+
+        "map": {
+            "catalog": {
+                "box": {
+                    "title": "CATÁLOGO",
+                    "form": {
+                        "providers": "Selecione os Provedores",
+                        "collections": "Selecione as Coleções",
+                        "startDate": "Data Inicial",
+                        "lastDate": "Data Final",
+                        "cloud": "Cobertura de Nuvem",
+                        "btn": "Pesquisar"
+                    }
+                },
+                "results": {
+                    "notFoundLabel": "Imagens não encontrada",
+                    "paginationLabel": "Por página"
+                }
+            },
+            "edit": {
+                "title": "EDITAR",
+                "btn": "APLICAR",
+                "btnReset": "Resetar Estilo"
+            },
+            "sideBySide": {
+                "box": {
+                    "label": "Selecione dois períodos",
+                    "firstInput": "Selecione o primeiro período",
+                    "secondInput": "Selecione o segundo período",
+                    "btn": "Comparar"
+                }
+            },
+            "timeSeries": {
+                "label": "mova o ponteiro e clique em 'VISUALIZAR'",
+                "btns": {
+                    "view": "VISUALIZAR",
+                    "cancel": "Cancelar"
+                },
+                "box": {
+                    "bandsLabel": "Selecione as bandas",
+                    "btn": "Gerar Serie Temporal",
+                    "btnTension": "Linha tensionada"
+                }
+            }
+        }
+    },
+
+
+    "shared": {
+        "loading": {
+            "text": "Carregando"
+        },
+        "formField": {
+            "required": "obrigatório",
+            "notUnique": "já existe",
+            "email": "Digite um email válido"
+        },
+        "dialogFeature": {
+            "titles": {
+                "cube": "CUBO",
+                "date": "DATA"
+            },
+            "btns": {
+                "generate": "Gerar links",
+                "download": "Baixar o arquivo"
+            }
+        },
+        "about": {
+            "text": "<b><i>Brazil Data Cube</i></b> é um projeto que está sendo desenvolvido desde janeiro de 2019 pelo Instituto Nacional de Pesquisas Espaciais (INPE), Brasil, com o objetivo de criar cubos de dados multidimensionais prontos para análise a partir de imagens de média resolução espacial de satélites de observação da Terra, para todo o território brasileiro e gerar informações de uso e cobertura do solo a partir desses cubos de dados usando aprendizado de máquina e análise de séries temporais de imagens de satélites. <br /><br /> O <b><i>Brazil Data Cube</i></b> é um subprojeto do projeto “<a href='http://www.fundoamazonia.gov.br/pt/projeto/Environmental-Monitoring-of-Brazilian-Biomes/' target='_blank'>Monitoramento Ambiental dos Biomas Brasileiros</a>“, financiado pelo <a href='http://www.fundoamazonia.gov.br/pt/home/' target='_blank'>Fundo Amazônia</a> em colaboração financeira do BNDES (Contrato nº 17.2.0536.1).<br>",
+            "link": "Leia mais sobre o Brazil Data Cube"
+        }
+    }
+}
