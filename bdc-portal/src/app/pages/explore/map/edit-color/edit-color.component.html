@@ -71,11 +71,21 @@
             <mat-label>{{ sigmoidal }}</mat-label>
         </div>
 
-        <button 
-            type="submit" 
-            mat-raised-button color="primary" 
-            (click)="compositeImage()">
-            {{ 'explore.map.edit.btn' | translate }}
-        </button>
+        <div class="box-btns">
+            <button 
+                type="submit" 
+                mat-raised-button 
+                (click)="resetImage()">
+                {{ 'explore.map.edit.btnReset' | translate }}
+            </button>
+            <button 
+                type="submit" 
+                mat-raised-button 
+                color="primary" 
+                class="btn-apply"
+                (click)="compositeImage()">
+                {{ 'explore.map.edit.btn' | translate }}
+            </button>
+        </div>
     </div>
 </section>

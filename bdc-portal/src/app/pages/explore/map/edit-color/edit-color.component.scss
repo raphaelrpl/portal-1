@@ -65,11 +65,20 @@
             }
         }
 
-        button {
-            display: block;
-            margin: 10px auto 0 auto;
-            background: var(--mainColor) !important;
+        .box-btns {
+            display: flex;
+            justify-content: center;
+            
+            button {
+                margin: 10px 5px 0 5px;
+            }
+
+            .btn-apply {
+                background: var(--mainColor) !important;
+                color: #FFF;
+            }
         }
+        
     }
 
     /* SCROLL */

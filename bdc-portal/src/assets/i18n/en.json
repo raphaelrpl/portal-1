@@ -55,7 +55,8 @@
             },
             "edit": {
                 "title": "EDIT",
-                "btn": "APPLY"
+                "btn": "APPLY",
+                "btnReset": "Reset Style"
             },
             "sideBySide": {
                 "box": {
