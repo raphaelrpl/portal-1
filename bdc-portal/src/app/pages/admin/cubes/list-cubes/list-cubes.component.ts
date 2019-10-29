@@ -7,7 +7,7 @@ import { EditCubesComponent } from '../edit-cubes/edit-cubes.component';
 import { CubeMetadata } from '../cube.interface';
 import { AuthService } from '../../../auth/auth.service';
 
-/** 
+/**
  * List Cubes Components
  * component to list cubes available
  */
@@ -19,7 +19,7 @@ export class ListCubesComponent implements OnInit {
 
   /** reference to sort table element */
   @ViewChild(MatSort, {static: false}) sort: MatSort;
-  
+
   /** columns of table */
   public displayedColumns: string[];
   /** cubes */
@@ -92,11 +92,13 @@ export class ListCubesComponent implements OnInit {
 
   /** check authorizations of the user */
   private checkAuthorization() {
-    this.checkAuthGET()
-    this.checkAuthPOST()
+    this.checkAuthGET();
+    this.checkAuthPOST();
   }
 
-  /** check authorization of the user - scope GE T*/
+  /**
+   * check authorization of the user - scope GET
+   */
   private async checkAuthGET() {
     try {
       const response = await this.as.token(`${window['__env'].appName}:manage_cubes:get`);

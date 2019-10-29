@@ -34,8 +34,8 @@ export class LogsCubesComponent implements AfterViewInit {
   /** reference to sort table element */
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  /** 
-   * get infos of the cube 
+  /**
+   * get infos of the cube
    */
   constructor(
     public cs: CubesService,
@@ -50,15 +50,15 @@ export class LogsCubesComponent implements AfterViewInit {
   }
 
   /**
-   * mount paginator and sort in table 
+   * mount paginator and sort in table
    */
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  /** 
-   * get activities of the cube 
+  /**
+   * get activities of the cube
    */
   public async searchActivities() {
     try {
@@ -91,8 +91,8 @@ export class LogsCubesComponent implements AfterViewInit {
     }
   }
 
-  /** 
-   * filter activities selected 
+  /**
+   * filter activities selected
    */
   public applyFilter(value: string) {
     this.dataSource.filter = value.trim();

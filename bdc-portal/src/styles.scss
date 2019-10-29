@@ -48,21 +48,15 @@ body {
         background: rgba(#FFF, 0.9);
         border: none;
         font-size: 12px;
-        padding: 2.5px 5;
+        padding: 2.5px 5px !important;
+        line-height: none;
+        border-radius: 5px;
 
-        &:first-child {
-            border-radius: 7.5px 0 0 7.5px;
-            border-right: 1px solid #666;
-        }
-        &:last-child {
-            border-radius: 0 7.5px 7.5px 0;
-        }
         &:not(:first-child) {
             margin-top: 0;
         }
     }
 }
-
 
 // MATERIAL DESIGN
 .mat-drawer-content {

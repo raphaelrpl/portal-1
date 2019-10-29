@@ -13,7 +13,7 @@ import { getCookie } from 'src/app/shared/helpers/Cookie';
 @Component({
 	template: ''
 })
-export class RedirectLoginComponent implements OnInit{
+export class RedirectLoginComponent implements OnInit {
 
 	/** declare services */
 	constructor(
@@ -51,5 +51,4 @@ export class RedirectLoginComponent implements OnInit{
 		}
 
 	}
-
 }

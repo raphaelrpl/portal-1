@@ -63,8 +63,8 @@ export class CollectionComponent {
    */
   public onChangeLayer(event) {
     if (event.checked) {
-      const bands = "red,green,blue";
-      const color_formula = "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+      const bands = 'red,green,blue';
+      const color_formula = 'Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35';
 
       this.featuresPeriod = this.featuresPeriod.map( (f: any) => {
         let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;

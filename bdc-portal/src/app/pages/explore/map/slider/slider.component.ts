@@ -82,7 +82,7 @@ export class SliderComponent {
             return { value: date.getTime() };
           }),
           translate: (value: number, _: LabelType): string => {
-            return `${this.formatDate(value)} / ${this.formatDate(this.nextPeriod(new Date(value)).getTime())}`
+            return `${this.formatDate(value)} / ${this.formatDate(this.nextPeriod(new Date(value)).getTime())}`;
           }
         };
 
@@ -121,11 +121,11 @@ export class SliderComponent {
 
       // plot new features
       const featSelectedEdited = featSelected.map( (f: any) => {
-        const composite = f['composite']
+        const composite = f['composite'];
         const bands = composite ? Object.values(composite['bands']).join(',') : 'red,green,blue';
-        const color_formula = composite ? 
-          `Gamma RGB ${composite.gamma} Saturation ${composite.saturation} Sigmoidal RGB ${composite.sigmoidal} 0.35` : 
-          "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+        const color_formula = composite ?
+          `Gamma RGB ${composite.gamma} Saturation ${composite.saturation} Sigmoidal RGB ${composite.sigmoidal} 0.35` :
+          'Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35';
 
         let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
         url += `?bands=${bands}&color_formula=${color_formula}`;
@@ -149,14 +149,14 @@ export class SliderComponent {
     }
   }
 
-  /** 
+  /**
    * sum with one period
    */
   public nextPeriod(date: Date): Date {
     return this.tschema.toLocaleLowerCase() === 'm' ? addMonth(date) : addDays(date, parseInt(this.tstep));
   }
 
-  /** 
+  /**
    * format datetime to string by temporal schema
    */
   public formatDate(value: number): string {

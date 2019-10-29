@@ -16,7 +16,6 @@ export class CatalogComponent {
   /** if display box to search */
   public viewBox = false;
 
-  
   /** display box to search */
   public showBox() {
     this.viewBox = true;
