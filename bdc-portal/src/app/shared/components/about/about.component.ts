@@ -10,10 +10,10 @@ import { MatDialogRef } from '@angular/material';
     styleUrls: ['./about.component.scss']
 })
 export class AboutComponent {
-    
+
     /**
      * open page in dialog
      */
     constructor(public dialogRef: MatDialogRef<AboutComponent>) {}
-        
+
 }

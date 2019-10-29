@@ -101,9 +101,9 @@ export class BoxCatalogComponent implements OnInit {
   /** send request to mount component */
   ngOnInit() {
     this.getProviders();
-    
+
     this.rangeTemporal = [
-      new Date(2000,1,1),
+      new Date(2000, 1, 1),
       new Date()
     ];
   }
@@ -133,8 +133,9 @@ export class BoxCatalogComponent implements OnInit {
           });
         });
       }
-    } catch (err) {}
-    finally {
+    } catch (err) {
+
+    } finally {
       this.storeApp.dispatch(closeLoading());
     }
   }
@@ -171,7 +172,7 @@ export class BoxCatalogComponent implements OnInit {
             .map( cp => sensorByProvider[cp.split(':')[1]]);
           let queryCatalog = `start=${formatDateUSA(this.searchObj.startDate)}`;
           queryCatalog += `&end=${formatDateUSA(this.searchObj.lastDate)}`;
-          queryCatalog += `&satsen=${sensors.join(',')}`
+          queryCatalog += `&satsen=${sensors.join(',')}`;
           const responseImgsCatalog = await this.cs.getImagesCatalog(queryCatalog);
           this.imagesCatalog = responseImgsCatalog.result;
 

@@ -15,7 +15,7 @@ import { SideBySideBoxComponent } from './box/side-by-side-box.component';
   styleUrls: ['./side-by-side.component.scss']
 })
 export class SideBySideComponent {
-  
+
   /** features selected in search */
   public features: Feature[] = [];
   /** temporal step of the cube (quantity) */

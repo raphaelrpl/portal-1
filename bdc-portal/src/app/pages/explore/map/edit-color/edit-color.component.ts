@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Feature } from '../../sidenav/collection/collection.interface';
-import { setEditFeature, removeGroupLayer, setLayers, setFeaturesPeriod, setFeatures } from '../../explore.action';
+import { setEditFeature, removeGroupLayer, setLayers, setFeatures } from '../../explore.action';
 import * as L from 'leaflet';
 
 /**
@@ -15,7 +15,7 @@ import * as L from 'leaflet';
   styleUrls: ['./edit-color.component.scss']
 })
 export class EditColorComponent {
-    
+
     /** feature selected */
     public feature: Feature = null;
     /** all features availables */
@@ -38,7 +38,7 @@ export class EditColorComponent {
     public actived = true;
     /** url to BDC Tiler - used to view tiles by TMS */
     private urlBDCTiler = window['__env'].urlBDCTiler;
-    
+
     /**
      * get features/layers by store (explore module) application
      */
@@ -63,7 +63,7 @@ export class EditColorComponent {
                 this.feature = null;
             }
             if (res.features) {
-                this.features = Object.values(res.features).slice(0, Object.values(res.features).length-1) as Feature[];
+                this.features = Object.values(res.features).slice(0, Object.values(res.features).length - 1) as Feature[];
                 this.actived = !this.features.length || (this.features[0] && this.features[0]['enabled'] !== false);
             }
         });
@@ -71,7 +71,7 @@ export class EditColorComponent {
 
     /** select bands availables by cube */
     setBandsAvailable() {
-        this.bandsAvailable = Object.keys(this.feature.assets).filter(key => key != 'thumbnail');
+        this.bandsAvailable = Object.keys(this.feature.assets).filter(key => key !== 'thumbnail');
     }
 
     /** reset values to composite image */
@@ -103,7 +103,7 @@ export class EditColorComponent {
             if (this.feature && this.feature.id === f.id) {
                 const bands = `${this.red},${this.green},${this.blue}`;
                 const color_formula = `Gamma RGB ${this.gamma} Saturation ${this.saturation} Sigmoidal RGB ${this.sigmoidal} 0.35`;
-    
+
                 if (this.actived) {
                     let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
                     url += `?bands=${bands}&color_formula=${color_formula}`;
@@ -112,9 +112,9 @@ export class EditColorComponent {
                         attribution: `Brazil Data Cube`
                     });
                 }
-    
+
                 return {
-                    ...f, 
+                    ...f,
                     composite: {
                         bands: {
                             red: this.red,
@@ -124,7 +124,7 @@ export class EditColorComponent {
                         gamma: this.gamma,
                         saturation: this.saturation,
                         sigmoidal: this.sigmoidal
-                    } 
+                    }
                 };
             } else {
                 return f;

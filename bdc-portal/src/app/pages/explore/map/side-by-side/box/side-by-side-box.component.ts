@@ -1,4 +1,4 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 import { Feature } from '../../../sidenav/collection/collection.interface';
@@ -15,8 +15,8 @@ import 'src/assets/plugins/Leaflet.SideBySide/index.js';
   templateUrl: './side-by-side-box.component.html',
   styleUrls: ['./side-by-side-box.component.scss']
 })
-export class SideBySideBoxComponent {
-  
+export class SideBySideBoxComponent implements OnInit {
+
   /** url to BDC Tiler - used to view tiles by TMS */
   private urlBDCTiler = window['__env'].urlBDCTiler;
   /** pointer to reference map */
@@ -35,7 +35,7 @@ export class SideBySideBoxComponent {
   private tschema: string;
   /** btn status - true if two layers selected */
   public disabled = false;
-  
+
   /** first layer selected to compare */
   public first: Feature;
   /** second layer selected to compare */
@@ -76,13 +76,13 @@ export class SideBySideBoxComponent {
       this.clearMap();
     }
 
-    let firstLayers = [];
-    let secondLayers = [];
-    let featGroup = new L.FeatureGroup();
+    const firstLayers = [];
+    const secondLayers = [];
+    const featGroup = new L.FeatureGroup();
     this.features.forEach( f => {
       if (f.properties['datetime'] === this.first) {
         firstLayers.push(this.setLayer(f));
-        featGroup.addLayer(L.geoJSON(f.geometry as any))
+        featGroup.addLayer(L.geoJSON(f.geometry as any));
       } else if (f.properties['datetime'] === this.second) {
         secondLayers.push(this.setLayer(f));
       }
@@ -102,9 +102,9 @@ export class SideBySideBoxComponent {
   private setLayer(feature: Feature) {
     const composite = feature['composite'];
     const bands = composite ? Object.values(composite['bands']).join(',') : 'red,green,blue';
-    const colorFormulaSecond = composite ? 
-      `Gamma RGB ${composite.gamma} Saturation ${composite.saturation} Sigmoidal RGB ${composite.sigmoidal} 0.35` : 
-      "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+    const colorFormulaSecond = composite ?
+      `Gamma RGB ${composite.gamma} Saturation ${composite.saturation} Sigmoidal RGB ${composite.sigmoidal} 0.35` :
+      'Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35';
 
     let urlSecond = `${this.urlBDCTiler}/${feature.id}/{z}/{x}/{y}.png`;
     urlSecond += `?bands=${bands}&color_formula=${colorFormulaSecond}`;
@@ -138,20 +138,20 @@ export class SideBySideBoxComponent {
     });
   }
 
-  /** 
+  /**
    * convert date to default format
    */
   public getDateFormated(dateStr: string): string {
     const date = new Date(dateStr);
-    return `${date.getFullYear()}-${date.getMonth()+1}-${date.getDate()}`;
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
   }
 
-  /** 
+  /**
    * sum with one period
    */
   public getNextPeriod(dateStr: string): string {
     const date = new Date(dateStr);
-    const nextDate = subDays(this.tschema.toLocaleLowerCase() === 'm' ? addMonth(date) : addDays(date, (parseInt(this.tstep)-1)), 1);
-    return `${nextDate.getFullYear()}-${nextDate.getMonth()+1}-${nextDate.getDate()}`;
+    const nextDate = subDays(this.tschema.toLocaleLowerCase() === 'm' ? addMonth(date) : addDays(date, (parseInt(this.tstep) - 1)), 1);
+    return `${nextDate.getFullYear()}-${nextDate.getMonth() + 1}-${nextDate.getDate()}`;
   }
 }

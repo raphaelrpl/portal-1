@@ -27,7 +27,7 @@ export class CatalogResultsComponent {
   @Input('itemsCatalog') public itemsCatalog;
 
   /** if POST permission - in download  */
-  @Input('authPOST') public authPOST;  
+  @Input('authPOST') public authPOST;
 
   /** count of result per page */
   public perPage = 10;
@@ -132,16 +132,16 @@ export class CatalogResultsComponent {
    */
   public verifyCataloged(feature) {
     const instrument = feature['properties']['eo:instrument'];
-    if (instrument && (instrument.indexOf("MSI") >= 0 || instrument.indexOf("OLI") >= 0)) {
-      const sat = instrument.indexOf("MSI") >= 0 ? 'sentinel' : 'landsat'
+    if (instrument && (instrument.indexOf('MSI') >= 0 || instrument.indexOf('OLI') >= 0)) {
+      const sat = instrument.indexOf('MSI') >= 0 ? 'sentinel' : 'landsat';
       const filter = this.itemsCatalog.filter( (item: string) => {
         const productId = feature['properties'][`${sat}:product_id`];
         return (
-          item.split('_')[0] == productId.split('_')[0] &&
-          item.split('_')[2] == productId.split('_')[2] &&
-          (sat == 'sentinel' ? item.split('_')[5] == productId.split('_')[5] : item.split('_')[5] == productId.split('_')[5])
+          item.split('_')[0] === productId.split('_')[0] &&
+          item.split('_')[2] === productId.split('_')[2] &&
+          (sat === 'sentinel' ? item.split('_')[5] === productId.split('_')[5] : item.split('_')[5] === productId.split('_')[5])
         );
-      })
+      });
       return filter.length > 0;
 
     } else {
@@ -158,7 +158,7 @@ export class CatalogResultsComponent {
       let query = `satsen=${feature['properties']['eo:platform'].indexOf('sentinel') >= 0 ? 'S2' : 'LC8'}`;
       query += `&start=${feature['properties']['datetime'].split('T')[0]}`;
       query += `&end=${feature['properties']['datetime'].split('T')[0]}`;
-      query += `&cloud=${parseInt(feature['properties']['eo:cloud_cover'])+1}`;
+      query += `&cloud=${parseInt(feature['properties']['eo:cloud_cover']) + 1}`;
       query += `&w=${feature['bbox'][0]}`;
       query += `&s=${feature['bbox'][1]}`;
       query += `&n=${feature['bbox'][3]}`;
@@ -175,13 +175,13 @@ export class CatalogResultsComponent {
         throw new Error('');
       }
 
-    } catch(err) {
+    } catch (err) {
       this.snackBar.open('Error in start download!', '', {
         duration: 5000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-error'
       });
-      
+
     } finally {
       this.storeApp.dispatch(closeLoading());
     }

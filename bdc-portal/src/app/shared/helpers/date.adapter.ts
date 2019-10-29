@@ -22,7 +22,7 @@ export class AppDateAdapter extends NativeDateAdapter {
 
     /**
      * format date result to EN format (YYYY/mm/dd)
-     * possibles: with or without days 
+     * possibles: with or without days
      */
     format(date: Date, displayFormat: string): string {
         // tslint:disable-next-line

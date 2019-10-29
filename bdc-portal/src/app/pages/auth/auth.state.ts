@@ -1,4 +1,3 @@
-
 /** State Model - used in Auth module */
 export interface AuthState {
 	/** id of user logged */
