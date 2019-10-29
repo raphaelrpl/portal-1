@@ -1,0 +1,80 @@
+<section class="edit-color_container"
+    *ngIf="feature"
+    cdkDrag>
+    <div class="header">
+        <h1 cdkDragHandle>
+            EDIT ({{feature.properties['bdc:tile']}} - {{getDateFormated(feature.properties['datetime'])}})
+        </h1>
+        <button mat-icon-button (click)="closeBox()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div class="content">
+        <div class="bands">
+            <mat-form-field appearance="outline" style="border-top: 4px solid red">
+                <mat-label>RED</mat-label>
+                <mat-select [(value)]="red">
+                    <mat-option *ngFor="let band of bandsAvailable" [value]="band">
+                        {{ band.toUpperCase() }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+    
+            <mat-form-field appearance="outline" style="border-top: 4px solid green;">
+                <mat-label>GREEN</mat-label>
+                <mat-select [(value)]="green">
+                    <mat-option *ngFor="let band of bandsAvailable" [value]="band">
+                        {{ band.toUpperCase() }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="border-top: 4px solid blue">
+                <mat-label>BLUE</mat-label>
+                <mat-select [(value)]="blue">
+                    <mat-option *ngFor="let band of bandsAvailable" [value]="band">
+                        {{ band.toUpperCase() }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+        <div class="box-slider" style="margin-top: -30px;">
+            <mat-label>Saturation</mat-label>
+            <mat-slider [min]="0"
+                [(ngModel)]="saturation"
+                [max]="10"
+                [step]="0.1">
+            </mat-slider>
+            <mat-label>{{ saturation }}</mat-label>
+        </div>
+
+        <div class="box-slider">
+            <mat-label>Gamma</mat-label>
+            <mat-slider [min]="0"
+                [(ngModel)]="gamma"
+                [max]="10"
+                [step]="0.1">
+            </mat-slider>
+            <mat-label>{{ gamma }}</mat-label>
+        </div>
+
+        <div class="box-slider">
+            <mat-label>Sigmoidal</mat-label>
+            <mat-slider [min]="0"
+                [(ngModel)]="sigmoidal"
+                [max]="100"
+                [step]="5">
+            </mat-slider>
+            <mat-label>{{ sigmoidal }}</mat-label>
+        </div>
+
+        <button 
+            type="submit" 
+            mat-raised-button color="primary" 
+            (click)="compositeImage()">
+            SET
+        </button>
+    </div>
+</section>

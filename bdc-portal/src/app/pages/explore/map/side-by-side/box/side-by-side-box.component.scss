@@ -1,0 +1,42 @@
+.dialog-map {
+    width: 100%;
+    overflow: auto;
+
+    header {
+        padding: 0 0 10px 0;
+        font-family: "Roboto", "Helvetica Neue", sans-serif;
+        font-size: 1.1em;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        p {
+            margin-right: 10px;
+        }
+
+        .mat-form-field {
+            width: 250px !important;
+            height: 50px;
+            margin-right: 10px;
+        }
+
+        button {
+            background: var(--mainColor);
+            text-transform: uppercase;
+            color: #FFF;
+
+            &:disabled {
+                background: #666;
+                cursor: not-allowed;
+            }
+        }
+
+    }
+
+    .map {
+        width: calc(100% - 10px);
+        height: calc(95vh - 128px);
+        border: 2px solid #CCC;
+        border-radius: 5px;
+    }
+}

@@ -3,7 +3,7 @@ import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../../explore.state';
 import { Options, LabelType } from 'ng5-slider';
 import { Feature } from '../../sidenav/collection/collection.interface';
-import { setFeaturesPeriod, setLayers, removeGroupLayer, setActualRangeTemporal } from '../../explore.action';
+import { setFeaturesPeriod, setLayers, removeGroupLayer, setActualRangeTemporal, setEditFeature } from '../../explore.action';
 import { Layer } from 'leaflet';
 import { addMonth, addDays, subMonth, subDays } from 'src/app/shared/helpers/date';
 
@@ -37,6 +37,8 @@ export class SliderComponent {
   private tschema: string;
   /** temporal step of the selected cube */
   private tstep: string;
+
+  private urlBDCTiler = window['__env'].urlBDCTiler;
 
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
@@ -76,7 +78,6 @@ export class SliderComponent {
         // update infos to display
         this.options = {
           showTicks: true,
-          showSelectionBar: true,
           stepsArray: this.steps.map((date: Date) => {
             return { value: date.getTime() };
           }),
@@ -102,8 +103,8 @@ export class SliderComponent {
   public changeValue(startDate: Date) {
     // remove images displayed
     this.store.dispatch(removeGroupLayer({
-      key: 'alt',
-      prefix: 'qls_'
+      key: 'className',
+      prefix: 'cube_'
     }));
 
     // filter new features
@@ -120,23 +121,18 @@ export class SliderComponent {
 
       // plot new features
       const featSelectedEdited = featSelected.map( (f: any) => {
-        const coordinates = f.geometry.coordinates[0];
-        // [lat, lng] => TL, TR, BR, BL
-        const anchor = [
-          [coordinates[0][1], coordinates[0][0]],
-          [coordinates[3][1], coordinates[3][0]],
-          [coordinates[2][1], coordinates[2][0]],
-          [coordinates[1][1], coordinates[1][0]]
-        ];
-        const layerTile = (L as any).imageTransform(f.assets.thumbnail.href, anchor, {
-          alt: `qls_${f.id}`,
-          interactive: true
-        }).bindPopup(`
-          <b>ID:</b> ${f.id}<br>
-          <b>Tile:</b> ${f.properties['bdc:tile']}<br>
-          <b>Datetime:</b> ${f.properties['datetime']}<br>
-          <b>Aggregation:</b> ${f.properties['bdc:time_aggregation']}
-        `);
+        const composite = f['composite']
+        const bands = composite ? Object.values(composite['bands']).join(',') : 'red,green,blue';
+        const color_formula = composite ? 
+          `Gamma RGB ${composite.gamma} Saturation ${composite.saturation} Sigmoidal RGB ${composite.sigmoidal} 0.35` : 
+          "Gamma RGB 4.5 Saturation 2 Sigmoidal RGB 10 0.35";
+
+        let url = `${this.urlBDCTiler}/${f.id}/{z}/{x}/{y}.png`;
+        url += `?bands=${bands}&color_formula=${color_formula}`;
+        const layerTile = new L.TileLayer(url, {
+          className: `cube_${f.id}`,
+          attribution: `Brazil Data Cube`
+        });
 
         if (this.actived) {
           this.store.dispatch(setLayers([layerTile]));

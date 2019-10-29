@@ -179,7 +179,7 @@ export class SearchComponent implements OnInit {
 
     } catch (err) {
       vm.changeStepNav(0);
-      vm.snackBar.open('INCORRECT SEARCH!', '', {
+      vm.snackBar.open('RESULTS NOT FOUND!', '', {
         duration: 5000,
         verticalPosition: 'top',
         panelClass: 'app_snack-bar-error'
@@ -313,10 +313,10 @@ export class SearchComponent implements OnInit {
       key: 'alt',
       prefix: 'samples_'
     }));
-    // remove sample layers
+    // remove cube layers
     this.store.dispatch(removeGroupLayer({
-      key: 'alt',
-      prefix: 'qls_'
+      key: 'className',
+      prefix: 'cube_'
     }));
     this.store.dispatch(setFeatures([]));
     this.store.dispatch(setSamples([]));

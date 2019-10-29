@@ -27,6 +27,17 @@
         padding: 20px;
         margin-bottom: 20px;
         text-align: justify;
+        color: #777777;
+
+        a {
+            text-decoration: none;
+            color: #000;
+            outline: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
     }
 
     .supporters {

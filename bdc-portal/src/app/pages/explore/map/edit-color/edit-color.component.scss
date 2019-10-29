@@ -1,9 +1,9 @@
-.box-catalog {
+.edit-color_container {
     position: absolute;
     z-index: 999;
-    right: 10px;
-    top: 140px;
-    max-height: 70%;
+    left: 10px;
+    bottom: 150px;
+    max-height: 40%;
     border: 2px solid rgba(0,0,0,0.2);
     border-radius: 2px;
     width: 310px;
@@ -15,7 +15,7 @@
         display: flex;
         position: fixed;
         z-index: 999;
-        width: 275px;
+        width: 295px;
         align-items: center;
         justify-content: space-between;
         background: #FFF;
@@ -23,18 +23,14 @@
         color: #176dc2;
         border-bottom: 1px solid #2196f3;
         border-radius: 7.5px 7.5px 0 0;
-        padding: 0px 15px 0 20px;
+        padding: 0px 5px 0 10px;
         box-shadow: 0 1px 4px rgba(0,0,0,0.16);
-
+        
         h1 {
             display: flex;
             align-items: center;
+            margin: 5px 0;
             cursor: grab;
-            
-            .mat-icon {
-                color: #176dc2;
-                margin-right: 10px;
-            }
         }
 
         .mat-icon {
@@ -44,20 +40,34 @@
 
     .content {
         background: rgba(#FFF, 0.9);
-        margin-top: 57px;
+        margin-top: 40px;
+        padding: 15px 10px;
 
-        .box_search {
-            padding: 10px;
-            border-bottom: 1px dashed #666;
+        .bands {
+            display: flex;
+            justify-content: space-between;
 
-            .btn-search {
-                display: block;
-                margin: -15px auto 5px auto;
+            .mat-form-field {
+                width: 32%;
             }
         }
 
-        .results {
-            padding: 10px;
+        .box-slider {
+            margin-top: -15px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            .mat-slider {
+                margin-top: 0px !important;
+            }
+        }
+
+        button {
+            display: block;
+            margin: 10px auto 0 auto;
+            background: var(--mainColor) !important;
         }
     }
 

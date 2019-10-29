@@ -34,6 +34,8 @@ export class SampleComponent {
   /** list with authors selected in input select (this component) */
   public authors: string[] = [];
 
+  private urlGeoserver = window['__env'].urlGeoserver;
+
   /** initialize services and get search information of the Explore store */
   constructor(private store: Store<ExploreState>) {
     this.store.pipe(select('explore')).subscribe(res => {
@@ -122,7 +124,7 @@ export class SampleComponent {
       queryCQL += ` AND (start_date AFTER ${this.rangeTemporal[0]} AND end_date BEFORE ${this.rangeTemporal[1]})`;
       // filter bbox
       queryCQL += ` AND BBOX(location,${this.bbox})`;
-      const layer = tileLayer.wms('http://brazildatacube.dpi.inpe.br/geoserver/samples/wms', {
+      const layer = tileLayer.wms(`${this.urlGeoserver}/samples/wms`, {
         layers: 'samples:sample',
         format: 'image/png',
         styles: 'samples:samples',
@@ -165,7 +167,7 @@ export class SampleComponent {
     queryCQL += ` AND BBOX(location,${this.bbox})`;
 
     // download file
-    let url = `http://brazildatacube.dpi.inpe.br/geoserver/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}`;
+    let url = `${this.urlGeoserver}/samples/ows?service=WFS&version=1.0.0&CQL_FILTER=${queryCQL}`;
     url += `&request=GetFeature&typeName=samples:sample&outputFormat=SHAPE-ZIP`;
     const element = document.createElement('a');
     element.setAttribute('href', url);

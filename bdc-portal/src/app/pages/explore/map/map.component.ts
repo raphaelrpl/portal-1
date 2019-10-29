@@ -13,7 +13,6 @@ import { LayerService } from './layers/layer.service';
 import { Store, select } from '@ngrx/store';
 import { ExploreState } from '../explore.state';
 import { setPositionMap, setBbox, removeLayers, setLayers, removeGroupLayer } from '../explore.action';
-import { SearchService } from '../sidenav/search/search.service';
 
 /**
  * Map component
@@ -45,23 +44,22 @@ export class MapComponent implements OnInit {
   private tilesUsed: number[];
   /** bounding box of Map */
   private bbox = null;
-  /** opacity of images disaplyed in the map */
-  private actualOpacity = 1;
 
   /** start Layer and Seatch Services */
   constructor(
     private ls: LayerService,
-    private ss: SearchService,
     private store: Store<ExploreState>) {
       this.store.pipe(select('explore')).subscribe(res => {
         // add layers
         if (Object.values(res.layers).length > 1) {
           const lyrs = Object.values(res.layers).slice(0, (Object.values(res.layers).length - 1)) as Layer[];
           lyrs.forEach( l => {
-            if (l['options'].alt) {
-              if (res.opacity && l['options'].alt.indexOf(`qls_`) >= 0) {
-                (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity)).setZIndex(9999);
+            if (l['options'].className) {
+              if (l['options'].className.indexOf(`cube_`) >= 0) {
+                (l as L.TileLayer).setZIndex(999);
               }
+            }
+            if (l['options'].alt) {
               if (l['options'].alt.indexOf(`samples_`) >= 0) {
                 (l as L.TileLayer).setZIndex(999);
               }
@@ -105,16 +103,6 @@ export class MapComponent implements OnInit {
             }
           });
           this.setGrid(res.grid);
-        }
-        // display other grid
-        // tslint:disable-next-line
-        if (res.opacity >= 0 && res.opacity != this.actualOpacity) {
-          this.map.eachLayer( l => {
-            if (l['options'].alt && l['options'].alt.indexOf(`qls_`) >= 0) {
-              (l as L.ImageOverlay).setOpacity(parseFloat(res.opacity));
-            }
-          });
-          this.actualOpacity = res.opacity;
         }
       });
   }
@@ -217,8 +205,10 @@ export class MapComponent implements OnInit {
     this.map.on(Draw.Event.CREATED, e => {
       const layer: any = e['layer'];
       const newLayer = rectangle(layer.getBounds(), {
-        color: '#CCC',
-        weight: 1,
+        color: '#FFF',
+        weight: 3,
+        fill: false,
+        dashArray: '10',
         interactive: false,
         className: 'previewBbox'
       });
@@ -357,6 +347,10 @@ export class MapComponent implements OnInit {
     });
   }
 
+  public setScaleControl() {
+    L.control.scale().addTo(this.map);
+  }
+
   /**
    * event used when change Map
    */
@@ -366,6 +360,7 @@ export class MapComponent implements OnInit {
     this.setDrawControl();
     this.setCoordinatesControl();
     this.setGeocoderControl();
+    this.setScaleControl();
     this.setViewInfo();
   }
 }
