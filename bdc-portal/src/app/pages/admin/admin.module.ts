@@ -34,6 +34,7 @@ import { EditCubesComponent } from './cubes/edit-cubes/edit-cubes.component';
 import { DescribeCubesComponent } from './cubes/describe-cubes/describe-cubes.component';
 import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
 import { UploadSampleComponent } from './samples/upload-sample/upload-sample.component';
+import { CreateClassificationSystemComponent } from './samples/create-classification-system/create-classification-system.component';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { UploadSampleComponent } from './samples/upload-sample/upload-sample.com
     CreateCubeComponent,
     SidenavComponent,
     ToolbarComponent,
-    UploadSampleComponent
+    UploadSampleComponent,
+    CreateClassificationSystemComponent
   ],
   imports: [
     AuthModule,

@@ -6,12 +6,41 @@
           </div>
         </header>
 
-        <section class="links">
+        <mat-accordion>
+          <section class="links">
+            <div *ngFor="let link of links">
+              <ng-template [ngIf]="!link.children" [ngIfElse]="subLinkRule">
+                <div [ngClass]="pathActive === link.group ? 'link active': 'link'"
+                  [routerLink]="link.path">
+                  <mat-icon>{{ link.icon }}</mat-icon> <strong>{{ link.title }}</strong>
+                </div>
+              </ng-template>
+
+              <ng-template #subLinkRule>
+                <mat-expansion-panel style="background-color: brown">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <mat-icon>{{ link.icon }}</mat-icon> <strong>{{ link.title }}</strong>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <div *ngFor="let subLink of link.children" [ngClass]="pathActive === subLink.group ? 'link active': 'link'"
+                    [routerLink]="subLink.path">
+                    <mat-icon>{{ subLink.icon }}</mat-icon> <strong>{{ subLink.title }}</strong>
+                  </div>
+
+                </mat-expansion-panel>
+              </ng-template>
+            </div>
+          </section>
+        </mat-accordion>
+
+        <!-- <section class="links">
           <div *ngFor="let link of links"
             [ngClass]="pathActive === link.group ? 'link active': 'link'"
             [routerLink]="link.path">
             <mat-icon>{{ link.icon }}</mat-icon> <strong>{{ link.title }}</strong>
           </div>
-        </section>
+        </section> -->
     </div>
 </aside>

@@ -33,3 +33,24 @@
         }
     }
 }
+
+.mat-expansion-panel {
+    border-radius: 0;
+    box-shadow: none;
+    border-top: 1px solid var(--mainBgPrimary);
+    background: var(--mainBgLight);
+
+    .mat-expansion-panel-header {
+        background: #1da9f4 !important;
+    }
+
+    .mat-expansion-panel-body {
+        padding: 0 !important;
+    }
+
+    .mat-expansion-panel-header-title {
+        color: white;
+        font-size: 1.2em;
+        font-family: "Roboto", "Helvetica Neue", sans-serif;
+    }
+}

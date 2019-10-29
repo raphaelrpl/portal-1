@@ -33,7 +33,21 @@ export class SidenavComponent {
       { path: '/admin/samples/upload',
         icon: 'satellite',
         title: 'Samples',
-        group: 'samples'
+        group: 'samples',
+        children: [
+          {
+            path: '/admin/samples/classification_system/create',
+            icon: 'filter_none',
+            title: 'Classification System',
+            group: 'class_system'
+          },
+          {
+            path: '/admin/samples/upload',
+            icon: 'satellite',
+            title: 'Upload',
+            group: 'upload',
+          }
+        ]
       }
     ];
   }

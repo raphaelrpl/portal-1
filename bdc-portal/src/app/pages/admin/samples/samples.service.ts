@@ -21,4 +21,14 @@ export class SamplesService {
 
     return this.http.post(`${this.API_URL}/api/sample/`, formData).toPromise();
   }
+
+  public getClassificationSystems(): Promise<string[]> {
+    return this.http.get<string[]>(`${this.API_URL}/api/sample/classification_system`).toPromise();
+  }
+
+  public addClassificationSystem(data: any): Promise<any> {
+    const url = `${this.API_URL}/api/sample/classification_system`;
+
+    return this.http.post(url, data).toPromise();
+  }
 }
