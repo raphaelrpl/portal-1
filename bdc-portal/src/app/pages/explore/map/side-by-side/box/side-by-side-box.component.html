@@ -1,9 +1,9 @@
 <section class="dialog-map">
     <header>
-        <p>Select two periods:</p>
+        <p>{{ 'explore.map.sideBySide.box.label' | translate }}:</p>
         
         <mat-form-field appearance="outline">
-            <mat-label>Select First Period</mat-label>
+            <mat-label>{{ 'explore.map.sideBySide.box.firstInput' | translate }}</mat-label>
             <mat-select [(value)]="first">
                 <mat-option
                     *ngFor="let p of periods"
@@ -12,7 +12,7 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-            <mat-label>Select Second Period</mat-label>
+            <mat-label>{{ 'explore.map.sideBySide.box.secondInput' | translate }}</mat-label>
             <mat-select [(value)]="second">
                 <mat-option
                     *ngFor="let p of periods"
@@ -21,7 +21,7 @@
         </mat-form-field>
 
         <button (click)="applyOverlayers()" mat-raised-button [disabled]="!first || !second || disabled">
-            Compare
+            {{ 'explore.map.sideBySide.box.btn' | translate }}
         </button>
     </header>
 

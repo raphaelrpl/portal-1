@@ -1,5 +1,5 @@
 <div class="box-language">
     <div *ngFor="let lang of languages">
-        <img [src]="lang.icon" title="icon PT-BR"/>
+        <img [src]="lang.icon" title="icon" (click)="changeLanguage(lang)" />
     </div>
 </div>

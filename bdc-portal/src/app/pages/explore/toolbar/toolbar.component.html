@@ -14,22 +14,22 @@
                 <span
                     style="margin-right: 15px;"
                     (click)="openAbout()">
-                    About
+                    {{ 'explore.toolbar.btns.about' | translate }}
                 </span>
  
                 <span
                     *ngIf="!logged"
                     (click)="openLogin()">
-                    Login
+                    {{ 'explore.toolbar.btns.login' | translate }}
                 </span>
 
                 <span
                     *ngIf="logged"
                     [routerLink]="'/admin'">
-                    Dashboard
+                    {{ 'explore.toolbar.btns.dash' | translate }}
                 </span>
 
-                <!--<app-select-lang></app-select-lang>-->
+                <app-select-lang></app-select-lang>
 
                 <button
                     mat-icon-button

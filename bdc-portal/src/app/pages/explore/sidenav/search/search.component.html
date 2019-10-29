@@ -2,7 +2,7 @@
 
     <form [formGroup]="formSearch" (ngSubmit)="search()">
         <mat-form-field appearance="fill">
-            <mat-label>Select Resources</mat-label>
+            <mat-label>{{ 'explore.sidenav.search.form.resources' | translate }}</mat-label>
             <mat-select [(value)]="products" multiple formControlName="products" required>
                 <mat-option *ngFor="let product of productsList" [value]="product.title" [disabled]="product.disabled">{{ product.title }}</mat-option>
             </mat-select>
@@ -13,7 +13,7 @@
 
         <span [hidden]="!(products && products.indexOf('cubes') >= 0)">
             <mat-form-field appearance="fill">
-                <mat-label>Select Cube</mat-label>
+                <mat-label>{{ 'explore.sidenav.search.form.cube' | translate }}</mat-label>
                 <mat-select [(value)]="searchObj.cube" formControlName="cube" [required]="products && products.indexOf('cubes') >= 0">
                     <mat-option
                         *ngFor="let collection of collections"
@@ -33,11 +33,10 @@
                 <mat-form-field appearance="outline"
                     style="margin-bottom: -15px !important"
                     class="field-top-bottom">
-                    <mat-label>North</mat-label>
+                    <mat-label>{{ 'explore.sidenav.search.form.bboxNorth' | translate }}</mat-label>
                     <input matInput
                         type="number"
                         name="north"
-                        placeholder="N"
                         [(ngModel)]="searchObj.bbox.north"
                         formControlName="north"
                         required />
@@ -45,21 +44,19 @@
 
                 <div style="display: flex; width: 95%">
                     <mat-form-field appearance="outline">
-                        <mat-label>West</mat-label>
+                        <mat-label>{{ 'explore.sidenav.search.form.bboxWest' | translate }}</mat-label>
                         <input matInput
                             type="number"
                             name="west"
-                            placeholder="W"
                             [(ngModel)]="searchObj.bbox.west"
                             formControlName="west"
                             required />
                     </mat-form-field>
                     <mat-form-field appearance="outline">
-                        <mat-label>East</mat-label>
+                        <mat-label>{{ 'explore.sidenav.search.form.bboxEast' | translate }}</mat-label>
                         <input matInput
                             type="number"
                             name="east"
-                            placeholder="E"
                             [(ngModel)]="searchObj.bbox.east"
                             formControlName="east"
                             required />
@@ -69,11 +66,10 @@
                 <mat-form-field appearance="outline"
                     style="margin-top: -25px !important"
                     class="field-top-bottom">
-                    <mat-label>South</mat-label>
+                    <mat-label>{{ 'explore.sidenav.search.form.bboxSouth' | translate }}</mat-label>
                     <input matInput
                         type="number"
                         name="south"
-                        placeholder="S"
                         [(ngModel)]="searchObj.bbox.south"
                         formControlName="south"
                         required />
@@ -96,12 +92,11 @@
 
         <div style="display: flex;">
             <mat-form-field appearance="fill" style="width: 48%">
-                <mat-label>Start Date</mat-label>
+                <mat-label>{{ 'explore.sidenav.search.form.startDate' | translate }}</mat-label>
                 <input matInput
                     [matDatepicker]="start_date"
                     [min]="rangeTemporal[0]"
                     [max]="rangeTemporal[1]"
-                    placeholder="Start Date"
                     name="start_date"
                     formControlName="start_date"
                     required
@@ -111,12 +106,11 @@
             </mat-form-field>
 
             <mat-form-field appearance="fill" style="width: 48%; margin-left: 4%;">
-                <mat-label>Last Date</mat-label>
+                <mat-label>{{ 'explore.sidenav.search.form.lastDate' | translate }}</mat-label>
                 <input matInput
                     [matDatepicker]="last_date"
                     [min]="rangeTemporal[0]"
                     [max]="rangeTemporal[1]"
-                    placeholder="Last Date"
                     name="last_date"
                     formControlName="last_date"
                     required
@@ -127,7 +121,7 @@
         </div>
 
         <button type="submit" mat-raised-button color="primary" class="btn-filter">
-            FILTER
+            {{ 'explore.sidenav.search.form.btn' | translate }}
         </button>
     </form>
 </div>

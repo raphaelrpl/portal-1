@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Language } from './language.interface';
+import { TranslateService } from '@ngx-translate/core';
 
 /**
  * Select Language
@@ -13,6 +14,8 @@ import { Language } from './language.interface';
 })
 export class SelectLangComponent implements OnInit {
 
+  constructor(public translate: TranslateService) { }
+
   /** List of Languages */
   public languages: Language[];
   /** Language selected */
@@ -23,10 +26,17 @@ export class SelectLangComponent implements OnInit {
    */
   ngOnInit() {
     this.languages = [
-      {id: 'pt', icon: '/portal/assets/images/icons/br.svg'},
+      {id: 'pt-br', icon: '/portal/assets/images/icons/br.svg'},
       {id: 'en', icon: '/portal/assets/images/icons/usa.svg'}
     ];
     this.languageId = 'en';
+  }
+
+  /**
+   * change language
+   */
+  changeLanguage(lang: Language) {
+    this.translate.use(lang.id);
   }
 
 }

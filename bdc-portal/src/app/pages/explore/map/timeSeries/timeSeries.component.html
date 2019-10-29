@@ -1,5 +1,5 @@
 <div class="timeseries_label-msg" *ngIf="actived">
-    move the point and click in 'VIEW'
+    {{ 'explore.map.timeSeries.label' | translate }}
 </div>
 
 <div class="container-timeseries" *ngIf="features.length">
@@ -8,9 +8,9 @@
     </div>
 
     <div class="btn-view" *ngIf="actived" (click)="showBox()">
-        VIEW
+        {{ 'explore.map.timeSeries.btns.view' | translate }}
     </div>
     <div class="btn-cancel" *ngIf="actived" (click)="desactive()">
-        Cancel
+        {{ 'explore.map.timeSeries.btns.cancel' | translate }}
     </div>
 </div>

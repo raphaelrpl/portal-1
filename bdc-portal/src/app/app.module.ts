@@ -13,13 +13,23 @@ import * as fromExplore from './pages/explore/explore.reducer';
 import { AdminModule } from './pages/admin/admin.module';
 import { APP_BASE_HREF } from '@angular/common';
 
+// import ngx-translate and the http loader
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+
 /**
  * Initial Module of Application (SPA)
  */
 @NgModule({
-  providers: [{provide: APP_BASE_HREF, useValue: '/portal/'}],
+  providers: [{
+    provide: APP_BASE_HREF, useValue: '/portal/'
+  }],
   declarations: [
     AppComponent
+  ],
+  exports: [
+    TranslateModule
   ],
   imports: [
     BrowserModule,
@@ -32,8 +42,21 @@ import { APP_BASE_HREF } from '@angular/common';
       app: fromApp.reducer,
       auth: fromAuth.reducer,
       explore: fromExplore.reducer
+    }),
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
     })
   ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/portal/assets/i18n/', '.json');
+}

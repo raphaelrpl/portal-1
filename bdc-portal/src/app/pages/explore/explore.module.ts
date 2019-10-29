@@ -46,6 +46,7 @@ import { SampleComponent } from './sidenav/sample/sample.component';
 import { EditColorComponent } from './map/edit-color/edit-color.component';
 import { SideBySideComponent } from './map/side-by-side/side-by-side.component';
 import { SideBySideBoxComponent } from './map/side-by-side/box/side-by-side-box.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 
 /**
@@ -102,6 +103,7 @@ import { SideBySideBoxComponent } from './map/side-by-side/box/side-by-side-box.
     MatCheckboxModule,
     NgxPaginationModule,
     ChartsModule,
+    TranslateModule,
     LeafletModule.forRoot(),
     LeafletDrawModule.forRoot()
   ],
