@@ -7,26 +7,38 @@ import { Map as MapLeaflet, MapOptions, latLng } from 'leaflet';
 import * as L from 'leaflet';
 import 'src/assets/plugins/Leaflet.SideBySide/index.js';
 
+/**
+ * Box to view/manage map with side_by_side effects
+ */
 @Component({
   selector: 'app-side-by-side-box',
   templateUrl: './side-by-side-box.component.html',
   styleUrls: ['./side-by-side-box.component.scss']
 })
 export class SideBySideBoxComponent {
-    
+  
+  /** url to BDC Tiler - used to view tiles by TMS */
+  private urlBDCTiler = window['__env'].urlBDCTiler;
   /** pointer to reference map */
   public map: MapLeaflet;
+  /** options to compose map */
   public options: MapOptions;
+  /** reference to side_by_side control */
   private sideControl: any;
-  private urlBDCTiler = window['__env'].urlBDCTiler;
-
-  public disabled = false;
+  /** periods by feature availables to select and compare */
   public periods: string[];
+  /** features availables to select and compare */
   private features: Feature[];
+  /** temporal step of the cube selected */
   private tstep: string;
+  /** temporal schema of the cube selected */
   private tschema: string;
-
+  /** btn status - true if two layers selected */
+  public disabled = false;
+  
+  /** first layer selected to compare */
   public first: Feature;
+  /** second layer selected to compare */
   public second: Feature;
 
   /** receive infos to display in this component */
@@ -45,6 +57,9 @@ export class SideBySideBoxComponent {
       });
   }
 
+  /**
+   * set start options of the map
+   */
   ngOnInit(): void {
     this.options = {
       zoom: 5,
@@ -52,6 +67,9 @@ export class SideBySideBoxComponent {
     };
   }
 
+  /**
+   * set layers by period selected
+   */
   public applyOverlayers() {
     this.disabled = true;
     if (this.sideControl) {
@@ -79,15 +97,8 @@ export class SideBySideBoxComponent {
   }
 
   /**
-   * event used when change Map
+   * display layer in map
    */
-  onMapReady(map: MapLeaflet) {
-    this.map = map;
-    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
-  }
-
   private setLayer(feature: Feature) {
     const composite = feature['composite'];
     const bands = composite ? Object.values(composite['bands']).join(',') : 'red,green,blue';
@@ -104,6 +115,20 @@ export class SideBySideBoxComponent {
     return LayerTile;
   }
 
+  /**
+   * event used when change Map
+   */
+  onMapReady(map: MapLeaflet) {
+    this.map = map;
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
+  }
+
+
+  /**
+   * remove layers of the map
+   */
   private clearMap() {
     this.map.removeControl(this.sideControl);
     this.map.eachLayer(l => {

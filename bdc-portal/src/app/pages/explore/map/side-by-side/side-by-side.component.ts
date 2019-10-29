@@ -18,11 +18,12 @@ export class SideBySideComponent {
   
   /** features selected in search */
   public features: Feature[] = [];
-
+  /** temporal step of the cube (quantity) */
   private tstep: string;
+  /** temporal schema of the cube (monthly, year) */
   private tschema: string;
 
-  /** select data of the store application */
+  /** select data in store application */
   constructor(
     private dialog: MatDialog,
     private store: Store<ExploreState>) {
@@ -35,6 +36,9 @@ export class SideBySideComponent {
       });
     }
 
+  /**
+   * Open box to view/manage side by side functionality
+   */
   public openDialog() {
     this.dialog.open(SideBySideBoxComponent, {
       width: '95%',

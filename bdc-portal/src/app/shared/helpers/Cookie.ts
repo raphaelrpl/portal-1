@@ -1,3 +1,7 @@
+/**
+ * get cookie value by key
+ * @param cname key cookie
+ */
 export function getCookie(cname) {
     var name = cname + "=";
     var decodedCookie = decodeURIComponent(document.cookie);
@@ -14,6 +18,12 @@ export function getCookie(cname) {
     return "";
 }
 
+/**
+ * set value in cookie
+ * @param cname key cookie
+ * @param cvalue value
+ * @param exdays quantity days to expiration cookie
+ */
 export function setCookie(cname, cvalue, exdays) {
     var d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));

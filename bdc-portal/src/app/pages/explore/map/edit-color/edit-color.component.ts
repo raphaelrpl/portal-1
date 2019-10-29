@@ -16,20 +16,32 @@ import * as L from 'leaflet';
 })
 export class EditColorComponent {
     
-    /** all features */
+    /** feature selected */
     public feature: Feature = null;
+    /** all features availables */
     public features: Feature[];
+    /** bands availables */
     public bandsAvailable = [];
+    /** band in red reference */
     public red = '';
+    /** band in green reference */
     public green = '';
+    /** band in blue reference */
     public blue = '';
+    /** saturation level */
     public saturation = null;
+    /** gamma level */
     public gamma = null;
+    /** sigmoidal level */
     public sigmoidal = null;
+    /** if actived layers in the map */
     public actived = true;
-    
+    /** url to BDC Tiler - used to view tiles by TMS */
     private urlBDCTiler = window['__env'].urlBDCTiler;
     
+    /**
+     * get features/layers by store (explore module) application
+     */
     constructor(private store: Store<ExploreState>) {
         this.store.pipe(select('explore')).subscribe(res => {
             if (res.featureEdit && res.featureEdit.id) {
@@ -57,10 +69,12 @@ export class EditColorComponent {
         });
     }
 
+    /** select bands availables by cube */
     setBandsAvailable() {
         this.bandsAvailable = Object.keys(this.feature.assets).filter(key => key != 'thumbnail');
     }
 
+    /** reset values to composite image */
     reset() {
         this.saturation = 2;
         this.gamma = 4.5;
@@ -70,10 +84,12 @@ export class EditColorComponent {
         this.blue = 'blue';
     }
 
+    /** close box of the window */
     closeBox() {
         this.store.dispatch(setEditFeature({}));
     }
 
+    /** composite new image by config levels */
     compositeImage() {
         // remove images displayed
         this.store.dispatch(removeGroupLayer({
