@@ -348,7 +348,9 @@ export class MapComponent implements OnInit {
   }
 
   public setScaleControl() {
-    L.control.scale().addTo(this.map);
+    L.control.scale({
+      imperial: false
+    }).addTo(this.map);
   }
 
   /**
