@@ -25,8 +25,8 @@ export class AuthService {
     /**
      * get Token in DPI Oauth
      */
-    public async token(scope: string): Promise<any> {
-        const urlSuffix = `/auth/token?service=${window['__env'].appName}&scope=${scope}`;
+    public async token(scope: string, service?: string): Promise<any> {
+        const urlSuffix = `/auth/token?service=${service || window['__env'].appName}&scope=${scope}`;
         const authenticationToken = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user'))['token'] : '';
         const response = await this.http.get(`${this.urlOauth}${urlSuffix}`, {
             headers: {

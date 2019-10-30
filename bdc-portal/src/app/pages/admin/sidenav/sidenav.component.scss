@@ -42,10 +42,10 @@
 
     .mat-expansion-panel-header {
         background: #1da9f4 !important;
-    }
 
-    .mat-expansion-panel-body {
-        padding: 0 !important;
+        .mat-icon {
+            margin-right: 15px;
+        }
     }
 
     .mat-expansion-panel-header-title {
@@ -53,4 +53,9 @@
         font-size: 1.2em;
         font-family: "Roboto", "Helvetica Neue", sans-serif;
     }
+}
+
+::ng-deep div.mat-expansion-panel-body {
+    padding-right: 0;
+    padding-left: 24px;
 }

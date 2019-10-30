@@ -3,6 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SamplesService } from '../samples.service';
 import { FileInputComponent } from 'ngx-material-file-input';
 import { isObject } from 'util';
+import { MatSnackBar } from '@angular/material';
+import { AuthService } from 'src/app/pages/auth/auth.service';
+import { Store } from '@ngrx/store';
+import { AppState } from 'src/app/app.state';
+import { showLoading, closeLoading } from 'src/app/app.action';
 
 @Component({
   selector: 'app-upload-sample',
@@ -16,15 +21,33 @@ export class UploadSampleComponent implements OnInit {
 
   systems: string[] = [];
 
+  tokenGet: string;
+
   constructor(
     private fb: FormBuilder,
-    private sampleService: SamplesService
+    private sampleService: SamplesService,
+    private snackBar: MatSnackBar,
+    private authService: AuthService,
+    private store: Store<AppState>,
   ) { }
 
+  public async getAuthorizeToken() {
+    this.store.dispatch(showLoading());
+    try {
+      const response = await this.authService.token(`samples:manage:post`, 'samples');
+      if (response) {
+        this.tokenGet = response.access_token;
+      }
+    } finally {
+      this.store.dispatch(closeLoading());
+    }
+  }
+
   ngOnInit() {
-    this.sampleService.getClassificationSystems()
+    this.getAuthorizeToken()
+      .then(() => this.sampleService.getClassificationSystems(this.tokenGet))
       .then(systems => {
-        this.systems = systems;
+        this.systems = systems.map((system: any) => system.authority_name);
       })
 
     this.formSampleUpload = this.fb.group({
@@ -85,6 +108,7 @@ export class UploadSampleComponent implements OnInit {
   }
 
   async submit() {
+    this.store.dispatch(showLoading())
     try {
       let mappings = this.prepareMappings();
 
@@ -95,8 +119,13 @@ export class UploadSampleComponent implements OnInit {
       }
 
     } catch (error) {
-      alert(error.message)
-      console.log(error)
+      this.snackBar.open(`Error creating classification system - ${error.message}!`, '', {
+        duration: 4000,
+        verticalPosition: 'top',
+        panelClass: 'app_snack-bar-error'
+      });
+    } finally {
+      this.store.dispatch(closeLoading())
     }
   }
 }

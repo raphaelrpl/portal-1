@@ -1,47 +1,52 @@
-<section class="container-page__admin">
-    <!-- TITLE -->
-    <div class="admin-title">
-        <div class="title">
-            <span class="title-group">samples / classification_system</span>
-            <span class="title-sub-group">Create</span>
-        </div>
-    </div>
-
-    <form [formGroup]="formClassSystem"
-        (ngSubmit)="create()"
-        class="create-cube">
-
-        <!-- BASIC INFOS -->
-        <div class="inline-block">
-            <mat-form-field appearance="fill">
-                <mat-label>Authority Name</mat-label>
-                <input matInput
-                    name="authority_name"
-                    formControlName="authority_name">
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-                <mat-label>System Name</mat-label>
-                <input matInput
-                    name="system_name"
-                    formControlName="system_name">
-            </mat-form-field>
-
-            <mat-form-field appearance="fill">
-                <mat-label>Description</mat-label>
-                <textarea matInput
-                    name="description"
-                    formControlName="description">
-                </textarea>
-            </mat-form-field>
-        </div>
-
-        <hr />
-
-        <button type="submit"
-                mat-raised-button
-                color="primary">
-                CREATE
-        </button>
-    </form>
+<section class="conatiner_page-not_authorized" *ngIf="!token; else allowedResource">
+    You are not allowed to access this resource!
 </section>
+
+<ng-template #allowedResource>
+    <section class="container-page__admin" #allowedResource>
+        <!-- TITLE -->
+        <div class="admin-title">
+            <div class="title">
+                <span class="title-group">samples / classification_system</span>
+                <span class="title-sub-group">Create</span>
+            </div>
+        </div>
+
+        <form [formGroup]="formClassSystem"
+            (ngSubmit)="submit()">
+
+            <!-- BASIC INFOS -->
+            <div class="inline-block">
+                <mat-form-field appearance="fill">
+                    <mat-label>Authority Name</mat-label>
+                    <input matInput
+                        name="authority_name"
+                        formControlName="authority_name">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>System Name</mat-label>
+                    <input matInput
+                        name="system_name"
+                        formControlName="system_name">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput
+                        name="description"
+                        formControlName="description">
+                    </textarea>
+                </mat-form-field>
+            </div>
+
+            <hr />
+
+            <button type="submit"
+                    mat-raised-button
+                    color="primary">
+                    CREATE
+            </button>
+        </form>
+    </section>
+</ng-template>
