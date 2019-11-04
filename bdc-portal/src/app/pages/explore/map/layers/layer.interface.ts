@@ -24,6 +24,7 @@ export interface BdcGrid {
     enabled: boolean;
     /** tileLayer in leaflet */
     layer: Layer;
+    style?: string;
     /** apply filter to diff colors/styles */
     filter: boolean;
 }

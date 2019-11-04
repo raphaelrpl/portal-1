@@ -176,39 +176,47 @@ export class BoxCatalogComponent implements OnInit {
           const responseImgsCatalog = await this.cs.getImagesCatalog(queryCatalog);
           this.imagesCatalog = responseImgsCatalog.result;
 
-          this.store.dispatch(removeGroupLayer({
-            key: 'alt',
-            prefix: 'catalog'
-          }));
-
-          // get images availables
-          let query = `collections=${this.collections.join(',')}`;
-          query += `&bbox=${this.bbox}`;
-          query += `&time=${formatDateUSA(this.searchObj.startDate)}`;
-          query += `/${formatDateUSA(this.searchObj.lastDate)}`;
-          if (this.searchObj.cloudCover) {
-            query += `&cloud_cover=${this.searchObj.cloudCover}`;
-          }
-          query += `&limit=100000`;
-
-          const response = await this.cs.getItems(query);
-          if (response.features.length) {
-            this.items = response.features;
-
-          } else {
-            this.items = [];
-            this.snackBar.open('Items not found!', '', {
-              duration: 5000,
-              verticalPosition: 'top',
-              panelClass: 'app_snack-bar-error'
-            });
-          }
+          this.searchStacCompose();
         }
       }
 
     } catch (err) {
-      this.items = [];
+      this.imagesCatalog = [];
+      this.searchStacCompose();
+    }
+  }
 
+  public async searchStacCompose() {
+    try {
+      this.store.dispatch(removeGroupLayer({
+        key: 'alt',
+        prefix: 'catalog'
+      }));
+
+      // get images availables
+      let query = `collections=${this.collections.join(',')}`;
+      query += `&bbox=${this.bbox}`;
+      query += `&time=${formatDateUSA(this.searchObj.startDate)}`;
+      query += `/${formatDateUSA(this.searchObj.lastDate)}`;
+      if (this.searchObj.cloudCover) {
+        query += `&cloud_cover=${this.searchObj.cloudCover}`;
+      }
+      query += `&limit=100000`;
+
+      const response = await this.cs.getItems(query);
+      if (response.features.length) {
+        this.items = response.features;
+
+      } else {
+        this.items = [];
+        this.snackBar.open('Items not found!', '', {
+          duration: 5000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-error'
+        });
+      }
+    } catch(err) {
+      this.items = [];
     } finally {
       this.storeApp.dispatch(closeLoading());
     }

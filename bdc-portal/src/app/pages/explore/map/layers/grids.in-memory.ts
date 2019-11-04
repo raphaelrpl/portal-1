@@ -31,5 +31,13 @@ export const Grids: BdcGrid[] = [
       name: 'WRS',
       layer: null,
       filter: false
+   },
+   {
+      id: 'ibge_biomas',
+      enabled: false,
+      name: 'Biomas',
+      layer: null,
+      style: 'biomas',
+      filter: false
    }
 ];
