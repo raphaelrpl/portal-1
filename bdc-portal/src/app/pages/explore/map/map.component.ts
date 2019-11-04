@@ -239,7 +239,7 @@ export class MapComponent implements OnInit {
       const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
         layers: `grids:${l.id}`,
         format: 'image/png',
-        styles: 'grids:tiles',
+        styles: l.style ? `grids:${l.style}` : 'grids:tiles',
         transparent: true,
         alt: `grid_${l.id}`
       } as any);

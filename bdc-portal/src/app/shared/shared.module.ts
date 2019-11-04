@@ -19,6 +19,7 @@ import { FormFieldErrorComponent } from './components/form-field-input/form-fiel
 import { AlertComponent } from './components/alert/alert.component';
 import { AboutComponent } from './components/about/about.component';
 import { TranslateModule } from '@ngx-translate/core';
+import { SupportersComponent } from './components/supporters/supporters.component';
 
 /**
  * Shared Module
@@ -32,6 +33,7 @@ import { TranslateModule } from '@ngx-translate/core';
     FormFieldErrorComponent,
     AlertComponent,
     AboutComponent,
+    SupportersComponent,
     DialogFeatureComponent
   ],
   exports: [
@@ -55,7 +57,8 @@ import { TranslateModule } from '@ngx-translate/core';
   ],
   entryComponents: [
     DialogFeatureComponent,
-    AboutComponent
+    AboutComponent,
+    SupportersComponent
   ]
 })
 export class SharedModule { }
