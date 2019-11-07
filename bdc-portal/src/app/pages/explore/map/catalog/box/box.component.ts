@@ -165,6 +165,7 @@ export class BoxCatalogComponent implements OnInit {
             verticalPosition: 'top',
             panelClass: 'app_snack-bar-error'
           });
+          this.storeApp.dispatch(closeLoading());
 
         } else {
           // get images existing in catalog
