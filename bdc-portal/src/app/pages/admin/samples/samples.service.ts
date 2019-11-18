@@ -18,14 +18,14 @@ export class SamplesService {
     });
   }
 
-  public upload(mappings: any, classification_system: any, file: any) {
+  public upload(mappings: any, classification_system: any, file: any, token: string) {
     const formData = new FormData();
 
     formData.append('file', file);
     formData.append('mappings', JSON.stringify(mappings));
     formData.append('classification_system', classification_system);
 
-    return this.http.post(`${this.API_URL}/api/sample/`, formData).toPromise();
+    return this.http.post(`${this.API_URL}/api/sample/`, formData, { headers: this.getHeaders(token) }).toPromise();
   }
 
   public getClassificationSystems(token: string): Promise<string[]> {

@@ -36,9 +36,9 @@ export class CreateClassificationSystemComponent implements OnInit {
   }
 
   async submit() {
-    this.store.dispatch(showLoading());
-
     if (this.formClassSystem.valid) {
+      this.store.dispatch(showLoading());
+
       const data = this.formClassSystem.value;
 
       try {
@@ -50,7 +50,7 @@ export class CreateClassificationSystemComponent implements OnInit {
           panelClass: 'app_snack-bar-success'
         });
       } catch (error) {
-        this.snackBar.open(`Error creating classification system - ${error}!`, '', {
+        this.snackBar.open(`Error creating classification system - ${error.message}!`, '', {
           duration: 4000,
           verticalPosition: 'top',
           panelClass: 'app_snack-bar-error'

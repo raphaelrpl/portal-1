@@ -21,7 +21,7 @@ export class UploadSampleComponent implements OnInit {
 
   systems: string[] = [];
 
-  tokenGet: string;
+  token: string;
 
   constructor(
     private fb: FormBuilder,
@@ -31,12 +31,16 @@ export class UploadSampleComponent implements OnInit {
     private store: Store<AppState>,
   ) { }
 
+  /**
+   * Check user authorization.
+   * @todo Creates a wrapper components that acts for general user permission. HoC.
+   */
   public async getAuthorizeToken() {
     this.store.dispatch(showLoading());
     try {
       const response = await this.authService.token(`samples:manage:post`, 'samples');
       if (response) {
-        this.tokenGet = response.access_token;
+        this.token = response.access_token;
       }
     } finally {
       this.store.dispatch(closeLoading());
@@ -45,7 +49,7 @@ export class UploadSampleComponent implements OnInit {
 
   ngOnInit() {
     this.getAuthorizeToken()
-      .then(() => this.sampleService.getClassificationSystems(this.tokenGet))
+      .then(() => this.sampleService.getClassificationSystems(this.token))
       .then(systems => {
         this.systems = systems.map((system: any) => system.authority_name);
       })
@@ -80,12 +84,11 @@ export class UploadSampleComponent implements OnInit {
     });
   }
 
-  controls(key: string) {
-    const group: FormGroup = <FormGroup>this.formSampleUpload.get(key);
-
-    return Object.keys(group.controls);
-  }
-
+  /**
+   * Prepare the input data set mappings to the sampledb format
+   *
+   * @returns {any} sampledb mappings
+   */
   private prepareMappings() {
     let mappings = this.formSampleUpload.get('mappings').value;
 
@@ -107,6 +110,7 @@ export class UploadSampleComponent implements OnInit {
     return mappings;
   }
 
+  /** Submit the process to the backend */
   async submit() {
     this.store.dispatch(showLoading())
     try {
@@ -115,7 +119,13 @@ export class UploadSampleComponent implements OnInit {
       if (this.formSampleUpload.status === 'VALID') {
         const classification_system = this.formSampleUpload.get('classification_system').value;
 
-        await this.sampleService.upload(mappings, classification_system, this.fileInput.value.files[0]);
+        const response: any = await this.sampleService.upload(mappings, classification_system, this.fileInput.value.files[0], this.token);
+
+        this.snackBar.open(`${response.affected} samples uploaded.`, '', {
+          duration: 4000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-success'
+        });
       }
 
     } catch (error) {

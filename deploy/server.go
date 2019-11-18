@@ -47,6 +47,7 @@ func main() {
 	new_content = strings.ReplaceAll(new_content, "URL_DATASEARCH_INPE", "'"+os.Getenv("URL_DATASEARCH_INPE")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_BDC_TILER", "'"+os.Getenv("URL_BDC_TILER")+"'")
 	new_content = strings.ReplaceAll(new_content, "URL_APM_SERVER", "'"+os.Getenv("URL_APM_SERVER")+"'")
+	new_content = strings.ReplaceAll(new_content, "URL_SAMPLEDB", "'"+os.Getenv("URL_SAMPLEDB")+"'")
 	err = ioutil.WriteFile(file_url+"assets/env.js", []byte(new_content), 0644)
 	if err != nil {
 		log.Fatalln(err)
