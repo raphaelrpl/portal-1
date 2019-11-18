@@ -17,3 +17,20 @@ $bdc_theme: mat-light-theme(
   $bdc_theme-accent,
   $bdc_theme-warn
 );
+
+
+.app-logos {
+  display: block;
+  background: #FFF;
+  position: absolute;
+  padding: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+
+  img {
+    display: block;
+    margin: 0 auto;
+  }
+}

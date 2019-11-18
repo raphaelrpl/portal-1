@@ -11,9 +11,9 @@
             <mat-expansion-panel [expanded]="step == 0" (click)="changeStep(0)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <mat-icon>search</mat-icon> Search
+                  <mat-icon>search</mat-icon> {{ 'explore.sidenav.search.title' | translate }}
                 </mat-panel-title>
-              </mat-expansion-panel-header>
+              </mat-expansion-panel-header> 
 
               <app-search (stepToEmit)="changeStep($event)"></app-search>
             </mat-expansion-panel>
@@ -22,7 +22,7 @@
             <mat-expansion-panel *ngIf="features.length" [expanded]="step == 1" (click)="changeStep(1)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <mat-icon>list</mat-icon> Cube
+                  <mat-icon>list</mat-icon> {{ 'explore.sidenav.collections.title' | translate }}
                 </mat-panel-title>
               </mat-expansion-panel-header>
 
@@ -33,7 +33,7 @@
             <mat-expansion-panel *ngIf="samples.length" [expanded]="step == 2" (click)="changeStep(2)">
               <mat-expansion-panel-header>
                 <mat-panel-title>
-                  <mat-icon>scatter_plot</mat-icon> Samples
+                  <mat-icon>scatter_plot</mat-icon> {{ 'explore.sidenav.samples.title' | translate }}
                 </mat-panel-title>
               </mat-expansion-panel-header>
 

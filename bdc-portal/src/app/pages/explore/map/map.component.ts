@@ -239,7 +239,7 @@ export class MapComponent implements OnInit {
       const layerGrid = L.tileLayer.wms(`${this.urlGeoserver}/grids/wms`, {
         layers: `grids:${l.id}`,
         format: 'image/png',
-        styles: 'grids:tiles',
+        styles: l.style ? `grids:${l.style}` : 'grids:tiles',
         transparent: true,
         alt: `grid_${l.id}`
       } as any);
@@ -282,17 +282,17 @@ export class MapComponent implements OnInit {
         let has = false;
         this.map.eachLayer(async l => {
           if (!has && l['options'].alt && l['options'].alt.indexOf('grid_') >= 0) {
-            let layerName = l['options'].alt.replace('grid_', '');
+            const layerName = l['options'].alt.replace('grid_', '');
             const response = await this.ls.getInfoByWMS(
               layerName, this.map.getBounds().toBBoxString(), point.x, point.y, size.y, size.x);
-  
+
             if (response.features.length > 0) {
               this.displayPopup(layerName, response.features[0].properties, latlng);
               has = true;
             }
           }
         });
-      } catch(err) {
+      } catch (err) {
         this.map.closePopup();
         return;
       }
@@ -348,7 +348,9 @@ export class MapComponent implements OnInit {
   }
 
   public setScaleControl() {
-    L.control.scale().addTo(this.map);
+    L.control.scale({
+      imperial: false
+    }).addTo(this.map);
   }
 
   /**

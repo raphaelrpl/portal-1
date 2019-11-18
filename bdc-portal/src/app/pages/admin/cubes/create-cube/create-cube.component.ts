@@ -13,7 +13,7 @@ import { MatSnackBar, MAT_DATE_FORMATS, DateAdapter } from '@angular/material';
 
 /**
  * Create Cube Component
- * component to create cube 
+ * component to create cube
  */
 @Component({
   templateUrl: './create-cube.component.html',
@@ -77,8 +77,8 @@ export class CreateCubeComponent implements OnInit {
       });
   }
 
-  /** 
-   * check user authentication and 
+  /**
+   * check user authentication and
    * mount list with informations available of the datasets, bands and GRS
    */
   ngOnInit() {

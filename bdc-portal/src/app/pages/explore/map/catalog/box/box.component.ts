@@ -101,9 +101,9 @@ export class BoxCatalogComponent implements OnInit {
   /** send request to mount component */
   ngOnInit() {
     this.getProviders();
-    
+
     this.rangeTemporal = [
-      new Date(2000,1,1),
+      new Date(2000, 1, 1),
       new Date()
     ];
   }
@@ -133,8 +133,9 @@ export class BoxCatalogComponent implements OnInit {
           });
         });
       }
-    } catch (err) {}
-    finally {
+    } catch (err) {
+
+    } finally {
       this.storeApp.dispatch(closeLoading());
     }
   }
@@ -164,6 +165,7 @@ export class BoxCatalogComponent implements OnInit {
             verticalPosition: 'top',
             panelClass: 'app_snack-bar-error'
           });
+          this.storeApp.dispatch(closeLoading());
 
         } else {
           // get images existing in catalog
@@ -171,43 +173,51 @@ export class BoxCatalogComponent implements OnInit {
             .map( cp => sensorByProvider[cp.split(':')[1]]);
           let queryCatalog = `start=${formatDateUSA(this.searchObj.startDate)}`;
           queryCatalog += `&end=${formatDateUSA(this.searchObj.lastDate)}`;
-          queryCatalog += `&satsen=${sensors.join(',')}`
+          queryCatalog += `&satsen=${sensors.join(',')}`;
           const responseImgsCatalog = await this.cs.getImagesCatalog(queryCatalog);
           this.imagesCatalog = responseImgsCatalog.result;
 
-          this.store.dispatch(removeGroupLayer({
-            key: 'alt',
-            prefix: 'catalog'
-          }));
-
-          // get images availables
-          let query = `collections=${this.collections.join(',')}`;
-          query += `&bbox=${this.bbox}`;
-          query += `&time=${formatDateUSA(this.searchObj.startDate)}`;
-          query += `/${formatDateUSA(this.searchObj.lastDate)}`;
-          if (this.searchObj.cloudCover) {
-            query += `&cloud_cover=${this.searchObj.cloudCover}`;
-          }
-          query += `&limit=100000`;
-
-          const response = await this.cs.getItems(query);
-          if (response.features.length) {
-            this.items = response.features;
-
-          } else {
-            this.items = [];
-            this.snackBar.open('Items not found!', '', {
-              duration: 5000,
-              verticalPosition: 'top',
-              panelClass: 'app_snack-bar-error'
-            });
-          }
+          this.searchStacCompose();
         }
       }
 
     } catch (err) {
-      this.items = [];
+      this.imagesCatalog = [];
+      this.searchStacCompose();
+    }
+  }
 
+  public async searchStacCompose() {
+    try {
+      this.store.dispatch(removeGroupLayer({
+        key: 'alt',
+        prefix: 'catalog'
+      }));
+
+      // get images availables
+      let query = `collections=${this.collections.join(',')}`;
+      query += `&bbox=${this.bbox}`;
+      query += `&time=${formatDateUSA(this.searchObj.startDate)}`;
+      query += `/${formatDateUSA(this.searchObj.lastDate)}`;
+      if (this.searchObj.cloudCover) {
+        query += `&cloud_cover=${this.searchObj.cloudCover}`;
+      }
+      query += `&limit=100000`;
+
+      const response = await this.cs.getItems(query);
+      if (response.features.length) {
+        this.items = response.features;
+
+      } else {
+        this.items = [];
+        this.snackBar.open('Items not found!', '', {
+          duration: 5000,
+          verticalPosition: 'top',
+          panelClass: 'app_snack-bar-error'
+        });
+      }
+    } catch(err) {
+      this.items = [];
     } finally {
       this.storeApp.dispatch(closeLoading());
     }

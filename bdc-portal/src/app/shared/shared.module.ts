@@ -18,6 +18,8 @@ import { DialogFeatureComponent } from './components/dialog-feature/dialog-featu
 import { FormFieldErrorComponent } from './components/form-field-input/form-field-error.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AboutComponent } from './components/about/about.component';
+import { TranslateModule } from '@ngx-translate/core';
+import { SupportersComponent } from './components/supporters/supporters.component';
 
 /**
  * Shared Module
@@ -31,6 +33,7 @@ import { AboutComponent } from './components/about/about.component';
     FormFieldErrorComponent,
     AlertComponent,
     AboutComponent,
+    SupportersComponent,
     DialogFeatureComponent
   ],
   exports: [
@@ -49,11 +52,13 @@ import { AboutComponent } from './components/about/about.component';
     MatSelectModule,
     MatInputModule,
     MatCheckboxModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    TranslateModule
   ],
   entryComponents: [
     DialogFeatureComponent,
-    AboutComponent
+    AboutComponent,
+    SupportersComponent
   ]
 })
 export class SharedModule { }

@@ -4,7 +4,7 @@
     <div class="header">
         <h1 cdkDragHandle>
             <mat-icon>open_with</mat-icon>
-            CATALOG
+            {{ 'explore.map.catalog.box.title' | translate }}
         </h1>
         <button mat-icon-button (click)="closeBox()">
             <mat-icon>close</mat-icon>
@@ -15,7 +15,7 @@
         <form class="box_search" [formGroup]="formSearch" (ngSubmit)="search()">
             <!-- PROVIDERS -->
             <mat-form-field appearance="outline">
-                <mat-label>Select Providers</mat-label>
+                <mat-label>{{ 'explore.map.catalog.box.form.providers' | translate }}</mat-label>
                 <mat-select [(value)]="providers" multiple formControlName="providers" required>
                     <mat-option *ngFor="let provider of providersList" [value]="provider" (click)="getCollections()">{{ provider }}</mat-option>
                 </mat-select>
@@ -23,7 +23,7 @@
 
             <!-- COLLECTIONS -->
             <mat-form-field appearance="outline" style="margin-top: -20px;">
-                <mat-label>Select Collections</mat-label>
+                <mat-label>{{ 'explore.map.catalog.box.form.collections' | translate }}</mat-label>
                 <mat-select [(value)]="collections" multiple formControlName="collections" required>
                     <mat-option *ngFor="let collection of collectionsList" [value]="collection">
                         {{ collection.split(':')[1] }}{{ collection.split(':').length > 2 ? ':'+collection.split(':')[2] : '' }}
@@ -33,10 +33,9 @@
 
             <!-- RANGE DATES -->
             <mat-form-field appearance="outline" style="margin-top: -20px; width: 49%">
-                <mat-label>Start Date</mat-label>
+                <mat-label>{{ 'explore.map.catalog.box.form.startDate' | translate }}</mat-label>
                 <input matInput
                     [matDatepicker]="startDate"
-                    placeholder="Start Date"
                     name="startDate"
                     [min]="rangeTemporal[0]"
                     [max]="rangeTemporal[1]"
@@ -48,10 +47,9 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline" style="margin-top: -20px; margin-left: 2%; width: 49%">
-                <mat-label>Last Date</mat-label>
+                <mat-label>{{ 'explore.map.catalog.box.form.lastDate' | translate }}</mat-label>
                 <input matInput
                     [matDatepicker]="lastDate"
-                    placeholder="Last Date"
                     [min]="rangeTemporal[0]"
                     [max]="rangeTemporal[1]"
                     name="lastDate"
@@ -64,7 +62,7 @@
 
             <!-- CLOUD COVER -->
             <mat-form-field appearance="outline" style="margin-top: -20px;">
-                <mat-label>Cloud Cover (max)</mat-label>
+                <mat-label>{{ 'explore.map.catalog.box.form.cloud' | translate }} (max)</mat-label>
                 <input type="number"
                     min="1"
                     max="100"
@@ -76,7 +74,7 @@
             </mat-form-field>
 
             <button type="submit" mat-raised-button class="btn-search">
-                SEARCH
+                {{ 'explore.map.catalog.box.form.btn' | translate }}
             </button>
         </form>
 

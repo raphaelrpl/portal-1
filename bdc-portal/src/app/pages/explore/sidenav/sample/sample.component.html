@@ -1,12 +1,12 @@
 <div class="form-select">
     <mat-form-field appearance="fill">
-        <mat-label>Select Authors</mat-label>
+        <mat-label>{{ 'explore.sidenav.samples.form.authors' | translate }}</mat-label>
         <mat-select [(value)]="authors" multiple>
             <mat-option *ngFor="let author of authorsList" [value]="author">{{ author }}</mat-option>
         </mat-select>
     </mat-form-field>
 
-    <button mat-flat-button (click)="filtered()">Apply Filter</button>
+    <button mat-flat-button (click)="filtered()">{{ 'explore.sidenav.samples.form.btn' | translate }}</button>
 </div>
 
 <div class="box-classes">
