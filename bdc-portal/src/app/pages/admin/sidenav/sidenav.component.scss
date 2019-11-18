@@ -55,7 +55,12 @@
     }
 }
 
+.mat-expansion-panel-header {
+    border-radius: 0;
+}
+
 ::ng-deep div.mat-expansion-panel-body {
-    padding-right: 0;
+    padding: 0;
     padding-left: 24px;
+    background: rgba(29, 169, 244, 0.9);
 }

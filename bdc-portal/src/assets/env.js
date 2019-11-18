@@ -28,5 +28,5 @@
     // URL BDC TILER
     window.__env.urlBDCTiler = 'http://brazildatacube.dpi.inpe.br/tiler/tms';
     // URL SampleDB Backend
-    window.__env.urlSampleDBBackend = 'http://127.0.0.1:5001';
+    window.__env.urlSampleDBBackend = 'http://127.0.0.1:5000';
 }(this));
